@@ -1,6 +1,65 @@
 function iniPage() {
 
+    addElementMenuItems();
+
 }
+
+iniPage();
+
+function addElementMenuItems() {
+    console.log("addElementMenuItems is here");
+
+    fetch('../assets/json/elementList.json')
+        .then(response => response.json())
+        .then(data => {
+            let elm = document.getElementsByClassName("menuTitle")[0];
+
+            for (let elementGroup of data) {
+
+                const new_elm = document.createElement("div");
+                new_elm.textContent = elementGroup.name;
+                new_elm.classList.add("groupName");
+
+                elm.after(new_elm);
+                elm = new_elm;
+
+                new_elm = document.createElement("div");
+                new_elm.classList.add(elementGroup.name + "Container");
+
+                const container = document.querySelector('.' + elementGroup.name + "Container");
+                container.style.display = 'grid';
+
+
+
+                console.log(elementGroup.name);
+
+                for (let element of elementGroup.elements) {
+
+                    console.log("  " + element.name);
+
+                }
+            }
+            console.log(data);
+        })
+        .catch(error => console.error(error));
+
+
+
+    // const fileReader = new FileReader();
+
+    // fileReader.onload = (event) => {
+    //     const contents = event.target.result;
+    //     const data = JSON.parse(contents);
+    //     console.log(data);
+
+    // };
+
+    // fileReader.readAsText('../json/elementList.json');
+
+}
+
+
+// 
 
 function addElement(event) {
 
@@ -15,6 +74,7 @@ function addElement(event) {
     const new_elm = document.createElement(caller.getAttribute("data-Htag"));
     new_elm.textContent = "Heading";
     new_elm.classList.add("canvasItem");
+    new_elm.setAttribute("draggable", "true");
 
     addListenerToElement(new_elm);
 
@@ -71,6 +131,8 @@ function addListenerToElement(elm) {
         this.focus();
     }, false);
 
+    //drag
+
 }
 
 
@@ -89,18 +151,10 @@ function getContentType() {
             for (i = 0; i < obj.items.length; i++) {
                 const item = obj.items[i];
 
-
-
-
                 let pulldownOption = document.createElement("option");
                 pulldownOption.textContent = item.name;
 
                 pulldownMenu.appendChild(pulldownOption);
-
-
-
-
-
 
                 console.log(item.name);
 
