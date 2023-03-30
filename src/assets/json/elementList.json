@@ -1,0 +1,37 @@
+[
+    {
+        "name": "Layout",
+        "elements": [
+            {
+                "name": "Div",
+                "tag": "div"
+            }
+        ]
+    },
+    {
+        "name": "Typography",
+        "elements": [
+            {
+                "name": "Heading",
+                "tag": "h1"
+            },
+            {
+                "name": "Paragraph",
+                "tag": "p"
+            },
+            {
+                "name": "Text link",
+                "tag": "a"
+            }
+        ]
+    },
+    {
+        "name": "Media",
+        "elements": [
+            {
+                "name": "Image",
+                "tag": "img"
+            }
+        ]
+    }
+]

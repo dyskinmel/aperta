@@ -1,0 +1,11 @@
+{
+  "dependencies": {
+    "forever": "^4.0.3",
+    "http": "^0.0.1-security"
+  },
+  "devDependencies": {
+    "@babel/cli": "^7.21.0",
+    "@babel/core": "^7.21.3",
+    "@babel/preset-env": "^7.20.2"
+  }
+}
