@@ -1,10 +1,10 @@
 @charset "utf-8";
 
-html,
+/* html,
 body {
     width: 100%;
     height: 100%;
-}
+} */
 
 .wrapper {
     /* @include box-sizing(border-box); */
@@ -69,10 +69,10 @@ body {
     white-space: nowrap;
 }
 
-
-.subElementContainer {
-    display: flex;
+.groupName {
+    outline: 1px solid gray;
 }
+
 
 .elementItem {
     font-size: 13px;
@@ -95,6 +95,7 @@ body {
 }
 
 .canvas {
+    border: none;
     height: 100%;
     width: 100%;
     /* outline: 1px solid gray; */
@@ -113,6 +114,18 @@ body {
 .selected {
     box-sizing: border-box;
     outline: 1px solid rgb(0, 120, 206);
+}
+
+.isAtTop {
+    border-top: 2px solid rgb(0, 120, 206);
+}
+
+.middle {
+    border: 2px solid rgb(0, 120, 206);
+}
+
+.isAtBottom {
+    border-bottom: 2px solid rgb(0, 120, 206);
 }
 
 

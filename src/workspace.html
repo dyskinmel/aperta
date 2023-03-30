@@ -33,9 +33,9 @@
                         </div>
                         <div class="elementContainer">
                             <div class="subElementContainer">
-                                <div class="elementItem" data-Htag="h1" onclick="addElement(event)"> Heading </div>
+                                <!-- <div class="elementItem" data-Htag="h1" onclick="addElement(event)"> Heading </div>
                                 <div class="elementItem"> Paragraph </div>
-                                <div class="elementItem"> Text link </div>
+                                <div class="elementItem"> Text link </div> -->
                             </div>
                         </div>
                     </div>
@@ -62,6 +62,10 @@
                     <div class="tab_contents" id="connectionEditor">
                         コンテンツ内容2
                         <button id="getContentType" onclick="getContentType()">get content type</button>
+                        <br>
+                        <select name="contentType" id="contentTypes"></select>
+                        <button id="getContents" onclick="getContents()">get contents</button>
+
 
                     </div>
                 </div>
@@ -71,7 +75,7 @@
 
     </div>
 
-    <Script type="module" src="./assets/js/aperta.js"></Script>
+    <Script src="./assets/js/aperta.js"></Script>
 </body>
 
 </html>
