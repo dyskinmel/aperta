@@ -3,7 +3,8 @@ import { readFile } from 'fs';
 
 const server = createServer((req, res) => {
     const baseURL = "https://localhost/";
-    const basePath = "./src";
+    //const basePath = "./src";
+    const basePath = "./public";
 
     const targetURL = new URL(req.url, baseURL);
     let targetPath = "";

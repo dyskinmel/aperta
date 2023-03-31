@@ -1,4 +1,11 @@
 {
+  "name": "your-project",
+  "version": "1.0.0",
+  "scripts": {
+    "build": "webpack --mode development",
+    "start": "node --experimental-modules ./src/server/app.mjs",
+    "test": "your-test-command"
+  },
   "dependencies": {
     "forever": "^4.0.3",
     "http": "^0.0.1-security"
@@ -6,6 +13,9 @@
   "devDependencies": {
     "@babel/cli": "^7.21.0",
     "@babel/core": "^7.21.3",
-    "@babel/preset-env": "^7.20.2"
+    "@babel/preset-env": "^7.20.2",
+    "babel-loader": "^9.1.2",
+    "webpack": "^5.77.0",
+    "webpack-cli": "^5.0.1"
   }
 }
