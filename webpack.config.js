@@ -1,9 +1,12 @@
 const path = require('path');
 
 module.exports = {
-    entry: './src/client/index.js', // エントリーポイント
+    entry: {
+        webdesign: './views/webdesign.js', // エントリーポイント
+        dashboard: './views/dashboard.js',
+    },
     output: {
-        filename: 'bundle.js', // 出力ファイル名
+        filename: '[name]/bundle.js', // 出力ファイル名
         path: path.resolve(__dirname, 'public') // 出力ディレクトリ
     },
     module: {

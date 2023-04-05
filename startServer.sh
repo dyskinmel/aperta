@@ -1,1 +1,1 @@
-node --experimental-modules ./src/server/app.mjs
+node --experimental-modules ./app.mjs

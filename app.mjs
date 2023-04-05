@@ -5,7 +5,7 @@ import { readFile } from 'fs';
 const app = express();
 const port = 8080;
 
-const basePath = new URL('../../public', import.meta.url).pathname;
+const basePath = new URL('./public', import.meta.url).pathname;
 
 app.use((req, res) => {
     const targetPath = req.path === "/" ? "/index.html" : req.path;
