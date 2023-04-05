@@ -1,3 +1,5 @@
-import bar from './bar';
+import App from './webdesign/App.svelte';
 
-bar();
+const app = new App({
+    target: document.querySelector('#app'),
+});
