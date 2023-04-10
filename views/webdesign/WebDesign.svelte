@@ -1,5 +1,6 @@
 <script>
     import LeftSideMenu from "./ LeftSideMenu.svelte";
+    import EditorCanvas from "./EditorCanvas.svelte";
     let message = "Hello from Svelte!";
 </script>
 
@@ -11,12 +12,7 @@
         </div>
         <div class="editor">
             <!-- <div class="canvas" id="canvas">editor</div> -->
-            <iframe
-                src="./pageDesign/index.html"
-                class="canvas"
-                id="canvas"
-                title="canvas"
-            />
+            <EditorCanvas />
         </div>
         <div class="rightSideMenu">
             RightSideMenu
@@ -140,14 +136,6 @@
         padding: 10px;
         outline: 1px solid gray;
         /* background-color: gray; */
-    }
-
-    .canvas {
-        border: none;
-        height: 100%;
-        width: 100%;
-        /* outline: 1px solid gray; */
-        /* background-color: white; */
     }
 
     /* .canvasItem {

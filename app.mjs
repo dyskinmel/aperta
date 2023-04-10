@@ -26,6 +26,7 @@ app.use((req, res) => {
 
 function getContentTypes(targetPath) {
     const extension = path.extname(targetPath).toLowerCase();
+    // console.log('taregtPath: ' + targetPath + ', extension: ' + extension);
     switch (extension) {
         case '.html':
             return 'text/html; charset=utf-8';

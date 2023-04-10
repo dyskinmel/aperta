@@ -1,9 +1,15 @@
 <script>
-    import { slide } from "svelte/transition";
+    import { createElementManager } from "./ElementFactory.js";
+
     export let elementList;
     let isOpen = true;
     const girdRow = elementList.elements.length / 3;
     const toggle = () => (isOpen = !isOpen);
+    const clickEvent = (event) => {
+        const elm = document.createElement(event.target.dataset.htag);
+        const elm_manager = createElementManager(elm);
+        elm_manager.addElementToCanvas(elm, event.target.textContent);
+    };
 </script>
 
 <div class="elementMenu">
@@ -24,7 +30,12 @@
     {#if isOpen}
         <div class="elementMenuBody">
             {#each elementList.elements as element}
-                <div class="elementMenuItem" data-Htag={element.tag}>
+                <!-- svelte-ignore a11y-click-events-have-key-events -->
+                <div
+                    on:click={clickEvent}
+                    class="elementMenuItem"
+                    data-Htag={element.tag}
+                >
                     {element.name}
                 </div>
             {/each}
