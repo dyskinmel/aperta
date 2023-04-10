@@ -1,5 +1,5 @@
-import App from './webdesign/App.svelte';
+import WebDesign from './webdesign/WebDesign.svelte';
 
-const app = new App({
-    target: document.querySelector('#app'),
+const webDesign = new WebDesign({
+    target: document.body,
 });
