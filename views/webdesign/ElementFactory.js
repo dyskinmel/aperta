@@ -5,13 +5,9 @@ import { addDblClickEventListeners } from "./EventListenerHandler.js";
 import { addDragAndDropEventListeners } from "./EventListenerHandler.js";
 
 
-
-
-
-
 // factory function to create an element
 export function createElementManager(elm) {
-    console.log(elm + " " + elm.tagName);
+    // console.log(elm + " " + elm.tagName);
     // return new Element();
     switch (elm.tagName) {
         case "BODY":
@@ -20,10 +16,7 @@ export function createElementManager(elm) {
     }
 }
 
-
-
 class Element {
-
     addElementToCanvas(elm, textContent) {
         // Add the element to the canvas
         const canvas = document.getElementById("canvas");
@@ -32,15 +25,12 @@ class Element {
         const canvasDocument = canvasWindow.document;
         const selectedElement = canvasDocument.getElementsByClassName("selected")[0];
 
-        // Create the element
-
+        // Create an element
         console.log(elm);
         elm.textContent = textContent;
         elm.classList.add("canvasItem");
         elm.setAttribute("draggable", "true");
         elm.setAttribute("data-uuid", crypto.randomUUID());
-
-
 
         // Add listener to element
         this.addListenerToElement(elm);
@@ -66,6 +56,7 @@ class BodyElement extends Element {
         // addKeydownEventListeners(elm);
         addHoverEventListeners(elm);
         addClickEventListeners(elm);
+        addDragAndDropEventListeners(elm);
     }
 
 

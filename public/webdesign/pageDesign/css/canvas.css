@@ -1,3 +1,5 @@
+/* Use this CSS file too define default style for newly added elements on canvas and animations like hover   */
+
 html {
     /* background-color: gray; */
     width: 100%;
@@ -11,4 +13,30 @@ body {
     background-color: white;
     width: 99%;
     height: 99%;
+}
+
+/* Default styles and animations */
+
+.hover {
+    box-sizing: border-box;
+    outline: 1px solid rgb(48, 165, 249);
+
+    content: "HTML Tag";
+}
+
+.selected {
+    box-sizing: border-box;
+    outline: 3px solid rgb(103, 167, 213);
+}
+
+.isAtTop {
+    border-top: 2px solid rgb(0, 120, 206);
+}
+
+.middle {
+    border: 2px solid rgb(0, 120, 206);
+}
+
+.isAtBottom {
+    border-bottom: 2px solid rgb(0, 120, 206);
 }

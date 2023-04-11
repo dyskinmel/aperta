@@ -2,15 +2,47 @@
 <html lang="en">
 
 <head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <script src="./bundle.js"></script>
-    <title>Document</title>
+    <title>動的に各要素のすぐ左上にH1と表示する</title>
+    <style>
+        .hover-text {
+            content: "H1";
+            display: none;
+            position: absolute;
+            top: 0;
+            left: 0;
+            padding: 2px 5px;
+            background-color: #000;
+            color: #fff;
+            font-size: 12px;
+            z-index: 999;
+        }
+    </style>
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            var hoverText = document.createElement("div");
+            hoverText.classList.add("hover-text");
+            document.body.appendChild(hoverText);
+            document.addEventListener("mousemove", function (event) {
+                var hoveredElement = event.target;
+                if (hoveredElement.tagName === "H1") {
+                    var rect = hoveredElement.getBoundingClientRect();
+                    var hoverText = document.querySelector(".hover-text");
+                    hoverText.style.display = "block";
+                    hoverText.style.top = rect.top - 20 + "px";
+                    hoverText.style.left = rect.left - 30 + "px";
+                } else {
+                    var hoverText = document.querySelector(".hover-text");
+                    hoverText.style.display = "none";
+                }
+            });
+        });
+    </script>
 </head>
 
-<body onloard="bar()">
-    Hello world from Index2
+<body>
+    <h1>Hoverしてください</h1>
+    <p>別の要素です</p>
+    <h1>もう一つのH1要素</h1>
 </body>
 
 </html>

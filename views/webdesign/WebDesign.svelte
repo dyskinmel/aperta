@@ -1,6 +1,8 @@
 <script>
     import LeftSideMenu from "./ LeftSideMenu.svelte";
     import EditorCanvas from "./EditorCanvas.svelte";
+    import MetaEditor from "./MetaEditor.svelte";
+
     let message = "Hello from Svelte!";
 </script>
 
@@ -17,7 +19,8 @@
         <div class="rightSideMenu">
             RightSideMenu
             <div class="metaEditorTab">
-                <input
+                <MetaEditor />
+                <!-- <input
                     id="cssEditor"
                     type="radio"
                     name="tab_menu"
@@ -40,7 +43,7 @@
                     <button id="getContents" onclick="getContents()"
                         >get contents</button
                     >
-                </div>
+                </div> -->
             </div>
         </div>
     </div>
@@ -180,7 +183,7 @@
         width: 225px;
     }
 
-    input[name="tab_menu"] {
+    /* input[name="tab_menu"] {
         display: none;
     }
 
@@ -198,5 +201,5 @@
     .metaEditorTab input:checked + .tab_menu {
         background-color: #1f71b5;
         color: #fff;
-    }
+    } */
 </style>

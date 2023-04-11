@@ -149,7 +149,7 @@ export function addDragAndDropEventListeners(elm) {
                 elm.classList.add("isAtBottom");
             }
             // console.log("isAtBottom");
-        } else {
+        } else if (!isAtTop && !isAtBottom) {
             if (previousState !== "middle") {
                 if (previousState !== null) {
                     elm.classList.remove(previousState);
@@ -168,7 +168,7 @@ export function addDragAndDropEventListeners(elm) {
     elm.addEventListener('dragleave', (event) => {
         event.preventDefault();
 
-        console.log("previousState: " + previousState);
+        // console.log("previousState: " + previousState);
 
         if (previousState !== null) {
             elm.classList.remove(previousState);
@@ -183,13 +183,9 @@ export function addDragAndDropEventListeners(elm) {
         //get data from dataTransfer to identify which element to swap when drop event is fired
         const draggedElmUUID = event.dataTransfer.getData('text/plain');
 
-        //console.log(event.target.getAttribute("data-uuid"));
-        // console.log("draggedElmUUID: " + draggedElmUUID);
-        // console.log("data-uuid: " + event.target.getAttribute("data-uuid"));
-
-
         //break if dragged element is same as element being dropped on
-        if (event.target.getAttribute("data-uuid") === draggedElmUUID) {
+        //also break if previousState is null
+        if (event.target.getAttribute("data-uuid") === draggedElmUUID || previousState === null) {
             //console.log("same element");
             return;
         }
@@ -198,20 +194,13 @@ export function addDragAndDropEventListeners(elm) {
         const canvasDocument = elm.ownerDocument;
         const draggedElm = canvasDocument.querySelector(`[data-uuid="${draggedElmUUID}"]`);
 
-
-
-        // console.log("dragend:UUID " + draggedElmUUID);
-        // console.log("dragend:Elm " + draggedElm);
-        // console.log("dragend:event.target: " + event.target);
-        //        console.log("parent: " + draggedElm.parentNode);
-
-
         //remove dragged element from previous position
         draggedElm.parentNode.removeChild(draggedElm);
 
         //insert dragged element into new position
         if (event.target.tagName === "BODY") {
             event.target.appendChild(draggedElm);
+            elm.classList.remove(previousState);
         } else {
             //place dragged element before or after element being dropped on
             if (previousState === "isAtTop") {
@@ -220,18 +209,12 @@ export function addDragAndDropEventListeners(elm) {
             } else if (previousState === "isAtBottom") {
                 event.target.after(draggedElm);
                 elm.classList.remove("isAtBottom");
-            } else {
+            } else if (previousState === "middle") {
                 //place dragged element as a child 
                 event.target.appendChild(draggedElm);
                 elm.classList.remove("middle");
             }
         }
-
-        // console.log(previousState);
-
-
-
-        //elm.classList.remove('dragging');
     });
 
 }
