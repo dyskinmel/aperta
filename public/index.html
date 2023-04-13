@@ -1,12 +1,11 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 
 <head>
-    <title>動的に各要素のすぐ左上にH1と表示する</title>
+    <title>Hoverしている要素の左上に文字を表示する</title>
     <style>
-        .hover-text {
-            content: "H1";
-            display: none;
+        .hover::before {
+            content: "HTML Tag";
             position: absolute;
             top: 0;
             left: 0;
@@ -15,34 +14,38 @@
             color: #fff;
             font-size: 12px;
             z-index: 999;
+            visibility: hidden;
         }
     </style>
     <script>
         document.addEventListener("DOMContentLoaded", function () {
-            var hoverText = document.createElement("div");
-            hoverText.classList.add("hover-text");
-            document.body.appendChild(hoverText);
-            document.addEventListener("mousemove", function (event) {
-                var hoveredElement = event.target;
-                if (hoveredElement.tagName === "H1") {
-                    var rect = hoveredElement.getBoundingClientRect();
-                    var hoverText = document.querySelector(".hover-text");
-                    hoverText.style.display = "block";
-                    hoverText.style.top = rect.top - 20 + "px";
-                    hoverText.style.left = rect.left - 30 + "px";
-                } else {
-                    var hoverText = document.querySelector(".hover-text");
-                    hoverText.style.display = "none";
-                }
+            var hoverElements = document.querySelectorAll(".hover");
+            hoverElements.forEach(function (hoverElement) {
+                hoverElement.addEventListener("mouseover", function (event) {
+                    var hoverBefore = window.getComputedStyle(event.target, "::before");
+                    var hoverText = event.target.querySelector(".hover-text");
+                    if (!hoverText) {
+                        hoverText = document.createElement("div");
+                        hoverText.classList.add("hover-text");
+                        hoverText.innerHTML = hoverBefore.getPropertyValue("content");
+                        event.target.appendChild(hoverText);
+                    }
+                    hoverText.style.visibility = "visible";
+                    hoverText.style.top = event.target.getBoundingClientRect().top - hoverText.getBoundingClientRect().height - 5 + "px";
+                    hoverText.style.left = event.target.getBoundingClientRect().left + "px";
+                });
+                hoverElement.addEventListener("mouseout", function (event) {
+                    var hoverText = event.target.querySelector(".hover-text");
+                    hoverText.style.visibility = "hidden";
+                });
             });
         });
     </script>
 </head>
 
 <body>
-    <h1>Hoverしてください</h1>
-    <p>別の要素です</p>
-    <h1>もう一つのH1要素</h1>
+    <h1 class="hover">Heading1</h1>
+    <h1 class="hover">Heading2</h1>
 </body>
 
 </html>

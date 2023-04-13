@@ -15,7 +15,7 @@ export function addKeydownEventListeners(elm) {
 
             //delete selected element except for a body element
 
-            if (selectedElement.tagName !== "BODY") {
+            if (selectedElement.tagName !== "BODY" && selectedElement.hasAttribute("contenteditable") === false) {
                 selectedElement.remove();
             }
         }
@@ -30,6 +30,48 @@ export function addHoverEventListeners(elm) {
     elm.addEventListener("mouseover", (event) => {
         event.preventDefault();
 
+        // return if the target element is selected
+        if (event.target.classList.contains("selected")) {
+            console.log("selected");
+            return;
+        }
+
+        // delete old hovered element before creating a new one
+        const hoveredElement = event.target.ownerDocument.getElementById("hoveredElement");
+
+        if (hoveredElement !== null) {
+            hoveredElement.remove();
+        }
+
+
+        // get position of hovered element
+        const rect = event.target.getBoundingClientRect();
+
+        // create a new hovered element
+        let new_elm = document.createElement("div");
+        new_elm.textContent = event.target.tagName;
+        new_elm.id = "hoveredElement";
+        new_elm.style.left = rect.left + 1 + "px";
+        // new_elm.style.position = "absolute";
+        // new_elm.style.color = "#1bbcf1";
+        // new_elm.style.fontSize = "10px";
+        // new_elm.style.fontWeight = "normal";
+
+        // set position of hovered element
+        if (event.target.tagName === "BODY") {
+            new_elm.style.top = rect.top + 1 + "px";
+        } else if (rect.top < 50) {
+            new_elm.style.top = rect.bottom + 3 + "px";
+
+        } else {
+            new_elm.style.top = rect.top - 16 + "px";
+        }
+
+        event.target.before(new_elm);
+
+        // const offset = event.clientY - rect.top;
+
+
         elm.classList.add('hover');
         event.stopPropagation();
     }, false);
@@ -38,6 +80,17 @@ export function addHoverEventListeners(elm) {
 
     elm.addEventListener("mouseout", (event) => {
         event.preventDefault();
+
+        // delete old hovered element before creating a new one
+        const hoveredElement = event.target.ownerDocument.getElementById("hoveredElement");
+        // console.log(hoveredElement);
+
+        if (hoveredElement !== null) {
+            hoveredElement.remove();
+        }
+
+
+
 
         elm.classList.remove('hover');
         event.stopPropagation();
@@ -49,17 +102,60 @@ export function addHoverEventListeners(elm) {
 export function addClickEventListeners(elm) {
 
     elm.addEventListener("click", (event) => {
-
+        // delete contenteditable attribute from a current selected element
         const canvasDocument = elm.ownerDocument;
-        let targetElements = canvasDocument.getElementsByClassName("selected");
+        let targetElements = canvasDocument.querySelector('[contenteditable="true"]');
+
+        if (targetElements !== null) {
+            if (elm.getAttribute('data-uuid') !== targetElements.getAttribute('data-uuid')) {
+                targetElements.removeAttribute("contenteditable");
+                targetElements.removeAttribute("spellcheck");
+            }
+        }
 
         /* Initialize: delete select class from a current selected element */
+        targetElements = canvasDocument.getElementsByClassName("selected");
+
         if (typeof targetElements[0] !== "undefined") {
             targetElements[0].classList.remove("selected");
         }
 
         // add select class to clicked element
         elm.classList.add("selected");
+
+
+        // delete old hovered element before creating a new one
+        const selectedElement = event.target.ownerDocument.getElementById("selectedElement");
+
+        if (selectedElement !== null) {
+            selectedElement.remove();
+        }
+
+
+        // get position of hovered element
+        const rect = event.target.getBoundingClientRect();
+
+        // create a new hovered element
+        let new_elm = document.createElement("div");
+        new_elm.textContent = event.target.tagName;
+        new_elm.id = "selectedElement";
+        new_elm.style.left = rect.left + 1 + "px";
+        // new_elm.style.position = "absolute";
+        // new_elm.style.color = "#1bbcf1";
+        // new_elm.style.fontSize = "10px";
+        // new_elm.style.fontWeight = "normal";
+
+        // set position of hovered element
+        if (event.target.tagName === "BODY") {
+            new_elm.style.top = rect.top + 1 + "px";
+        } else if (rect.top < 50) {
+            new_elm.style.top = rect.bottom + 3 + "px";
+
+        } else {
+            new_elm.style.top = rect.top - 16 + "px";
+        }
+
+        event.target.before(new_elm);
 
         // console.log(elm);
         event.stopPropagation();
@@ -71,17 +167,14 @@ export function addDblClickEventListeners(elm) {
 
     elm.addEventListener("dblclick", function () {
 
+        // delete contenteditable attribute from a current selected element
+        // const canvasDocument = elm.ownerDocument;
+        // const targetElements = canvasDocument.querySelector('[contenteditable="true"]');
 
-        const canvasDocument = elm.ownerDocument;
-        const targetElements = canvasDocument.querySelector('[contenteditable="true"]');
-
-        //console.log(targetElements);
-        // console.log(elm);
-
-        if (targetElements !== null) {
-            targetElements.removeAttribute("contenteditable");
-            targetElements.removeAttribute("spellcheck");
-        }
+        // if (targetElements !== null) {
+        //     targetElements.removeAttribute("contenteditable");
+        //     targetElements.removeAttribute("spellcheck");
+        // }
 
         // console.log(elm.tagName);
 
@@ -103,6 +196,16 @@ export function addDragAndDropEventListeners(elm) {
         //Set data to dataTransfer to identify which element to swap when drop event is fired
         event.dataTransfer.setData('text/plain', event.target.getAttribute('data-uuid'));
         //console.log("dragstart:draggedElm: " + event.target);
+
+        //set transparent image to prevent to show default drag image
+        const transparentImage = new Image();
+        transparentImage.src =
+            "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7";
+        event.dataTransfer.setDragImage(transparentImage, 0, 0);
+
+        //set drag effect to move (to delete + icon while drag & drop)
+        event.dataTransfer.effectAllowed = "move";
+
     });
 
 
@@ -190,6 +293,12 @@ export function addDragAndDropEventListeners(elm) {
             return;
         }
 
+        const selectedElement = event.target.ownerDocument.getElementById("selectedElement");
+
+        if (selectedElement !== null) {
+            selectedElement.remove();
+        }
+
         //get dragged element
         const canvasDocument = elm.ownerDocument;
         const draggedElm = canvasDocument.querySelector(`[data-uuid="${draggedElmUUID}"]`);
@@ -199,8 +308,14 @@ export function addDragAndDropEventListeners(elm) {
 
         //insert dragged element into new position
         if (event.target.tagName === "BODY") {
-            event.target.appendChild(draggedElm);
-            elm.classList.remove(previousState);
+            if (previousState === "isAtTop") {
+                event.target.prepend(draggedElm);
+                elm.classList.remove("isAtTop");
+            } else {
+                event.target.appendChild(draggedElm);
+                elm.classList.remove(previousState);
+            }
+
         } else {
             //place dragged element before or after element being dropped on
             if (previousState === "isAtTop") {

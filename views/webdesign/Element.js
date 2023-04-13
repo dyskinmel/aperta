@@ -26,7 +26,7 @@ class Element {
         const selectedElement = canvasDocument.getElementsByClassName("selected")[0];
 
         // Create an element
-        console.log(elm);
+        // console.log(elm);
         elm.textContent = textContent;
         elm.classList.add("canvasItem");
         elm.setAttribute("draggable", "true");
