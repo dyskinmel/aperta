@@ -1,5 +1,14 @@
 [
     {
+        "name": "Layout",
+        "elements": [
+            {
+                "name": "Div",
+                "tag": "div"
+            }
+        ]
+    },
+    {
         "name": "Typography",
         "elements": [
             {
@@ -9,7 +18,7 @@
             {
                 "name": "Paragraph",
                 "tag": "p"
-            }
+            },
             {
                 "name": "Text link",
                 "tag": "a"

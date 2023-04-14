@@ -33,16 +33,17 @@
                         </div>
                         <div class="elementContainer">
                             <div class="subElementContainer">
-                                <div class="elementItem" data-Htag="h1" onclick="addElement(event)"> Heading </div>
+                                <!-- <div class="elementItem" data-Htag="h1" onclick="addElement(event)"> Heading </div>
                                 <div class="elementItem"> Paragraph </div>
-                                <div class="elementItem"> Text link </div>
+                                <div class="elementItem"> Text link </div> -->
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
             <div class="editor">
-                <div class="canvas" id="canvas">editor</div>
+                <!-- <div class="canvas" id="canvas">editor</div> -->
+                <iframe src="./assets/pageDesign/index.html" class="canvas" id="canvas"></iframe>
 
             </div>
             <div class="rightSideMenu">
@@ -61,11 +62,17 @@
                     <div class="tab_contents" id="connectionEditor">
                         コンテンツ内容2
                         <button id="getContentType" onclick="getContentType()">get content type</button>
+                        <br>
+                        <select name="contentType" id="contentTypes"></select>
+                        <button id="getContents" onclick="getContents()">get contents</button>
+
 
                     </div>
                 </div>
             </div>
         </div>
+        <div class="footer">footer</div>
+
     </div>
 
     <Script src="./assets/js/aperta.js"></Script>
