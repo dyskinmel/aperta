@@ -12,6 +12,15 @@ export function createElementManager(elm) {
     switch (elm.tagName) {
         case "BODY":
             return new BodyElement();
+        case "H1":
+        case "H2":
+        case "H3":
+        case "H4":
+        case "H5":
+        case "H6":
+            return new HeadingElement();
+        case "IMG":
+            return new ImgElement();
         default: return new Element();
     }
 }
@@ -25,18 +34,33 @@ class Element {
         const canvasDocument = canvasWindow.document;
         const selectedElement = canvasDocument.getElementsByClassName("selected")[0];
 
-        // Create an element
-        // console.log(elm);
-        elm.textContent = textContent;
-        elm.classList.add("canvasItem");
-        elm.setAttribute("draggable", "true");
-        elm.setAttribute("data-uuid", crypto.randomUUID());
+        // return if no element is selected
+        if (selectedElement === undefined) {
+            return;
+        }
+
+        // migrated to setDefaultAttributes mothod
+        // // Create an element
+        // // console.log(elm);
+        // elm.textContent = textContent;
+        // // elm.classList.add("canvasItem");
+        // elm.setAttribute("draggable", "true");
+        // elm.setAttribute("data-uuid", crypto.randomUUID());
+        this.setDefaultAttributes(elm, textContent);
 
         // Add listener to element
         this.addListenerToElement(elm);
 
         // Add element to canvas
+        //addElementToSelectedElement(elm, selectedElement);
         selectedElement.appendChild(elm);
+    }
+
+    setDefaultAttributes(elm, textContent) {
+        // Add default attributes
+        elm.textContent = textContent;
+        elm.setAttribute("draggable", "true");
+        elm.setAttribute("data-uuid", crypto.randomUUID());
     }
 
     addListenerToElement(elm) {
@@ -45,12 +69,20 @@ class Element {
         addDblClickEventListeners(elm);
         addDragAndDropEventListeners(elm);
     }
+
+    addEleemntToSelectedElement(elm, selectedElement) {
+        if (selectedElement.tagName === "BODY") {
+            // Add element to selected element
+            selectedElement.appendChild(elm);
+        } else {
+            // Add element to selected element
+            selectedElement.after(elm);
+        }
+    }
 }
 
 class BodyElement extends Element {
-    constructor() {
-        super();
-    }
+
 
     addListenerToElement(elm) {
         // addKeydownEventListeners(elm);
@@ -61,4 +93,24 @@ class BodyElement extends Element {
 
 
 
+}
+
+class ImgElement extends Element {
+
+    setDefaultAttributes(elm, textContent) {
+        // Create an element
+        // console.log(elm);
+        elm.src = "../../img/imgPH.jpeg";
+        elm.alt = textContent + ": placeholder";
+        // elm.classList.add("canvasItem");
+        elm.setAttribute("draggable", "true");
+        elm.setAttribute("data-uuid", crypto.randomUUID());
+    }
+
+}
+
+class HeadingElement extends Element {
+    addElementToCanvas(elm, textContent) {
+
+    }
 }

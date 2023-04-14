@@ -3,49 +3,11 @@
 
 <head>
     <title>Hoverしている要素の左上に文字を表示する</title>
-    <style>
-        .hover::before {
-            content: "HTML Tag";
-            position: absolute;
-            top: 0;
-            left: 0;
-            padding: 2px 5px;
-            background-color: #000;
-            color: #fff;
-            font-size: 12px;
-            z-index: 999;
-            visibility: hidden;
-        }
-    </style>
-    <script>
-        document.addEventListener("DOMContentLoaded", function () {
-            var hoverElements = document.querySelectorAll(".hover");
-            hoverElements.forEach(function (hoverElement) {
-                hoverElement.addEventListener("mouseover", function (event) {
-                    var hoverBefore = window.getComputedStyle(event.target, "::before");
-                    var hoverText = event.target.querySelector(".hover-text");
-                    if (!hoverText) {
-                        hoverText = document.createElement("div");
-                        hoverText.classList.add("hover-text");
-                        hoverText.innerHTML = hoverBefore.getPropertyValue("content");
-                        event.target.appendChild(hoverText);
-                    }
-                    hoverText.style.visibility = "visible";
-                    hoverText.style.top = event.target.getBoundingClientRect().top - hoverText.getBoundingClientRect().height - 5 + "px";
-                    hoverText.style.left = event.target.getBoundingClientRect().left + "px";
-                });
-                hoverElement.addEventListener("mouseout", function (event) {
-                    var hoverText = event.target.querySelector(".hover-text");
-                    hoverText.style.visibility = "hidden";
-                });
-            });
-        });
-    </script>
+
 </head>
 
 <body>
-    <h1 class="hover">Heading1</h1>
-    <h1 class="hover">Heading2</h1>
+    <img src="./img/imgPH.jpeg">
 </body>
 
 </html>

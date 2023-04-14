@@ -216,6 +216,8 @@ export function addDragAndDropEventListeners(elm) {
     elm.addEventListener('dragover', (event) => {
         event.preventDefault();
 
+        //check if dragged element can be child of hovered element
+
         //
         const rect = event.target.getBoundingClientRect();
         const offset = event.clientY - rect.top;
