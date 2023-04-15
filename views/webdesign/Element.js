@@ -1,9 +1,11 @@
+//Event Listeners
 import { addKeydownEventListeners } from "./EventListenerHandler.js";
 import { addHoverEventListeners } from "./EventListenerHandler.js";
 import { addClickEventListeners } from "./EventListenerHandler.js";
 import { addDblClickEventListeners } from "./EventListenerHandler.js";
 import { addDragAndDropEventListeners } from "./EventListenerHandler.js";
-
+//
+import { isPhrasingContentTags } from "./HtmlCategories.js";
 
 // factory function to create an element
 export function createElementManager(elm) {
@@ -79,6 +81,10 @@ class Element {
             selectedElement.after(elm);
         }
     }
+
+    canBeParentOf(child) {
+        return true;
+    }
 }
 
 class BodyElement extends Element {
@@ -110,7 +116,8 @@ class ImgElement extends Element {
 }
 
 class HeadingElement extends Element {
-    addElementToCanvas(elm, textContent) {
-
+    canBeParentOf(child) {
+        return isPhrasingContentTags(child);
     }
+
 }

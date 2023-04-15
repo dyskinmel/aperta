@@ -1,4 +1,4 @@
-
+import { createElementManager } from "./Element";
 
 
 // keydown event to delete selected eleemnt on canvas except for a body element
@@ -43,11 +43,10 @@ export function addHoverEventListeners(elm) {
             hoveredElement.remove();
         }
 
-
         // get position of hovered element
         const rect = event.target.getBoundingClientRect();
 
-        // create a new hovered element
+        // create a label to show tagName
         let new_elm = document.createElement("div");
         new_elm.textContent = event.target.tagName;
         new_elm.id = "hoveredElement";
@@ -188,13 +187,21 @@ export function addDblClickEventListeners(elm) {
     }, false);
 }
 
+//use to set data to identify which element to swap when drop event is fired
+let draggedElm = null;
+//use in dragover event to identify when to insert element before or after, and, to prevent swapping with itself
+let previousState = null;
 
 export function addDragAndDropEventListeners(elm) {
-    //Dragging: enable drag and drop element swapping
 
+    //Dragging: enable drag and drop element swapping
     elm.addEventListener('dragstart', (event) => {
-        //Set data to dataTransfer to identify which element to swap when drop event is fired
-        event.dataTransfer.setData('text/plain', event.target.getAttribute('data-uuid'));
+
+
+        //Set data to identify which element to swap when drop event is fired
+        draggedElm = event.target;
+
+        // event.dataTransfer.setData('text/plain', event.target.getAttribute('data-uuid'));
         //console.log("dragstart:draggedElm: " + event.target);
 
         //set transparent image to prevent to show default drag image
@@ -209,14 +216,13 @@ export function addDragAndDropEventListeners(elm) {
     });
 
 
-    //use in dragover event to identify when to insert element before or after, and, to prevent swapping with itself
-    let previousState = null;
 
     //Dragover: identify when to insert element before or after, and, to prevent swapping with itself
     elm.addEventListener('dragover', (event) => {
         event.preventDefault();
 
-        //check if dragged element can be child of hovered element
+        const elementManager = createElementManager(event.target);
+        console.log("can be parent of:" + elementManager.canBeParentOf(draggedElm));
 
         //
         const rect = event.target.getBoundingClientRect();
@@ -286,11 +292,12 @@ export function addDragAndDropEventListeners(elm) {
         event.preventDefault();
 
         //get data from dataTransfer to identify which element to swap when drop event is fired
-        const draggedElmUUID = event.dataTransfer.getData('text/plain');
+        // const draggedElmUUID = event.dataTransfer.getData('text/plain');
+        // console.log("draggedElmUUID: " + draggedElmUUID);
 
         //break if dragged element is same as element being dropped on
         //also break if previousState is null
-        if (event.target.getAttribute("data-uuid") === draggedElmUUID || previousState === null) {
+        if (event.target.getAttribute("data-uuid") === draggedElm.getAttribute("data-uuid") || previousState === null) {
             //console.log("same element");
             return;
         }
@@ -302,8 +309,8 @@ export function addDragAndDropEventListeners(elm) {
         }
 
         //get dragged element
-        const canvasDocument = elm.ownerDocument;
-        const draggedElm = canvasDocument.querySelector(`[data-uuid="${draggedElmUUID}"]`);
+        // const canvasDocument = elm.ownerDocument;
+        // const draggedElm = canvasDocument.querySelector(`[data-uuid="${draggedElmUUID}"]`);
 
         //remove dragged element from previous position
         draggedElm.parentNode.removeChild(draggedElm);
@@ -337,4 +344,83 @@ export function addDragAndDropEventListeners(elm) {
 }
 
 
+function working() {
+    //assign true to isInTo if offset is in top 1/3 of element
+    const isAtTop = offset < rect.height / 2;
+
+
+
+    //console.log("top: " + isAtTop + " bottom: " + isAtBottom);
+
+
+    //add class to element to show user where element will be inserted
+    if (isAtTop) {
+        //change class only if previous state is not isAtTop
+        if (previousState !== "isAtTop") {
+            //remove previous class if other part of element is highlighted
+            if (previousState !== null) {
+                elm.classList.remove(previousState);
+            }
+            //set previous state to isAtTop
+            previousState = "isAtTop";
+            //add isAtTop class to element to highlight where element will be inserted
+            elm.classList.add("isAtTop");
+        }
+        // console.log("isAtTop");
+    } else {
+        if (previousState !== "isAtBottom") {
+            if (previousState !== null) {
+                elm.classList.remove(previousState);
+            }
+            previousState = "isAtBottom";
+            elm.classList.add("isAtBottom");
+        }
+    }
+
+}
+
+function backup() {
+    //assign true to isInTo if offset is in top 1/3 of element
+    const isAtTop = offset < rect.height / 3;
+    //return true if offset is in bottom 1/3 of element
+    const isAtBottom = offset > rect.height * 2 / 3;
+
+
+    //console.log("top: " + isAtTop + " bottom: " + isAtBottom);
+
+
+    //add class to element to show user where element will be inserted
+    if (isAtTop) {
+        //change class only if previous state is not isAtTop
+        if (previousState !== "isAtTop") {
+            //remove previous class if other part of element is highlighted
+            if (previousState !== null) {
+                elm.classList.remove(previousState);
+            }
+            //set previous state to isAtTop
+            previousState = "isAtTop";
+            //add isAtTop class to element to highlight where element will be inserted
+            elm.classList.add("isAtTop");
+        }
+        // console.log("isAtTop");
+    } else if (isAtBottom) {
+        if (previousState !== "isAtBottom") {
+            if (previousState !== null) {
+                elm.classList.remove(previousState);
+            }
+            previousState = "isAtBottom";
+            elm.classList.add("isAtBottom");
+        }
+        // console.log("isAtBottom");
+    } else if (!isAtTop && !isAtBottom) {
+        if (previousState !== "middle") {
+            if (previousState !== null) {
+                elm.classList.remove(previousState);
+            }
+            previousState = "middle";
+            elm.classList.add("middle");
+        }
+        // console.log("middle");
+    }
+}
 

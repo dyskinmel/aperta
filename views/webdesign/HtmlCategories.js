@@ -3,7 +3,7 @@
 // based on 6 April 2023 version
 
 
-function isMetadataContentTags(elm) {
+export function isMetadataContentTags(elm) {
     const array = [
         "BASE",
         "LINK",
@@ -21,7 +21,7 @@ function isMetadataContentTags(elm) {
     }
 }
 
-function isFlowContentTags(elm) {
+export function isFlowContentTags(elm) {
     const array = [
         "A",
         "ABBR",
@@ -148,7 +148,7 @@ function isFlowContentTags(elm) {
     }
 }
 
-function isSectioningContentTags(elm) {
+export function isSectioningContentTags(elm) {
     const array = [
         "ARTICLE",
         "ASIDE",
@@ -162,7 +162,7 @@ function isSectioningContentTags(elm) {
     }
 }
 
-function isHeadingContentTags(elm) {
+export function isHeadingContentTags(elm) {
     const array = [
         "H1",
         "H2",
@@ -184,7 +184,7 @@ function isHeadingContentTags(elm) {
 
 }
 
-function isPhrasingContentTags(elm) {
+export function isPhrasingContentTags(elm) {
     const array = [
         "A",
         "ABBR",
@@ -267,7 +267,7 @@ function isPhrasingContentTags(elm) {
     }
 }
 
-function isEmbeddedContentTags(elm) {
+export function isEmbeddedContentTags(elm) {
     const array = [
         "AUDIO",
         "CANVAS",
@@ -287,7 +287,7 @@ function isEmbeddedContentTags(elm) {
     }
 }
 
-function isInteractiveContentTags(elm) {
+export function isInteractiveContentTags(elm) {
     const array = [
         "BUTTON",
         "DETAILS",
@@ -346,7 +346,7 @@ function isInteractiveContentTags(elm) {
     }
 }
 
-function isPalpableContentTags(elm) {
+export function isPalpableContentTags(elm) {
     const array = [
         "A",
         "ABBR",
