@@ -223,53 +223,97 @@ export function addDragAndDropEventListeners(elm) {
 
         const elementManager = createElementManager(event.target);
         console.log("can be parent of:" + elementManager.canBeParentOf(draggedElm));
+        const canBeParentOf = elementManager.canBeParentOf(draggedElm);
 
         //
         const rect = event.target.getBoundingClientRect();
         const offset = event.clientY - rect.top;
 
-        //assign true to isInTo if offset is in top 1/3 of element
-        const isAtTop = offset < rect.height / 3;
-        //return true if offset is in bottom 1/3 of element
-        const isAtBottom = offset > rect.height * 2 / 3;
+        //allow user to insert an element as a child
+        if (canBeParentOf) {
+            //add class to element to show user where element will be inserted
+            //assign true to isInTo if offset is in top 1/3 of element
+            const isAtTop = offset < rect.height / 3;
+            //return true if offset is in bottom 1/3 of element
+            const isAtBottom = offset > rect.height * 2 / 3;
 
 
-        //console.log("top: " + isAtTop + " bottom: " + isAtBottom);
+            //console.log("top: " + isAtTop + " bottom: " + isAtBottom);
 
 
-        //add class to element to show user where element will be inserted
-        if (isAtTop) {
-            //change class only if previous state is not isAtTop
-            if (previousState !== "isAtTop") {
-                //remove previous class if other part of element is highlighted
-                if (previousState !== null) {
-                    elm.classList.remove(previousState);
+            //add class to element to show user where element will be inserted
+            if (isAtTop) {
+                //change class only if previous state is not isAtTop
+                if (previousState !== "isAtTop") {
+                    //remove previous class if other part of element is highlighted
+                    if (previousState !== null) {
+                        elm.classList.remove(previousState);
+                    }
+                    //set previous state to isAtTop
+                    previousState = "isAtTop";
+                    //add isAtTop class to element to highlight where element will be inserted
+                    elm.classList.add("isAtTop");
                 }
-                //set previous state to isAtTop
-                previousState = "isAtTop";
-                //add isAtTop class to element to highlight where element will be inserted
-                elm.classList.add("isAtTop");
-            }
-            // console.log("isAtTop");
-        } else if (isAtBottom) {
-            if (previousState !== "isAtBottom") {
-                if (previousState !== null) {
-                    elm.classList.remove(previousState);
+                // console.log("isAtTop");
+            } else if (isAtBottom) {
+                if (previousState !== "isAtBottom") {
+                    if (previousState !== null) {
+                        elm.classList.remove(previousState);
+                    }
+                    previousState = "isAtBottom";
+                    elm.classList.add("isAtBottom");
                 }
-                previousState = "isAtBottom";
-                elm.classList.add("isAtBottom");
-            }
-            // console.log("isAtBottom");
-        } else if (!isAtTop && !isAtBottom) {
-            if (previousState !== "middle") {
-                if (previousState !== null) {
-                    elm.classList.remove(previousState);
+                // console.log("isAtBottom");
+            } else if (!isAtTop && !isAtBottom) {
+                if (previousState !== "middle") {
+                    if (previousState !== null) {
+                        elm.classList.remove(previousState);
+                    }
+                    previousState = "middle";
+                    elm.classList.add("middle");
                 }
-                previousState = "middle";
-                elm.classList.add("middle");
+                // console.log("middle");
             }
-            // console.log("middle");
         }
+        //only allow user to insert an element as a sibling
+        else {
+            //assign true to isInTo if offset is in top 1/3 of element
+            const isAtTop = offset < rect.height / 2;
+
+
+
+            //console.log("top: " + isAtTop + " bottom: " + isAtBottom);
+
+
+            //add class to element to show user where element will be inserted
+            if (isAtTop) {
+                //change class only if previous state is not isAtTop
+                if (previousState !== "isAtTop") {
+                    //remove previous class if other part of element is highlighted
+                    if (previousState !== null) {
+                        elm.classList.remove(previousState);
+                    }
+                    //set previous state to isAtTop
+                    previousState = "isAtTop";
+                    //add isAtTop class to element to highlight where element will be inserted
+                    elm.classList.add("isAtTop");
+                }
+                // console.log("isAtTop");
+            } else {
+                if (previousState !== "isAtBottom") {
+                    if (previousState !== null) {
+                        elm.classList.remove(previousState);
+                    }
+                    previousState = "isAtBottom";
+                    elm.classList.add("isAtBottom");
+                }
+            }
+        }
+
+
+
+
+
 
         //stop propagate to prevent dragover event from firing on parent element
         event.stopPropagation();
@@ -343,84 +387,4 @@ export function addDragAndDropEventListeners(elm) {
 
 }
 
-
-function working() {
-    //assign true to isInTo if offset is in top 1/3 of element
-    const isAtTop = offset < rect.height / 2;
-
-
-
-    //console.log("top: " + isAtTop + " bottom: " + isAtBottom);
-
-
-    //add class to element to show user where element will be inserted
-    if (isAtTop) {
-        //change class only if previous state is not isAtTop
-        if (previousState !== "isAtTop") {
-            //remove previous class if other part of element is highlighted
-            if (previousState !== null) {
-                elm.classList.remove(previousState);
-            }
-            //set previous state to isAtTop
-            previousState = "isAtTop";
-            //add isAtTop class to element to highlight where element will be inserted
-            elm.classList.add("isAtTop");
-        }
-        // console.log("isAtTop");
-    } else {
-        if (previousState !== "isAtBottom") {
-            if (previousState !== null) {
-                elm.classList.remove(previousState);
-            }
-            previousState = "isAtBottom";
-            elm.classList.add("isAtBottom");
-        }
-    }
-
-}
-
-function backup() {
-    //assign true to isInTo if offset is in top 1/3 of element
-    const isAtTop = offset < rect.height / 3;
-    //return true if offset is in bottom 1/3 of element
-    const isAtBottom = offset > rect.height * 2 / 3;
-
-
-    //console.log("top: " + isAtTop + " bottom: " + isAtBottom);
-
-
-    //add class to element to show user where element will be inserted
-    if (isAtTop) {
-        //change class only if previous state is not isAtTop
-        if (previousState !== "isAtTop") {
-            //remove previous class if other part of element is highlighted
-            if (previousState !== null) {
-                elm.classList.remove(previousState);
-            }
-            //set previous state to isAtTop
-            previousState = "isAtTop";
-            //add isAtTop class to element to highlight where element will be inserted
-            elm.classList.add("isAtTop");
-        }
-        // console.log("isAtTop");
-    } else if (isAtBottom) {
-        if (previousState !== "isAtBottom") {
-            if (previousState !== null) {
-                elm.classList.remove(previousState);
-            }
-            previousState = "isAtBottom";
-            elm.classList.add("isAtBottom");
-        }
-        // console.log("isAtBottom");
-    } else if (!isAtTop && !isAtBottom) {
-        if (previousState !== "middle") {
-            if (previousState !== null) {
-                elm.classList.remove(previousState);
-            }
-            previousState = "middle";
-            elm.classList.add("middle");
-        }
-        // console.log("middle");
-    }
-}
 
