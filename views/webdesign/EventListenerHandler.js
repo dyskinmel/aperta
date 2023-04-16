@@ -4,11 +4,10 @@ import { createElementManager } from "./Element";
 // keydown event to delete selected eleemnt on canvas except for a body element
 export function addKeydownEventListeners(elm) {
     elm.addEventListener('keydown', (event) => {
+        //execute when delete or backspace key is pressed
         if (event.keyCode === 46 || event.keyCode === 8) {
 
-            //execute when delete or backspace key is pressed
             const canvas = document.getElementById("canvas");
-
             const canvasWindow = canvas.contentWindow;
             const canvasDocument = canvasWindow.document;
             const selectedElement = canvasDocument.getElementsByClassName("selected")[0];
@@ -32,15 +31,17 @@ export function addHoverEventListeners(elm) {
 
         // return if the target element is selected
         if (event.target.classList.contains("selected")) {
-            console.log("selected");
             return;
         }
 
-        // delete old hovered element before creating a new one
-        const hoveredElement = event.target.ownerDocument.getElementById("hoveredElement");
+        // add hover class to hovered element
+        elm.classList.add('hover');
 
-        if (hoveredElement !== null) {
-            hoveredElement.remove();
+        // delete old hovered element before creating a new one
+        const hoverLabel = event.target.ownerDocument.getElementById("hoverLabel");
+
+        if (hoverLabel !== null) {
+            hoverLabel.remove();
         }
 
         // get position of hovered element
@@ -49,7 +50,7 @@ export function addHoverEventListeners(elm) {
         // create a label to show tagName
         let new_elm = document.createElement("div");
         new_elm.textContent = event.target.tagName;
-        new_elm.id = "hoveredElement";
+        new_elm.id = "hoverLabel";
         new_elm.style.left = rect.left + 1 + "px";
         // new_elm.style.position = "absolute";
         // new_elm.style.color = "#1bbcf1";
@@ -61,7 +62,6 @@ export function addHoverEventListeners(elm) {
             new_elm.style.top = rect.top + 1 + "px";
         } else if (rect.top < 50) {
             new_elm.style.top = rect.bottom + 3 + "px";
-
         } else {
             new_elm.style.top = rect.top - 16 + "px";
         }
@@ -70,8 +70,6 @@ export function addHoverEventListeners(elm) {
 
         // const offset = event.clientY - rect.top;
 
-
-        elm.classList.add('hover');
         event.stopPropagation();
     }, false);
 
@@ -81,15 +79,12 @@ export function addHoverEventListeners(elm) {
         event.preventDefault();
 
         // delete old hovered element before creating a new one
-        const hoveredElement = event.target.ownerDocument.getElementById("hoveredElement");
+        const hoverLabel = event.target.ownerDocument.getElementById("hoverLabel");
         // console.log(hoveredElement);
 
-        if (hoveredElement !== null) {
-            hoveredElement.remove();
+        if (hoverLabel !== null) {
+            hoverLabel.remove();
         }
-
-
-
 
         elm.classList.remove('hover');
         event.stopPropagation();
@@ -103,8 +98,8 @@ export function addClickEventListeners(elm) {
     elm.addEventListener("click", (event) => {
         // delete contenteditable attribute from a current selected element
         const canvasDocument = elm.ownerDocument;
-        let targetElements = canvasDocument.querySelector('[contenteditable="true"]');
 
+        let targetElements = canvasDocument.querySelector('[contenteditable="true"]');
         if (targetElements !== null) {
             if (elm.getAttribute('data-uuid') !== targetElements.getAttribute('data-uuid')) {
                 targetElements.removeAttribute("contenteditable");
@@ -117,27 +112,26 @@ export function addClickEventListeners(elm) {
 
         if (typeof targetElements[0] !== "undefined") {
             targetElements[0].classList.remove("selected");
+            // remove eventlistner from a current selected element
         }
 
         // add select class to clicked element
         elm.classList.add("selected");
 
+        // delete old label and menu before creating a new one
+        const selectLabel = event.target.ownerDocument.getElementById("selectLabel");
 
-        // delete old hovered element before creating a new one
-        const selectedElement = event.target.ownerDocument.getElementById("selectedElement");
-
-        if (selectedElement !== null) {
-            selectedElement.remove();
+        if (selectLabel !== null) {
+            selectLabel.remove();
         }
-
 
         // get position of hovered element
         const rect = event.target.getBoundingClientRect();
 
-        // create a new hovered element
+        // create a new label and menu element
         let new_elm = document.createElement("div");
         new_elm.textContent = event.target.tagName;
-        new_elm.id = "selectedElement";
+        new_elm.id = "selectLabel";
         new_elm.style.left = rect.left + 1 + "px";
         // new_elm.style.position = "absolute";
         // new_elm.style.color = "#1bbcf1";
@@ -156,9 +150,38 @@ export function addClickEventListeners(elm) {
 
         event.target.before(new_elm);
 
+        addListenersToChangeSizeMarginPadding(canvasDocument, rect);
+
         // console.log(elm);
         event.stopPropagation();
     }, false);
+}
+
+function addListenersToChangeSizeMarginPadding() {
+    const canvas = document.getElementById("canvas");
+    const canvasWindow = canvas.contentWindow;
+    const canvasDocument = canvasWindow.document;
+
+    canvasDocument.addEventListener("mousemove", function (event) {
+
+
+        const selectedElm = canvasDocument.getElementsByClassName("selected")[0];
+        const rect = selectedElm.getBoundingClientRect();
+
+        // if (event.clientX > rect.left && event.clientX < rect.right && event.clientY > rect.top && event.clientY < rect.bottom) {
+        //     console.log("HERE!!");
+        // } else {
+        //     console.log("NOT HERE!!");
+        // }
+
+
+
+
+        // console.log("event.clientX: " + event.clientX + "event.clientY: " + event.clientY);
+        console.log(" rect.left: " + rect.left + " rect.top: " + rect.top);
+    });
+    // add keydown event listener to
+
 }
 
 // Double Click: make element editable when double clicked
@@ -309,11 +332,6 @@ export function addDragAndDropEventListeners(elm) {
                 }
             }
         }
-
-
-
-
-
 
         //stop propagate to prevent dragover event from firing on parent element
         event.stopPropagation();
