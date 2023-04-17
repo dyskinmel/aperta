@@ -162,11 +162,57 @@ function addListenersToChangeSizeMarginPadding() {
     const canvasWindow = canvas.contentWindow;
     const canvasDocument = canvasWindow.document;
 
+    const cursorIsOn = "notInArea";
+
     canvasDocument.addEventListener("mousemove", function (event) {
 
-
+        //get the selected element to get its position
         const selectedElm = canvasDocument.getElementsByClassName("selected")[0];
         const rect = selectedElm.getBoundingClientRect();
+        // const rectTop = Math.round(rect.top);
+        // const rectBottom = Math.round(rect.bottom);
+        // const rectLeft = Math.round(rect.left);
+        // const rectRight = Math.round(rect.right);
+        const rectTop = rect.top;
+        const rectBottom = rect.bottom;
+        const rectLeft = rect.left;
+        const rectRight = rect.right;
+
+
+
+
+        // console.log("margin: " + marginTop + " " + marginRight + " " + marginBottom + " " + marginLeft);
+        // console.log("padding: " + paddingTop + " " + paddingRight + " " + paddingBottom + " " + paddingLeft);
+
+        //check if the cursor is on the top left edge of the selected element
+        if (event.clientX === rectLeft && event.clientY === rectTop) {
+            console.log("top left");
+        } else if (event.clientX === rectRight && event.clientY === rectTop) {
+            console.log("top right");
+        } else if (event.clientX === rectLeft && event.clientY === rectBottom) {
+            console.log("bottom left");
+        } else if (event.clientX === rectRight && event.clientY === rectBottom) {
+            console.log("bottom right");
+        } else if (event.clientX > rectLeft && event.clientX < rectRight && event.clientY === rectTop) {
+            console.log("top");
+        } else if (event.clientX > rectLeft && event.clientX < rectRight && event.clientY === rectBottom) {
+            console.log("bottom");
+        } else if (event.clientX === rectLeft && event.clientY > rectTop && event.clientY < rectBottom) {
+            console.log("left");
+        } else if (event.clientX === rectRight && event.clientY > rectTop && event.clientY < rectBottom) {
+            console.log("right");
+        } else {
+            console.log("notInArea");
+        }
+
+
+
+        // check if the mouse is inside the selected element
+        // if (event.clientX > rect.left && event.clientX < rect.right && event.clientY > rect.top && event.clientY < rect.bottom) {
+        //     console.log("inside");
+        // } else {
+        //     console.log("not inside");
+        // }
 
         // if (event.clientX > rect.left && event.clientX < rect.right && event.clientY > rect.top && event.clientY < rect.bottom) {
         //     console.log("HERE!!");
@@ -176,9 +222,9 @@ function addListenersToChangeSizeMarginPadding() {
 
 
 
-
+        // console.log(" rect.top: " + rectTop + " event.clientY: " + event.clientY);
         // console.log("event.clientX: " + event.clientX + "event.clientY: " + event.clientY);
-        console.log(" rect.left: " + rect.left + " rect.top: " + rect.top);
+        // console.log(" rect.left: " + rect.left + " rect.top: " + rect.top);
     });
     // add keydown event listener to
 
