@@ -17,7 +17,6 @@
             <EditorCanvas />
         </div>
         <div class="rightSideMenu">
-            RightSideMenu
             <div class="metaEditorTab">
                 <MetaEditor />
                 <!-- <input

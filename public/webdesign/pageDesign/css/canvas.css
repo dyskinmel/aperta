@@ -15,6 +15,7 @@ body {
     height: 99%;
 }
 
+
 /* Default styles and animations */
 
 .hover {
@@ -24,7 +25,20 @@ body {
     content: "HTML Tag";
 }
 
-#hoveredElement {
+#hoveredElm {
+    box-sizing: border-box;
+    outline: 1px solid rgb(48, 165, 249);
+}
+
+/* hoveredElmCaptionに変える */
+#hoverLabel {
+    position: absolute;
+    color: #1bbcf1;
+    font-size: 10px;
+    font-weight: normal;
+}
+
+#hoverCaption {
     position: absolute;
     color: #1bbcf1;
     font-size: 10px;
@@ -50,7 +64,21 @@ body {
     outline: 3px solid rgb(103, 167, 213);
 }
 
-#selectedElement {
+#selectedElm {
+    box-sizing: border-box;
+    outline: 3px solid rgb(103, 167, 213);
+}
+
+/* selectedElmCaptionに変える */
+#selectLabel {
+    position: absolute;
+    color: #ffffff;
+    background-color: #1bbcf1;
+    font-size: 10px;
+    font-weight: normal;
+}
+
+#selectCaption {
     position: absolute;
     color: #ffffff;
     background-color: #1bbcf1;
