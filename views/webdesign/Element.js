@@ -34,7 +34,7 @@ class Element {
 
         const canvasWindow = canvas.contentWindow;
         const canvasDocument = canvasWindow.document;
-        const selectedElement = canvasDocument.getElementsByClassName("selected")[0];
+        const selectedElement = canvasDocument.getElementById("selectedElm");
 
         // return if no element is selected
         if (selectedElement === undefined) {

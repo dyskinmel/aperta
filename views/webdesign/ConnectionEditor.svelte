@@ -101,8 +101,7 @@
 
         const canvasWindow = canvas.contentWindow;
         const canvasDocument = canvasWindow.document;
-        const selectedElement =
-            canvasDocument.getElementsByClassName("selected")[0];
+        const selectedElement = canvasDocument.getElementById("selectedElm");
         selectedElement.innerHTML = entries.value;
     }}>link contents</button
 >
