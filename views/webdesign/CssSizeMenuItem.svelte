@@ -1,15 +1,17 @@
 <script>
     import { blurWhenEnterPressed } from "./CssEditorEventListener.js";
     import { applyStyleToSelectedElement } from "./CssEditorEventListener.js";
+
+    // export let property;
     export let item;
 
-    let sizeProperty = null;
-    let sizeValue = null;
-    let sizeUnit = null;
+    let property = null;
+    let value = null;
+    let unit = null;
     function getSizeValueAndApply(event) {
-        let property = sizeProperty.id;
-        let value = sizeValue.value;
-        let unit = sizeUnit.value;
+        let property = roperty.id;
+        let value = value.value;
+        let unit = unit.value;
         let css = `${property}: ${value}${unit};`;
         if (value !== "") {
             applyStyleToSelectedElement(css);
@@ -17,21 +19,21 @@
     }
 </script>
 
-<div class="cssSizeMenuItem" bind:this={sizeProperty} id={item.value}>
+<div class="cssSizeMenuItem" bind:this={property} id={item.value}>
     <span class="cssSizeMenuItemLabel">{item.label}</span>
     <div class="cssSizeMenuItemInputGroup">
         <input
             type="text"
             class="cssSizeMenuItemInput"
             data-css-value-type="value"
-            bind:this={sizeValue}
+            bind:this={value}
             on:keydown={blurWhenEnterPressed}
             on:blur={getSizeValueAndApply}
         />
         <select
             class="cssSizeMenuItemInputUnit"
             data-css-value-type="unit"
-            bind:this={sizeUnit}
+            bind:this={unit}
             on:change={getSizeValueAndApply}
         >
             <option>PX</option>
