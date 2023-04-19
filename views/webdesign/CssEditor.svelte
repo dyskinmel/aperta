@@ -1,8 +1,8 @@
 <script>
     import CssMarginPadding from "./CssMarginPadding.svelte";
-    import CssSize from "./CssSize.svelte";
+    import CssSizeMenu from "./CssSizeMenu.svelte";
 </script>
 
-<CssSize />
+<CssSizeMenu />
 
 <!-- <CssMarginPadding /> -->

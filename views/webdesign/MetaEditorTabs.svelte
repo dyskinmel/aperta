@@ -23,8 +23,10 @@
 
 <style>
     .box {
+        width: 100%;
+        height: 100%;
         margin-bottom: 10px;
-        padding: 40px;
+        /* padding: 10px; */
         border: 1px solid #dee2e6;
         border-radius: 0 0 0.5rem 0.5rem;
         border-top: 0;
