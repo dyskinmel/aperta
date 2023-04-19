@@ -602,12 +602,13 @@ function addCaptionToHoveredElm(elm) {
     const canvasWindow = canvas.contentWindow;
     const absoluteRectTop = rect.top + canvasWindow.scrollY;
     const absoluteRectBottom = rect.bottom + canvasWindow.scrollY;
+    const absoluteRectLeft = rect.left + canvasWindow.scrollX;
 
     // create a label to show tagName
     hoverCaption = document.createElement("div");
     hoverCaption.textContent = elm.tagName;
     hoverCaption.id = "hoverCaption";
-    hoverCaption.style.left = rect.left + 1 + "px";
+    hoverCaption.style.left = absoluteRectLeft + 1 + "px";
     // new_elm.style.position = "absolute";
     // new_elm.style.color = "#1bbcf1";
     // new_elm.style.fontSize = "10px";
@@ -663,6 +664,7 @@ function addCaptionToSelectedElm(elm) {
     const canvasWindow = canvas.contentWindow;
     const absoluteRectTop = rect.top + canvasWindow.scrollY;
     const absoluteRectBottom = rect.bottom + canvasWindow.scrollY;
+    const absoluteRectLeft = rect.left + canvasWindow.scrollX;
 
 
 
@@ -670,7 +672,7 @@ function addCaptionToSelectedElm(elm) {
     selectCaption = document.createElement("div");
     selectCaption.textContent = elm.tagName;
     selectCaption.id = "selectCaption";
-    selectCaption.style.left = rect.left + 1 + "px";
+    selectCaption.style.left = absoluteRectLeft + 1 + "px";
     // new_elm.style.position = "absolute";
     // new_elm.style.color = "#1bbcf1";
     // new_elm.style.fontSize = "10px";

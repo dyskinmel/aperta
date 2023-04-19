@@ -4,14 +4,14 @@ export function adjustBodyHeight() {
     const canvasWindowHeight = canvasWindow.innerHeight;
     const canvasBody = canvasWindow.document.body;
     const lastElmInBody = canvasBody.lastElementChild;
-    const lastElmY = lastElmInBody.getBoundingClientRect().bottom;
+    const absoluteRectBottom = lastElmInBody.getBoundingClientRect().bottom + canvasWindow.scrollY;
 
     // console.log("lastElmY: ", lastElmY);
 
-
-    if (lastElmY < canvasWindowHeight) {
+    if (absoluteRectBottom < canvasWindowHeight) {
         canvasBody.style.height = `${canvasWindowHeight}px`;
     } else {
-        canvasBody.style.height = 'auto';
+        canvasBody.style.height = absoluteRectBottom + 'px';
+        // canvasBody.style.height = 'auto';
     }
 }
