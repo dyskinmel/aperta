@@ -1,4 +1,5 @@
 import { createElementManager } from "./Element";
+import { adjustBodyHeight } from "./CanvasManager";
 
 
 // keydown event to delete selected eleemnt on canvas except for a body element
@@ -14,6 +15,7 @@ export function addKeydownEventListeners(elm) {
 
             if (selectedElement.tagName !== "BODY" && selectedElement.hasAttribute("contenteditable") === false) {
                 selectedElement.remove();
+                adjustBodyHeight();
             }
         }
 
@@ -596,6 +598,11 @@ function addCaptionToHoveredElm(elm) {
     // get position of hovered element
     const rect = elm.getBoundingClientRect();
 
+    const canvas = document.getElementById("canvas");
+    const canvasWindow = canvas.contentWindow;
+    const absoluteRectTop = rect.top + canvasWindow.scrollY;
+    const absoluteRectBottom = rect.bottom + canvasWindow.scrollY;
+
     // create a label to show tagName
     hoverCaption = document.createElement("div");
     hoverCaption.textContent = elm.tagName;
@@ -608,11 +615,11 @@ function addCaptionToHoveredElm(elm) {
 
     // set position of hovered element
     if (elm.tagName === "BODY") {
-        hoverCaption.style.top = rect.top + 1 + "px";
+        hoverCaption.style.top = absoluteRectTop + 1 + "px";
     } else if (rect.top < 50) {
-        hoverCaption.style.top = rect.bottom + 3 + "px";
+        hoverCaption.style.top = absoluteRectBottom + 3 + "px";
     } else {
-        hoverCaption.style.top = rect.top - 16 + "px";
+        hoverCaption.style.top = absoluteRectTop - 16 + "px";
     }
 
     elm.ownerDocument.body.after(hoverCaption);
@@ -652,6 +659,13 @@ function addCaptionToSelectedElm(elm) {
     // get position of hovered element
     const rect = elm.getBoundingClientRect();
 
+    const canvas = document.getElementById("canvas");
+    const canvasWindow = canvas.contentWindow;
+    const absoluteRectTop = rect.top + canvasWindow.scrollY;
+    const absoluteRectBottom = rect.bottom + canvasWindow.scrollY;
+
+
+
     // create a new label and menu element
     selectCaption = document.createElement("div");
     selectCaption.textContent = elm.tagName;
@@ -664,14 +678,15 @@ function addCaptionToSelectedElm(elm) {
 
     // set position of hovered element
     if (elm.tagName === "BODY") {
-        selectCaption.style.top = rect.top + 1 + "px";
+        selectCaption.style.top = absoluteRectTop + 1 + "px";
     } else if (rect.top < 50) {
-        selectCaption.style.top = rect.bottom + 3 + "px";
+        selectCaption.style.top = absoluteRectBottom + 3 + "px";
 
     } else {
-        selectCaption.style.top = rect.top - 16 + "px";
+        selectCaption.style.top = absoluteRectTop - 16 + "px";
     }
 
     elm.ownerDocument.body.after(selectCaption);
 
 }
+

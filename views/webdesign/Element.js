@@ -1,9 +1,10 @@
 //Event Listeners
-import { addKeydownEventListeners } from "./EventListenerHandler.js";
-import { addHoverEventListeners } from "./EventListenerHandler.js";
-import { addClickEventListeners } from "./EventListenerHandler.js";
-import { addDblClickEventListeners } from "./EventListenerHandler.js";
-import { addDragAndDropEventListeners } from "./EventListenerHandler.js";
+import { addKeydownEventListeners } from "./ElementEventListeners.js";
+import { addHoverEventListeners } from "./ElementEventListeners.js";
+import { addClickEventListeners } from "./ElementEventListeners.js";
+import { addDblClickEventListeners } from "./ElementEventListeners.js";
+import { addDragAndDropEventListeners } from "./ElementEventListeners.js";
+import { adjustBodyHeight } from "./CanvasManager.js";
 //
 import { isPhrasingContentTags } from "./HtmlCategories.js";
 
@@ -37,7 +38,7 @@ class Element {
         const selectedElement = canvasDocument.getElementById("selectedElm");
 
         // return if no element is selected
-        if (selectedElement === undefined) {
+        if (selectedElement === null) {
             return;
         }
 
@@ -54,8 +55,8 @@ class Element {
         this.addListenerToElement(elm);
 
         // Add element to canvas
-        //addElementToSelectedElement(elm, selectedElement);
-        selectedElement.appendChild(elm);
+        this.addElmToSelectedElm(elm, selectedElement);
+        // selectedElement.appendChild(elm);
     }
 
     setDefaultAttributes(elm, textContent) {
@@ -72,7 +73,7 @@ class Element {
         addDragAndDropEventListeners(elm);
     }
 
-    addEleemntToSelectedElement(elm, selectedElement) {
+    addElmToSelectedElm(elm, selectedElement) {
         if (selectedElement.tagName === "BODY") {
             // Add element to selected element
             selectedElement.appendChild(elm);
@@ -80,6 +81,7 @@ class Element {
             // Add element to selected element
             selectedElement.after(elm);
         }
+        adjustBodyHeight();
     }
 
     canBeParentOf(child) {

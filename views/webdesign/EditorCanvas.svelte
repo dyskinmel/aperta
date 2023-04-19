@@ -1,7 +1,7 @@
 <script>
     import { onMount } from "svelte";
     import { createElementManager } from "./Element.js";
-    import { addKeydownEventListeners } from "./EventListenerHandler.js";
+    import { addKeydownEventListeners } from "./ElementEventListeners.js";
 
     let canvas;
 
