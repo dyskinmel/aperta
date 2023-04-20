@@ -8,11 +8,10 @@
     const onCanvasLoad = () => {
         const canvasWindow = canvas.contentWindow;
         addKeydownEventListeners(canvasWindow);
-        const canvasDocument = canvasWindow.document;
-        const elm = canvasDocument.getElementsByTagName("body")[0];
+        const canvasBody = canvasWindow.document.body;
 
-        const elm_manager = createElementManager(elm);
-        elm_manager.addListenerToElement(elm);
+        const elm_manager = createElementManager(canvasBody);
+        elm_manager.addListenerToElement(canvasBody);
     };
 </script>
 

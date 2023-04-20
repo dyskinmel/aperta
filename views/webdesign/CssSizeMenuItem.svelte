@@ -5,6 +5,9 @@
     // export let property;
     export let item;
 
+    let none = null;
+    let auto = null;
+
     let sizeProperty = null;
     let sizeValue = null;
     let sizeUnit = null;
@@ -12,10 +15,14 @@
         let property = sizeProperty.id;
         let value = sizeValue.value;
         let unit = sizeUnit.value;
-        let css = `${property}: ${value}${unit};`;
+        let cssValue = `${value}${unit}`;
         if (value !== "") {
-            applyStyleToSelectedElement(css);
+            applyStyleToSelectedElement(property, cssValue);
         }
+        // if (unit === "Auto") {
+        //     sizeValue.value = "Auto";
+        //     console.log("Auto!!");
+        // }
     }
 </script>
 
@@ -30,8 +37,14 @@
             on:keydown={blurWhenEnterPressed}
             on:blur={getSizeValueAndApply}
         />
+        <!-- {#if isAuto === true}
+
+        {:else}
+            
+        {/if} -->
+
         <select
-            class="cssSizeMenuItemInputUnit"
+            class="cssSizeMenuItemInputUnit deleteArrow"
             data-css-value-type="unit"
             bind:this={sizeUnit}
             on:change={getSizeValueAndApply}
@@ -46,15 +59,24 @@
             <option>DVW</option>
             <option>DVH</option>
             {#if item.value == "max-height" || item.value == "max-width"}
-                <option>None</option>
+                <option bind:this={none}>None</option>
             {:else}
-                <option>Auto</option>
+                <option bind:this={auto}>Auto</option>
             {/if}
         </select>
     </div>
 </div>
 
 <style>
+    .deleteArrow {
+        appearance: none;
+        -webkit-appearance: none;
+        -moz-appearance: none;
+        -ms-appearance: none;
+    }
+    option {
+        width: 100%;
+    }
     .cssSizeMenuItem {
         padding-top: 2px;
         padding-bottom: 2px;
@@ -75,6 +97,6 @@
         width: 20px;
     }
     .cssSizeMenuItemInputUnit {
-        width: 40px;
+        width: 25px;
     }
 </style>

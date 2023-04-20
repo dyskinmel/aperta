@@ -147,6 +147,8 @@ export function addClickEventListeners(elm) {
         // addListenersToChangeSizeMarginPadding(canvasDocument, rect);
 
         // console.log(elm);
+        setCssValuteToCssEditor(elm);
+
         event.stopPropagation();
     }, false);
 }
@@ -608,7 +610,7 @@ function addCaptionToHoveredElm(elm) {
     hoverCaption = document.createElement("div");
     hoverCaption.textContent = elm.tagName;
     hoverCaption.id = "hoverCaption";
-    hoverCaption.style.left = absoluteRectLeft + 1 + "px";
+    hoverCaption.style.left = absoluteRectLeft + "px";
     // new_elm.style.position = "absolute";
     // new_elm.style.color = "#1bbcf1";
     // new_elm.style.fontSize = "10px";
@@ -616,7 +618,7 @@ function addCaptionToHoveredElm(elm) {
 
     // set position of hovered element
     if (elm.tagName === "BODY") {
-        hoverCaption.style.top = absoluteRectTop + 1 + "px";
+        hoverCaption.style.top = absoluteRectTop + "px";
     } else if (rect.top < 50) {
         hoverCaption.style.top = absoluteRectBottom + 3 + "px";
     } else {
@@ -672,7 +674,7 @@ function addCaptionToSelectedElm(elm) {
     selectCaption = document.createElement("div");
     selectCaption.textContent = elm.tagName;
     selectCaption.id = "selectCaption";
-    selectCaption.style.left = absoluteRectLeft + 1 + "px";
+    selectCaption.style.left = absoluteRectLeft - 1 + "px";
     // new_elm.style.position = "absolute";
     // new_elm.style.color = "#1bbcf1";
     // new_elm.style.fontSize = "10px";
@@ -680,7 +682,7 @@ function addCaptionToSelectedElm(elm) {
 
     // set position of hovered element
     if (elm.tagName === "BODY") {
-        selectCaption.style.top = absoluteRectTop + 1 + "px";
+        selectCaption.style.top = absoluteRectTop + "px";
     } else if (rect.top < 50) {
         selectCaption.style.top = absoluteRectBottom + 3 + "px";
 
@@ -692,3 +694,15 @@ function addCaptionToSelectedElm(elm) {
 
 }
 
+function setCssValuteToCssEditor(elm) {
+    // get css value from selected element
+    const cssValue = elm.ownerDocument.defaultView.getComputedStyle(elm);
+
+    console.log("cssValue: ", cssValue);
+    // // get css editor
+    // const cssEditor = elm.ownerDocument.getElementById("cssEditor");
+
+    // // set css value to css editor
+    // cssEditor.value = cssValue.cssText;
+
+}

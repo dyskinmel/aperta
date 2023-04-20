@@ -5,22 +5,13 @@ export function blurWhenEnterPressed(event) {
     }
 }
 
-export function applyStyleToSelectedElement(css) {
+export function applyStyleToSelectedElement(property, cssValue) {
     const canvas = document.getElementById("canvas");
     const canvasWindow = canvas.contentWindow;
     const canvasDocument = canvasWindow.document;
     const selectedElement = canvasDocument.getElementById("selectedElm");
 
     if (selectedElement !== null) {
-        selectedElement.setAttribute('style', css);
+        selectedElement.style[property] = cssValue;
     }
-
-    //add feature to set value to css style sheet
-    // const styleSheet = canvasDocument.styleSheets[0];
-    // styleSheet.insertRule(`#${selectedElement.id} { ${css} }`, 0);
-
-
-    console.log(css);
-
-
 }
