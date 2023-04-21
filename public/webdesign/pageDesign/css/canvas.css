@@ -81,6 +81,13 @@ body {
     padding-right: 4px;
 }
 
+#draggedOverOutline {
+    position: absolute;
+    box-sizing: border-box;
+    outline: 1px dashed rgb(103, 167, 213);
+    z-index: -1;
+}
+
 .isAtTop {
     border-top: 2px solid rgb(0, 120, 206);
 }

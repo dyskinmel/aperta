@@ -154,6 +154,8 @@ function addCaptionToHoveredElm(elm) {
     hoverOutline.style.height = absoluteRectBottom - absoluteRectTop + "px";
 
     hoverCaption.after(hoverOutline);
+
+    console.log("Hovered");
 }
 
 function delCaptionFromHoveredElm() {
@@ -535,6 +537,8 @@ export function addDblClickEventListeners(elm) {
 let draggedElm = null;
 //use in dragover event to identify when to insert element before or after, and, to prevent swapping with itself
 let previousState = null;
+// 
+let draggedOverOutline = null;
 
 export function addDragAndDropEventListeners(elm) {
 
@@ -563,19 +567,50 @@ export function addDragAndDropEventListeners(elm) {
         }
     });
 
-
-
     //Dragover: identify when to insert element before or after, and, to prevent swapping with itself
     elm.addEventListener('dragover', (event) => {
         event.preventDefault();
+        // get canvas window and document
+        const canvasWindow = event.target.ownerDocument.defaultView;
+        const canvasDocument = event.target.ownerDocument;
 
+        //get elementManager and check if draggedElm can be parent of event.target
         const elementManager = createElementManager(event.target);
         console.log("can be parent of:" + elementManager.canBeParentOf(draggedElm));
         const canBeParentOf = elementManager.canBeParentOf(draggedElm);
 
+
+        //
+        if (event.target.getAttribute("data-uuid") === draggedElm.getAttribute("data-uuid")) {
+            //console.log("same element");
+            return;
+        }
+
         //
         const rect = event.target.getBoundingClientRect();
         const offset = event.clientY - rect.top;
+
+        //create outline div for element to show user where element will be inserted
+        if (draggedOverOutline === null) {
+            draggedOverOutline = document.createElement("div");
+            draggedOverOutline.id = "draggedOverOutline";
+            const absoluteRectTop = rect.top + canvasWindow.scrollY;
+            const absoluteRectBottom = rect.bottom + canvasWindow.scrollY;
+            const absoluteRectLeft = rect.left + canvasWindow.scrollX;
+            const absoluteRectRight = rect.right + canvasWindow.scrollX;
+
+            draggedOverOutline.style.left = absoluteRectLeft + "px";
+            draggedOverOutline.style.top = absoluteRectTop + "px";
+            draggedOverOutline.style.width = absoluteRectRight - absoluteRectLeft + "px";
+            draggedOverOutline.style.height = absoluteRectBottom - absoluteRectTop + "px";
+
+            //add outline div after document's last element
+            canvasDocument.body.after(draggedOverOutline);
+        }
+
+
+        // console.log(canvasDocument.lastElementChild);
+
 
         //allow user to insert an element as a child
         if (canBeParentOf) {
@@ -595,30 +630,30 @@ export function addDragAndDropEventListeners(elm) {
                 if (previousState !== "isAtTop") {
                     //remove previous class if other part of element is highlighted
                     if (previousState !== null) {
-                        elm.classList.remove(previousState);
+                        draggedOverOutline.classList.remove(previousState);
                     }
                     //set previous state to isAtTop
                     previousState = "isAtTop";
                     //add isAtTop class to element to highlight where element will be inserted
-                    elm.classList.add("isAtTop");
+                    draggedOverOutline.classList.add("isAtTop");
                 }
                 // console.log("isAtTop");
             } else if (isAtBottom) {
                 if (previousState !== "isAtBottom") {
                     if (previousState !== null) {
-                        elm.classList.remove(previousState);
+                        draggedOverOutline.classList.remove(previousState);
                     }
                     previousState = "isAtBottom";
-                    elm.classList.add("isAtBottom");
+                    draggedOverOutline.classList.add("isAtBottom");
                 }
                 // console.log("isAtBottom");
             } else if (!isAtTop && !isAtBottom) {
                 if (previousState !== "middle") {
                     if (previousState !== null) {
-                        elm.classList.remove(previousState);
+                        draggedOverOutline.classList.remove(previousState);
                     }
                     previousState = "middle";
-                    elm.classList.add("middle");
+                    draggedOverOutline.classList.add("middle");
                 }
                 // console.log("middle");
             }
@@ -627,8 +662,6 @@ export function addDragAndDropEventListeners(elm) {
         else {
             //assign true to isInTo if offset is in top 1/3 of element
             const isAtTop = offset < rect.height / 2;
-
-
 
             //console.log("top: " + isAtTop + " bottom: " + isAtBottom);
 
@@ -639,21 +672,21 @@ export function addDragAndDropEventListeners(elm) {
                 if (previousState !== "isAtTop") {
                     //remove previous class if other part of element is highlighted
                     if (previousState !== null) {
-                        elm.classList.remove(previousState);
+                        draggedOverOutline.classList.remove(previousState);
                     }
                     //set previous state to isAtTop
                     previousState = "isAtTop";
                     //add isAtTop class to element to highlight where element will be inserted
-                    elm.classList.add("isAtTop");
+                    draggedOverOutline.classList.add("isAtTop");
                 }
                 // console.log("isAtTop");
             } else {
                 if (previousState !== "isAtBottom") {
                     if (previousState !== null) {
-                        elm.classList.remove(previousState);
+                        draggedOverOutline.classList.remove(previousState);
                     }
                     previousState = "isAtBottom";
-                    elm.classList.add("isAtBottom");
+                    draggedOverOutline.classList.add("isAtBottom");
                 }
             }
         }
@@ -669,9 +702,12 @@ export function addDragAndDropEventListeners(elm) {
         // console.log("previousState: " + previousState);
 
         if (previousState !== null) {
-            elm.classList.remove(previousState);
+            // draggedOverOutline.classList.remove(previousState);
+            draggedOverOutline.remove();
+            previousState = null;
         }
-        previousState = null;
+
+        draggedOverOutline = null;
     });
 
     //Drop: swap element with element being dragged
@@ -701,25 +737,32 @@ export function addDragAndDropEventListeners(elm) {
         if (event.target.tagName === "BODY") {
             if (previousState === "isAtTop") {
                 event.target.prepend(draggedElm);
-                elm.classList.remove("isAtTop");
+                // draggedOverOutline.classList.remove("isAtTop");
             } else {
                 event.target.appendChild(draggedElm);
-                elm.classList.remove(previousState);
+                // draggedOverOutline.classList.remove(previousState);
             }
 
         } else {
             //place dragged element before or after element being dropped on
             if (previousState === "isAtTop") {
                 event.target.before(draggedElm);
-                elm.classList.remove("isAtTop");
+                // draggedOverOutline.classList.remove("isAtTop");
             } else if (previousState === "isAtBottom") {
                 event.target.after(draggedElm);
-                elm.classList.remove("isAtBottom");
+                // draggedOverOutline.classList.remove("isAtBottom");
             } else if (previousState === "middle") {
                 //place dragged element as a child 
                 event.target.appendChild(draggedElm);
-                elm.classList.remove("middle");
+                // draggedOverOutline.classList.remove("middle");
             }
+        }
+
+        //
+        if (draggedOverOutline !== null) {
+            draggedOverOutline.remove();
+            draggedOverOutline = null;
+            previousState = null;
         }
 
         //reset Caption to selected element
