@@ -83,29 +83,21 @@ class Element {
         }
         adjustBodyHeight();
     }
-
     canBeParentOf(child) {
         return true;
     }
 }
 
 class BodyElement extends Element {
-
-
     addListenerToElement(elm) {
         // addKeydownEventListeners(elm);
         addHoverEventListeners(elm);
         addClickEventListeners(elm);
         addDragAndDropEventListeners(elm);
-
     }
-
-
-
 }
 
 class ImgElement extends Element {
-
     setDefaultAttributes(elm, textContent) {
         // Create an element
         // console.log(elm);
@@ -115,7 +107,6 @@ class ImgElement extends Element {
         elm.setAttribute("draggable", "true");
         elm.setAttribute("data-uuid", crypto.randomUUID());
     }
-
 }
 
 class HeadingElement extends Element {
