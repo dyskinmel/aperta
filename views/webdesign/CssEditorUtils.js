@@ -69,7 +69,7 @@ function pxToPercentage(propertyName, pxValue) {
 
     const isHeightProperty = isHeightProperty(propertyName);
 
-    if (isHeightPropety === true) {
+    if (isHeightProperty === true) {
         parentSize = parentElement.getBoundingClientRect().height;
     } else {
         parentSize = parentElement.getBoundingClientRect().width;
@@ -80,6 +80,77 @@ function pxToPercentage(propertyName, pxValue) {
     return percentageValue;
 }
 
+function percentToPx(propertyName, percentValue) {
+    const canvas = document.getElementById("canvas");
+    const canvasWindow = canvas.contentWindow;
+    const canvasDocument = canvasWindow.document;
+    const selectedElement = canvasDocument.getElementById("selectedElm");
+    const parentElement = selectedElement.parentElement;
+    let parentSize = null;
+
+    const isHeightProperty = isHeightProperty(propertyName);
+
+    if (isHeightProperty === true) {
+        parentSize = parentElement.getBoundingClientRect().height;
+    } else {
+        parentSize = parentElement.getBoundingClientRect().width;
+    }
+
+    const pxValue = percentValue / 100 * parentSize;
+
+    return pxValue;
+}
+
 function isHeightProperty(propertyName) {
-    return propertyName.includes("height") || propertyName.includes(top) || propertyName.includes("bottom");
+    return propertyName.includes("height") || propertyName.includes("top") || propertyName.includes("bottom");
+}
+
+function pxToEm(pxValue) {
+    const canvas = document.getElementById("canvas");
+    const canvasWindow = canvas.contentWindow;
+    const canvasDocument = canvasWindow.document;
+    const selectedElement = canvasDocument.getElementById("selectedElm");
+    const parentElement = selectedElement.parentElement;
+    const parentFontSize = parseFloat(getComputedStyle(parentElement).fontSize);
+
+    const emValue = pxValue / parentFontSize;
+
+    return emValue;
+}
+
+function emToPx(emValue) {
+    const canvas = document.getElementById("canvas");
+    const canvasWindow = canvas.contentWindow;
+    const canvasDocument = canvasWindow.document;
+    const selectedElement = canvasDocument.getElementById("selectedElm");
+    const parentElement = selectedElement.parentElement;
+    const parentFontSize = parseFloat(getComputedStyle(parentElement).fontSize);
+
+    const pxValue = emValue * parentFontSize;
+
+    return pxValue;
+}
+
+function pxToRem(pxValue) {
+    const canvas = document.getElementById("canvas");
+    const canvasWindow = canvas.contentWindow;
+    const canvasDocument = canvasWindow.document;
+    const rootElement = canvasDocument.documentElement;
+    const rootFontSize = parseFloat(getComputedStyle(rootElement).fontSize);
+
+    const remValue = pxValue / rootFontSize;
+
+    return remValue;
+}
+
+function remToPx(remValue) {
+    const canvas = document.getElementById("canvas");
+    const canvasWindow = canvas.contentWindow;
+    const canvasDocument = canvasWindow.document;
+    const rootElement = canvasDocument.documentElement;
+    const rootFontSize = parseFloat(getComputedStyle(rootElement).fontSize);
+
+    const pxValue = remValue * rootFontSize;
+
+    return pxValue;
 }
