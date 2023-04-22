@@ -113,6 +113,11 @@ function pxToRem(pxValue) {
     return remValue;
 }
 
+
+
+//percentage to target unit
+// 
+
 function percentToPx(propertyName, percentValue) {
     const canvas = document.getElementById("canvas");
     const canvasWindow = canvas.contentWindow;
