@@ -82,7 +82,7 @@ export function convertCssUnits(propertyName, currentValue, currentUnit, convert
 
 
 }
- 
+
 // px to a target unit
 //
 
@@ -135,6 +135,48 @@ function pxToRem(pxValue) {
     return remValue;
 }
 
+// to ch
+function pxToCh(pxValue) {
+    const canvas = document.getElementById("canvas");
+    const canvasWindow = canvas.contentWindow;
+    const canvasDocument = canvasWindow.document;
+    const selectedElement = canvasDocument.getElementById("selectedElm");
+
+    const computedStyle = canvaswindow.getComputedStyle(selectedElement);
+    const fontSize = parseFloat(computedStyle.fontSize);
+    const fontFamily = computedStyle.fontFamily;
+
+    const canvasTomMeasure = document.createElement("canvas");
+    const ctx = canvasTomMeasure.getContext("2d");
+    ctx.font = fontSize + "px " + fontFamily;
+
+    const sampleText = "0";
+    const fontWidth = ctx.measureText(sampleText).width;
+
+    const chValue = pxValue / fontWidth;
+
+    return chValue;
+}
+
+// to vw
+function pxToVw(pxValue) {
+
+    const viewportWidth = window.innerWidth || document.documentElement.clientWidth || document.body.clientWidth;
+
+    const vwValue = pxValue / viewportWidth * 100;
+
+    return vwValue;
+}
+
+// to vh
+function pxToVh(pxValue) {
+
+    const viewportHeight = window.innerHeight || document.documentElement.clientHeight || document.body.clientHeight;
+
+    const vhValue = pxValue / viewportHeight * 100;
+
+    return vhValue;
+}
 
 
 // % to a target unit
