@@ -6,6 +6,8 @@
 //
 
 // add caption to hovered element
+//
+
 export function addCaptionToHoveredElm(elm) {
     // delete old hovered element before creating a new one
     let hoverCaption = elm.ownerDocument.getElementById("hoverCaption");
