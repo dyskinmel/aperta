@@ -8,6 +8,10 @@ import { adjustBodyHeight } from "./CanvasManager.js";
 //
 import { isPhrasingContentTags } from "./HtmlCategories.js";
 
+//
+// Factory function to create an element
+//
+
 // factory function to create an element
 export function createElementManager(elm) {
     // console.log(elm + " " + elm.tagName);
@@ -24,9 +28,14 @@ export function createElementManager(elm) {
             return new HeadingElement();
         case "IMG":
             return new ImgElement();
+        // add more cases here
         default: return new Element();
     }
 }
+
+//
+// Base class for all elements
+//
 
 class Element {
     addElementToCanvas(elm, textContent) {
@@ -42,23 +51,18 @@ class Element {
             return;
         }
 
-        // migrated to setDefaultAttributes mothod
-        // // Create an element
-        // // console.log(elm);
-        // elm.textContent = textContent;
-        // // elm.classList.add("canvasItem");
-        // elm.setAttribute("draggable", "true");
-        // elm.setAttribute("data-uuid", crypto.randomUUID());
+        // set default attributes to a new element
         this.setDefaultAttributes(elm, textContent);
 
-        // Add listener to element
+        // Add event listeners to a new element
         this.addListenerToElement(elm);
 
         // Add element to canvas
         this.addElmToSelectedElm(elm, selectedElement);
-        // selectedElement.appendChild(elm);
     }
 
+    // set default attributes to a new element
+    // override this method in child classes if needed
     setDefaultAttributes(elm, textContent) {
         // Add default attributes
         elm.textContent = textContent;
@@ -66,6 +70,8 @@ class Element {
         elm.setAttribute("data-uuid", crypto.randomUUID());
     }
 
+    // default listeners to add to an element
+    // override this method in child classes if needed
     addListenerToElement(elm) {
         addHoverEventListeners(elm);
         addClickEventListeners(elm);
@@ -73,20 +79,36 @@ class Element {
         addDragAndDropEventListeners(elm);
     }
 
+    // add element to/after the selected element
     addElmToSelectedElm(elm, selectedElement) {
         if (selectedElement.tagName === "BODY") {
             // Add element to selected element
             selectedElement.appendChild(elm);
         } else {
-            // Add element to selected element
+            // Add element after selected element
             selectedElement.after(elm);
         }
         adjustBodyHeight();
     }
+
+    // check if the element can be a parent of the child element
+    // override this method in child classes 
+    // refer https://html.spec.whatwg.org/multipage/semantics.html#semantics for specifcations
+    // use methods in HtmlCategories.js to check child elements belogs to which category
+    // also add exceptional cases if needed
+    // return true if the element can be a parent of the child element
     canBeParentOf(child) {
+
         return true;
     }
 }
+
+//
+// Child classes for elements (Categorize if possible)
+//
+
+// Body element
+//
 
 class BodyElement extends Element {
     addListenerToElement(elm) {
@@ -96,6 +118,9 @@ class BodyElement extends Element {
         addDragAndDropEventListeners(elm);
     }
 }
+
+// Image element
+//
 
 class ImgElement extends Element {
     setDefaultAttributes(elm, textContent) {
@@ -108,6 +133,9 @@ class ImgElement extends Element {
         elm.setAttribute("data-uuid", crypto.randomUUID());
     }
 }
+
+// Heading element
+//
 
 class HeadingElement extends Element {
     canBeParentOf(child) {

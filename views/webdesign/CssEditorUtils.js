@@ -1,11 +1,17 @@
 import { addCaptionToSelectedElm } from "./utils";
 
+//
+// functions called by events from CssEditor
+//
+
+// blur a text input field when the enter key is pressed. 
 export function blurWhenEnterPressed(event) {
     if (event.key === 'Enter' || event.keyCode == 13) {
         event.target.blur();
     }
 }
 
+// apply edited css value on CssEditor to the selected element
 export function applyStyleToSelectedElement(property, cssValue) {
     const canvas = document.getElementById("canvas");
     const canvasWindow = canvas.contentWindow;
@@ -18,11 +24,18 @@ export function applyStyleToSelectedElement(property, cssValue) {
 
     // refresh caption and outline to reflect the change
     addCaptionToSelectedElm(selectedElement);
-
 }
+
+//
+// functions related to data formatting
+//
+
+// parse css value to separate the value and unit
+// e.g. "10px" -> { value: 10, unit: "px" }
 
 export function parseCssValue(value) {
     const patterns = [
+        // e.g. "10px"
         {
             regex: /^(\d*\.?\d+)([a-z]+|%*)$/i,
             handler: (matches) => ({
@@ -30,6 +43,7 @@ export function parseCssValue(value) {
                 unit: matches[2],
             }),
         },
+        // e.g. "10px 20px 30px 40px"
         {
             regex: /^(\d*\.?\d+)\s+(\d*\.?\d+)\s+(\d*\.?\d+)\s+(\d*\.?\d+)([a-z]+|%*)$/i,
             handler: (matches) => ({
@@ -54,19 +68,25 @@ export function parseCssValue(value) {
 // functions related to convert units
 //
 
+// convert css value to target unit 
+//
+
 export function convertCssUnits(propertyName, currentValue, currentUnit, convertUnit) {
     console.log(propertyName + ": " + currentValue + " " + currentUnit + " → " + convertUnit);
+    // if the current unit is the same as the target unit, return the current value
     if (currentUnit === convertUnit) {
         return { values: currentValue, unit: currentUnit };
     }
+    // add more conditions here
 
 
 
 }
-
-//px to target unit
+ 
+// px to a target unit
 //
 
+// to %
 function pxToPercentage(propertyName, pxValue) {
     const canvas = document.getElementById("canvas");
     const canvasWindow = canvas.contentWindow;
@@ -88,6 +108,7 @@ function pxToPercentage(propertyName, pxValue) {
     return percentageValue;
 }
 
+// to em
 function pxToEm(pxValue) {
     const canvas = document.getElementById("canvas");
     const canvasWindow = canvas.contentWindow;
@@ -101,6 +122,7 @@ function pxToEm(pxValue) {
     return emValue;
 }
 
+// to rem
 function pxToRem(pxValue) {
     const canvas = document.getElementById("canvas");
     const canvasWindow = canvas.contentWindow;
@@ -115,9 +137,10 @@ function pxToRem(pxValue) {
 
 
 
-//percentage to target unit
+// % to a target unit
 // 
 
+// to px
 function percentToPx(propertyName, percentValue) {
     const canvas = document.getElementById("canvas");
     const canvasWindow = canvas.contentWindow;
@@ -139,11 +162,11 @@ function percentToPx(propertyName, percentValue) {
     return pxValue;
 }
 
-//em to target units
+//em to a target units
 //
 
 
-
+// to px
 function emToPx(emValue) {
     const canvas = document.getElementById("canvas");
     const canvasWindow = canvas.contentWindow;
@@ -157,9 +180,10 @@ function emToPx(emValue) {
     return pxValue;
 }
 
-//rem to target units
+//rem to a target units
 //
 
+// to px
 function remToPx(remValue) {
     const canvas = document.getElementById("canvas");
     const canvasWindow = canvas.contentWindow;
@@ -175,6 +199,7 @@ function remToPx(remValue) {
 // util methods
 //
 
+// check if the property is a height property
 function isHeightProperty(propertyName) {
     return propertyName.includes("height") || propertyName.includes("top") || propertyName.includes("bottom");
 }

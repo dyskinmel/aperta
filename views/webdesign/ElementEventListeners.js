@@ -5,7 +5,10 @@ import { addCaptionToSelectedElm } from "./utils.js";
 import { addCaptionToHoveredElm } from "./utils.js";
 import { delCaptionFromHoveredElm } from "./utils.js";
 
+
 // keydown event to delete selected eleemnt on canvas except for a body element
+//
+
 export function addKeydownEventListeners(elm) {
     elm.addEventListener('keydown', (event) => {
         const canvas = document.getElementById("canvas");
@@ -71,6 +74,8 @@ export function addKeydownEventListeners(elm) {
 
 
 //Hover activate: add hover class to hovered element to highlight
+//
+
 export function addHoverEventListeners(elm) {
 
     elm.addEventListener("mouseover", (event) => {
@@ -178,6 +183,8 @@ export function addHoverEventListeners(elm) {
 
 
 //Click: add select class to clicked element to target other events
+//
+
 export function addClickEventListeners(elm) {
 
     elm.addEventListener("click", (event) => {
