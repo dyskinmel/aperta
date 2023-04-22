@@ -1,16 +1,29 @@
 <script>
-    import { blurWhenEnterPressed } from "./CssEditorEventListeners.js";
-    import { applyStyleToSelectedElement } from "./CssEditorEventListeners.js";
+    import { blurWhenEnterPressed } from "./CssEditorUtils.js";
+    import { applyStyleToSelectedElement } from "./CssEditorUtils.js";
+    import { parseCssValue } from "./CssEditorUtils.js";
 
     // export let property;
     export let item;
 
-    let none = null;
-    let auto = null;
+    let hidden = null;
+    let isDisabled = false;
+
+    let inputClass = "cssSizeMenuItemInputUnit deleteArrow";
+
+    let previousValue = null;
+    let previousUnit = null;
 
     let sizeProperty = null;
     let sizeValue = null;
     let sizeUnit = null;
+
+    function saveValues(event) {
+        previousValue = sizeValue.value;
+        previousUnit = sizeUnit.value;
+        // console.log(previousValue + " " + previousUnit);
+    }
+
     function getSizeValueAndApply(event) {
         let property = sizeProperty.id;
         let value = sizeValue.value;
@@ -19,6 +32,57 @@
         if (value !== "") {
             applyStyleToSelectedElement(property, cssValue);
         }
+    }
+
+    function handleUnitChange(event) {
+        let property = sizeProperty.id;
+        let value = sizeValue.value;
+        let unit = sizeUnit.value;
+        let cssValue = `${value}${unit}`;
+
+        // apply edited style to selected element
+        // if (value !== "") {
+        //     applyStyleToSelectedElement(property, cssValue);
+        // }
+
+        if (sizeUnit.value === "None" || sizeUnit.value === "Auto") {
+            // console.log("None or Auto");
+            sizeValue.value = sizeUnit.value;
+            sizeUnit.value = hidden;
+            isDisabled = true;
+            inputClass = "cssSizeMenuItemInputUnit";
+
+            //set css value to apply it to selected element
+            cssValue = sizeValue.value;
+        } else {
+            inputClass = "cssSizeMenuItemInputUnit deleteArrow";
+            isDisabled = false;
+            if (sizeValue.value === "None" || sizeValue.value === "Auto") {
+                //get current style value
+                const canvas = document.getElementById("canvas");
+                const canvasWindow = canvas.contentWindow;
+                const canvasDocument = canvasWindow.document;
+                const selectedElm =
+                    canvasDocument.getElementById("selectedElm");
+
+                if (selectedElm === null) {
+                    sizeValue.value = "";
+                    return;
+                } else {
+                    // get selected element's current style value and set it to sizeValue
+                    const currentStyleValue =
+                        canvasWindow.getComputedStyle(selectedElm)[property];
+                    console.log(currentStyleValue);
+                    console.log(parseCssValue(currentStyleValue));
+                    sizeValue.value = "";
+                    cssValue = `${sizeValue.value}${sizeUnit.value}`;
+                }
+            }
+            //insert else to convert units
+        }
+
+        console.log(cssValue);
+
         // if (unit === "Auto") {
         //     sizeValue.value = "Auto";
         //     console.log("Auto!!");
@@ -33,21 +97,23 @@
             type="text"
             class="cssSizeMenuItemInput"
             data-css-value-type="value"
+            disabled={isDisabled}
             bind:this={sizeValue}
             on:keydown={blurWhenEnterPressed}
             on:blur={getSizeValueAndApply}
         />
         <!-- {#if isAuto === true}
-
+            auto is true;
         {:else}
-            
+            auto is false
         {/if} -->
 
         <select
-            class="cssSizeMenuItemInputUnit deleteArrow"
+            class={inputClass}
             data-css-value-type="unit"
             bind:this={sizeUnit}
-            on:change={getSizeValueAndApply}
+            on:focus={saveValues}
+            on:change={handleUnitChange}
         >
             <option>PX</option>
             <option>%</option>
@@ -59,10 +125,11 @@
             <option>DVW</option>
             <option>DVH</option>
             {#if item.value == "max-height" || item.value == "max-width"}
-                <option bind:this={none}>None</option>
+                <option>None</option>
             {:else}
-                <option bind:this={auto}>Auto</option>
+                <option>Auto</option>
             {/if}
+            <option bind:this={hidden} hidden />
         </select>
     </div>
 </div>
