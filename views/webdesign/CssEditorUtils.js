@@ -50,6 +50,10 @@ export function parseCssValue(value) {
     return { value }; // if no pattern matches, return the value as is
 }
 
+//
+// functions related to convert units
+//
+
 export function convertCssUnits(propertyName, currentValue, currentUnit, convertUnit) {
     console.log(propertyName + ": " + currentValue + " " + currentUnit + " → " + convertUnit);
     if (currentUnit === convertUnit) {
@@ -57,7 +61,11 @@ export function convertCssUnits(propertyName, currentValue, currentUnit, convert
     }
 
 
+
 }
+
+//px to target unit
+//
 
 function pxToPercentage(propertyName, pxValue) {
     const canvas = document.getElementById("canvas");
@@ -78,6 +86,31 @@ function pxToPercentage(propertyName, pxValue) {
     const percentageValue = pxValue / parentSize * 100;
 
     return percentageValue;
+}
+
+function pxToEm(pxValue) {
+    const canvas = document.getElementById("canvas");
+    const canvasWindow = canvas.contentWindow;
+    const canvasDocument = canvasWindow.document;
+    const selectedElement = canvasDocument.getElementById("selectedElm");
+    const parentElement = selectedElement.parentElement;
+    const parentFontSize = parseFloat(getComputedStyle(parentElement).fontSize);
+
+    const emValue = pxValue / parentFontSize;
+
+    return emValue;
+}
+
+function pxToRem(pxValue) {
+    const canvas = document.getElementById("canvas");
+    const canvasWindow = canvas.contentWindow;
+    const canvasDocument = canvasWindow.document;
+    const rootElement = canvasDocument.documentElement;
+    const rootFontSize = parseFloat(getComputedStyle(rootElement).fontSize);
+
+    const remValue = pxValue / rootFontSize;
+
+    return remValue;
 }
 
 function percentToPx(propertyName, percentValue) {
@@ -101,22 +134,10 @@ function percentToPx(propertyName, percentValue) {
     return pxValue;
 }
 
-function isHeightProperty(propertyName) {
-    return propertyName.includes("height") || propertyName.includes("top") || propertyName.includes("bottom");
-}
+//em to target units
+//
 
-function pxToEm(pxValue) {
-    const canvas = document.getElementById("canvas");
-    const canvasWindow = canvas.contentWindow;
-    const canvasDocument = canvasWindow.document;
-    const selectedElement = canvasDocument.getElementById("selectedElm");
-    const parentElement = selectedElement.parentElement;
-    const parentFontSize = parseFloat(getComputedStyle(parentElement).fontSize);
 
-    const emValue = pxValue / parentFontSize;
-
-    return emValue;
-}
 
 function emToPx(emValue) {
     const canvas = document.getElementById("canvas");
@@ -131,17 +152,8 @@ function emToPx(emValue) {
     return pxValue;
 }
 
-function pxToRem(pxValue) {
-    const canvas = document.getElementById("canvas");
-    const canvasWindow = canvas.contentWindow;
-    const canvasDocument = canvasWindow.document;
-    const rootElement = canvasDocument.documentElement;
-    const rootFontSize = parseFloat(getComputedStyle(rootElement).fontSize);
-
-    const remValue = pxValue / rootFontSize;
-
-    return remValue;
-}
+//rem to target units
+//
 
 function remToPx(remValue) {
     const canvas = document.getElementById("canvas");
@@ -153,4 +165,11 @@ function remToPx(remValue) {
     const pxValue = remValue * rootFontSize;
 
     return pxValue;
+}
+
+// util methods
+//
+
+function isHeightProperty(propertyName) {
+    return propertyName.includes("height") || propertyName.includes("top") || propertyName.includes("bottom");
 }
