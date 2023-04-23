@@ -2,8 +2,6 @@
     import LeftSideMenu from "./ LeftSideMenu.svelte";
     import EditorCanvas from "./EditorCanvas.svelte";
     import MetaEditor from "./MetaEditor.svelte";
-
-    let message = "Hello from Svelte!";
 </script>
 
 <div class="wrapper">
@@ -38,12 +36,6 @@
         overflow: hidden;
     }
 
-    /* .wrapper {
-        height: 100vh;
-        width: 100vw;
-        display: flex;
-        flex-direction: column;
-    } */
     .header {
         width: 100%;
         text-align: center;
@@ -80,16 +72,12 @@
 
     .rightSideMenu {
         height: 100%;
-        /* width: 100%; */
-        /* position: absolute;
-    right: 0; */
         outline: 1px solid gray;
     }
 
     /*  */
 
     .metaEditorTab {
-        /* height: 100%; */
         width: 225px;
     }
 </style>

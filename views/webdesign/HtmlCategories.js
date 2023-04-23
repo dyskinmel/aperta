@@ -2,6 +2,12 @@
 // https://html.spec.whatwg.org/multipage/dom.html#content-models
 // based on 6 April 2023 version
 
+//Following functions are used to check if the element is in the category
+//functions mainly used in the Element.js to check if the element can be parent of the element
+
+
+// Metadata content
+//
 
 export function isMetadataContentTags(elm) {
     const array = [
@@ -20,6 +26,9 @@ export function isMetadataContentTags(elm) {
         return false;
     }
 }
+
+// Flow content
+//
 
 export function isFlowContentTags(elm) {
     const array = [
@@ -148,6 +157,9 @@ export function isFlowContentTags(elm) {
     }
 }
 
+// Sectioning content
+//
+
 export function isSectioningContentTags(elm) {
     const array = [
         "ARTICLE",
@@ -161,6 +173,9 @@ export function isSectioningContentTags(elm) {
         return false;
     }
 }
+
+// Heading content
+//
 
 export function isHeadingContentTags(elm) {
     const array = [
@@ -183,6 +198,9 @@ export function isHeadingContentTags(elm) {
     }
 
 }
+
+// Phrasing content
+//
 
 export function isPhrasingContentTags(elm) {
     const array = [
@@ -267,6 +285,9 @@ export function isPhrasingContentTags(elm) {
     }
 }
 
+// Embedded content
+//
+
 export function isEmbeddedContentTags(elm) {
     const array = [
         "AUDIO",
@@ -286,6 +307,9 @@ export function isEmbeddedContentTags(elm) {
         return false;
     }
 }
+
+// Interactive content
+//
 
 export function isInteractiveContentTags(elm) {
     const array = [
@@ -345,6 +369,9 @@ export function isInteractiveContentTags(elm) {
         default: return false;
     }
 }
+
+// Palpable content
+//
 
 export function isPalpableContentTags(elm) {
     const array = [
