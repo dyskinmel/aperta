@@ -16,6 +16,7 @@
         <div class="rightSideMenu">
             <div class="metaEditorTab">
                 <MetaEditor />
+                <!-- <RightSideMenu /> -->
             </div>
         </div>
     </div>

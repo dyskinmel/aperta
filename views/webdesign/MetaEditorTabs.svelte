@@ -1,5 +1,6 @@
 <script>
     export let metaMenus = [];
+    // export let rightSideMenuItems = [];
     export let activeTabValue = 1;
 
     const handleClick = (tabValue) => () => (activeTabValue = tabValue);
@@ -7,9 +8,11 @@
 
 <ul>
     {#each metaMenus as metaMenu}
+        <!-- {#each rightSideMenuItems as rightSideMenuItem} -->
         <li class={activeTabValue === metaMenu.value ? "active" : ""}>
             <!-- svelte-ignore a11y-click-events-have-key-events -->
             <span on:click={handleClick(metaMenu.value)}>{metaMenu.label}</span>
+            <!-- <span on:click={handleClick(rightSideMenuItems.value)}>{rightSideMenuItems.label}</span> -->
         </li>
     {/each}
 </ul>
@@ -20,6 +23,14 @@
         </div>
     {/if}
 {/each}
+
+<!-- {#each rightSideMenuItems as rightSideMenuItem}
+    {#if activeTabValue == rightSideMenuItems.value}
+        <div class="box">
+            <svelte:component this={rightSideMenuItems.component} />
+        </div>
+    {/if}
+{/each} -->
 
 <style>
     .box {
