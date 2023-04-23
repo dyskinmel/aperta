@@ -5,7 +5,7 @@
 // hovered elements related functions
 //
 
-// add caption to hovered element
+// add caption and outline to hovered element
 export function addCaptionToHoveredElm(elm) {
     // delete old hovered element before creating a new one
     delCaptionFromHoveredElm(elm);
@@ -57,7 +57,11 @@ export function addCaptionToHoveredElm(elm) {
 // delete caption from hovered element
 //
 export function delCaptionFromHoveredElm(elm) {
-    // let hoverCaption = elm.ownerDocument.getElementById("hoverCaption");
+    // don't proceed to delete if there is no hovered element
+    if (elm === null) {
+        return;
+    }
+
     const hoverCaption = elm.ownerDocument.getElementById("hoverCaption");
     const hoverOutline = elm.ownerDocument.getElementById("hoverOutline");
 

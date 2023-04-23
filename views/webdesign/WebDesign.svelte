@@ -1,7 +1,8 @@
 <script>
     import LeftSideMenu from "./ LeftSideMenu.svelte";
     import EditorCanvas from "./EditorCanvas.svelte";
-    import MetaEditor from "./MetaEditor.svelte";
+    // import MetaEditor from "./RightSideMenu.svelte";
+    import RightSideMenu from "./RightSideMenu.svelte";
 </script>
 
 <div class="wrapper">
@@ -15,8 +16,8 @@
         </div>
         <div class="rightSideMenu">
             <div class="metaEditorTab">
-                <MetaEditor />
-                <!-- <RightSideMenu /> -->
+                <!-- <MetaEditor /> -->
+                <RightSideMenu />
             </div>
         </div>
     </div>

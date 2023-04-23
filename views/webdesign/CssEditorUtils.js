@@ -22,7 +22,7 @@ export function applyStyleToSelectedElement(property, cssValue) {
         selectedElement.style[property] = cssValue;
     }
 
-    // refresh caption and outline to reflect the change
+    // refresh caption and outline to reflect a style change
     addCaptionToSelectedElm(selectedElement);
 }
 

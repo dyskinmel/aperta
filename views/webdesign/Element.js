@@ -4,6 +4,7 @@ import { addHoverEventListeners } from "./ElementEventListeners.js";
 import { addClickEventListeners } from "./ElementEventListeners.js";
 import { addDblClickEventListeners } from "./ElementEventListeners.js";
 import { addDragAndDropEventListeners } from "./ElementEventListeners.js";
+//
 import { adjustBodyHeight } from "./CanvasManager.js";
 //
 import { isPhrasingContentTags } from "./HtmlCategories.js";
