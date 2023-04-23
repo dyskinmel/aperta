@@ -6,11 +6,10 @@
 //
 
 // add caption to hovered element
+//
 export function addCaptionToHoveredElm(elm) {
     // delete old hovered element before creating a new one
-    let hoverCaption = elm.ownerDocument.getElementById("hoverCaption");
-
-    delCaptionFromHoveredElm(hoverCaption);
+    delCaptionFromHoveredElm(elm);
 
     // get position of hovered element
     const rect = elm.getBoundingClientRect();
@@ -23,7 +22,7 @@ export function addCaptionToHoveredElm(elm) {
     const absoluteRectRight = rect.right + canvasWindow.scrollX;
 
     // create a label to show tagName
-    hoverCaption = document.createElement("div");
+    let hoverCaption = document.createElement("div");
     hoverCaption.textContent = elm.tagName;
     hoverCaption.id = "hoverCaption";
     hoverCaption.style.left = absoluteRectLeft + "px";
@@ -53,13 +52,15 @@ export function addCaptionToHoveredElm(elm) {
 
     hoverCaption.after(hoverOutline);
 
-    console.log("Hovered");
+    // console.log("Hovered");
 }
 
-export function delCaptionFromHoveredElm() {
+// delete caption from hovered element
+//
+export function delCaptionFromHoveredElm(elm) {
     // let hoverCaption = elm.ownerDocument.getElementById("hoverCaption");
-    const hoverCaption = event.target.ownerDocument.getElementById("hoverCaption");
-    const hoverOutline = event.target.ownerDocument.getElementById("hoverOutline");
+    const hoverCaption = elm.ownerDocument.getElementById("hoverCaption");
+    const hoverOutline = elm.ownerDocument.getElementById("hoverOutline");
 
     if (hoverCaption !== null && hoverOutline !== null) {
         hoverCaption.remove();
@@ -72,6 +73,8 @@ export function delCaptionFromHoveredElm() {
 //　selected elements related functions 
 //
 
+// change state of selected elements
+//
 export function selectElm(elm) {
     const selectedElement = elm.ownerDocument.getElementById("selectedElm");
 
@@ -83,6 +86,8 @@ export function selectElm(elm) {
     elm.id = "selectedElm";
 }
 
+// add caption to selected element
+//
 export function addCaptionToSelectedElm(elm) {
     // delete old label and menu before creating a new one
     let selectCaption = elm.ownerDocument.getElementById("selectCaption");

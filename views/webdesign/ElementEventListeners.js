@@ -106,8 +106,7 @@ export function addHoverEventListeners(elm) {
         event.preventDefault();
 
         // delete old hovered element before creating a new one
-        delCaptionFromHoveredElm();
-
+        delCaptionFromHoveredElm(event.target);
 
         event.stopPropagation();
     }, false);
