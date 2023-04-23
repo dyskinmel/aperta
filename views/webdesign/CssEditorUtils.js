@@ -73,8 +73,14 @@ export function parseCssValue(value) {
 
 export function convertCssUnits(propertyName, currentValue, currentUnit, convertUnit) {
     console.log(propertyName + ": " + currentValue + " " + currentUnit + " → " + convertUnit);
+    // css units based on viewport
+    const viewportUnits = ["vw", "vh", "svw", "svh", "lvw", "lvh", "dvw", "dvh"];
+
     // if the current unit is the same as the target unit, return the current value
     if (currentUnit === convertUnit) {
+        return { values: currentValue, unit: currentUnit };
+    } else if (currentUnit.includes(viewportUnits) && convertUnit.includes(viewportUnits)) {
+        // if both current unit and target unit are viewport units, return the current value
         return { values: currentValue, unit: currentUnit };
     }
     // add more conditions here
@@ -86,7 +92,7 @@ export function convertCssUnits(propertyName, currentValue, currentUnit, convert
 // px to a target unit
 //
 
-// to %
+// px to %
 function pxToPercentage(propertyName, pxValue) {
     const canvas = document.getElementById("canvas");
     const canvasWindow = canvas.contentWindow;
@@ -108,7 +114,7 @@ function pxToPercentage(propertyName, pxValue) {
     return percentageValue;
 }
 
-// to em
+// px to em
 function pxToEm(pxValue) {
     const canvas = document.getElementById("canvas");
     const canvasWindow = canvas.contentWindow;
@@ -122,7 +128,7 @@ function pxToEm(pxValue) {
     return emValue;
 }
 
-// to rem
+// px to rem
 function pxToRem(pxValue) {
     const canvas = document.getElementById("canvas");
     const canvasWindow = canvas.contentWindow;
@@ -135,7 +141,7 @@ function pxToRem(pxValue) {
     return remValue;
 }
 
-// to ch
+// px to ch
 function pxToCh(pxValue) {
     const canvas = document.getElementById("canvas");
     const canvasWindow = canvas.contentWindow;
@@ -158,7 +164,7 @@ function pxToCh(pxValue) {
     return chValue;
 }
 
-// to vw
+// px to vw
 function pxToVw(pxValue) {
 
     const viewportWidth = window.innerWidth || document.documentElement.clientWidth || document.body.clientWidth;
@@ -168,7 +174,7 @@ function pxToVw(pxValue) {
     return vwValue;
 }
 
-// to vh
+// px to vh
 function pxToVh(pxValue) {
 
     const viewportHeight = window.innerHeight || document.documentElement.clientHeight || document.body.clientHeight;
@@ -182,7 +188,7 @@ function pxToVh(pxValue) {
 // % to a target unit
 // 
 
-// to px
+// % to px
 function percentToPx(propertyName, percentValue) {
     const canvas = document.getElementById("canvas");
     const canvasWindow = canvas.contentWindow;
@@ -208,7 +214,7 @@ function percentToPx(propertyName, percentValue) {
 //
 
 
-// to px
+// em to px
 function emToPx(emValue) {
     const canvas = document.getElementById("canvas");
     const canvasWindow = canvas.contentWindow;
@@ -225,7 +231,7 @@ function emToPx(emValue) {
 //rem to a target units
 //
 
-// to px
+// rem to px
 function remToPx(remValue) {
     const canvas = document.getElementById("canvas");
     const canvasWindow = canvas.contentWindow;
