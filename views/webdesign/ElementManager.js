@@ -102,6 +102,20 @@ class ElementManager {
 
         return true;
     }
+
+    getEnabledCssProperties() {
+        const enabledCssProperties = {
+            "width": true,
+            "height": true,
+            "min-width": true,
+            "min-height": true,
+            "max-width": true,
+            "max-height": true,
+        }
+        return enabledCssProperties;
+    }
+
+
 }
 
 //

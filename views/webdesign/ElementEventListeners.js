@@ -1,9 +1,10 @@
-import { elementManagaerFactory } from "./ElementManager.js";
+import { elementManagerFactory } from "./ElementManager.js";
 import { adjustBodyHeight } from "./utils.js";
 import { selectElm } from "./utils.js";
 import { addCaptionToSelectedElm } from "./utils.js";
 import { addCaptionToHoveredElm } from "./utils.js";
 import { delCaptionFromHoveredElm } from "./utils.js";
+import { setCssValueToCssEditor } from "./CssEditorUtils.js";
 
 
 // keydown event to delete selected eleemnt on canvas except for a body element
@@ -212,19 +213,17 @@ export function addClickEventListeners(elm) {
         const hoverCaption = event.target.ownerDocument.getElementById("hoverCaption");
         delCaptionFromHoveredElm(hoverCaption);
 
-        // elm.classList.remove('hover');
-
-
         // set id to selected element
         selectElm(event.target);
+
+        // set selected element's css value to css editor
+        setCssValueToCssEditor(elm);
 
         // add caption to selected element
         addCaptionToSelectedElm(event.target);
 
         // addListenersToChangeSizeMarginPadding(canvasDocument, rect);
 
-        // console.log(elm);
-        setCssValuteToCssEditor(elm);
 
         event.stopPropagation();
     }, false);
@@ -516,19 +515,7 @@ function addListenersToChangeSizeMarginPadding() {
 export function addDblClickEventListeners(elm) {
 
     elm.addEventListener("dblclick", function () {
-
-        // moved following code to addClickEventListeners
-        // delete contenteditable attribute from a current selected element
-        // const canvasDocument = elm.ownerDocument;
-        // const targetElements = canvasDocument.querySelector('[contenteditable="true"]');
-
-        // if (targetElements !== null) {
-        //     targetElements.removeAttribute("contenteditable");
-        //     targetElements.removeAttribute("spellcheck");
-        // }
-
-        // console.log(elm.tagName);
-
+        // add contenteditable attributes to a double clicked element
         if (elm.tagName !== "BODY") {
             elm.setAttribute("contenteditable", "true");
             elm.setAttribute("spellcheck", "true");
@@ -790,29 +777,65 @@ export function addDragAndDropEventListeners(elm) {
 
 
 
-function setCssValuteToCssEditor(elm) {
-    const cssItems = [
-        "width",
-        "height",
-        "min-width",
-        "min-height",
-        "max-width",
-        "max-height",
-    ]
+// function setCssValueToCssEditor(elm) {
+//     //all css property items in css editor
+//     const cssProperties = [
+//         "width",
+//         "height",
+//         "min-width",
+//         "min-height",
+//         "max-width",
+//         "max-height",
+//         //add more css properties here
+//     ]
 
-    // get css value from selected element
-    const cssValue = elm.ownerDocument.defaultView.getComputedStyle(elm);
+//     // get css value from selected element
+//     const cssValues = elm.ownerDocument.defaultView.getComputedStyle(elm);
+
+//     //get disabled css property items
+//     const elmManager = elementManagerFactory(elm);
+//     const enabledCssProperties = elmManager.getEnabledCssProperties();
+
+//     // console.log("cssValue: ", cssValue);
+//     // console.log(enabledCssProperties[cssProperties[0]]);
+
+//     cssProperties.forEach((cssProperty) => {
+//         //get css editor
+//         const targetProperty = document.getElementById(cssProperty);
+//         const targetValue = targetProperty.querySelectorAll('[data-css-value-type="value"]')[0];
+//         const targetUnit = targetProperty.querySelectorAll('[data-css-value-type="unit"]')[0];
+
+//         let cssValue = cssValues[cssProperty];
+//         cssValue = 
+//         console.log(cssProperty + ": " + cssValues[cssProperty]);
+
+//         if (enabledCssProperties[cssProperty] === true) {
+//             if(targetUnit !== null){
+//                 //
+//             } else{
+//                 //
+//             }
+//             console.log("targetValue: " + targetValue);
+//             console.log("targetUnit: " + targetUnit);
+//         } else {
+//             //clear value and disable css editor
+
+//         }
 
 
+//         //set css value to css editor
 
-    console.log("cssValue: ", cssValue);
-    // console.log("cssValue.length: ", cssValue.length);
-    // console.log("cssValue.length: ", cssValue[350]);
+//     });
 
-    // // get css editor
-    // const cssEditor = elm.ownerDocument.getElementById("cssEditor");
+//     // get 
 
-    // // set css value to css editor
-    // cssEditor.value = cssValue.cssText;
+//     // console.log("cssValue.length: ", cssValue.length);
+//     // console.log("cssValue.length: ", cssValue[350]);
 
-}
+//     // // get css editor
+//     // const cssEditor = elm.ownerDocument.getElementById("cssEditor");
+
+//     // // set css value to css editor
+//     // cssEditor.value = cssValue.cssText;
+
+// }

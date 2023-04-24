@@ -1,4 +1,5 @@
 import { addCaptionToSelectedElm } from "./utils";
+import { elementManagerFactory } from "./ElementManager";
 
 //
 // functions be directly called by events from CssEditor
@@ -749,4 +750,72 @@ function vhToCh(vhValue) {
 // check if the property is a height property
 function ifHeightProperty(propertyName) {
     return propertyName.includes("height") || propertyName.includes("top") || propertyName.includes("bottom") || propertyName.includes("VH");
+}
+
+//
+//
+//
+
+export function setCssValueToCssEditor(elm) {
+    //all css property items in css editor
+    const cssProperties = [
+        "width",
+        "height",
+        "min-width",
+        "min-height",
+        "max-width",
+        "max-height",
+        //add more css properties here
+    ]
+
+    // get css value from selected element
+    const cssValues = elm.ownerDocument.defaultView.getComputedStyle(elm);
+
+    //get disabled css property items
+    const elmManager = elementManagerFactory(elm);
+    const enabledCssProperties = elmManager.getEnabledCssProperties();
+
+    // console.log("cssValue: ", cssValue);
+    // console.log(enabledCssProperties[cssProperties[0]]);
+
+    cssProperties.forEach((cssProperty) => {
+        //get css editor
+        const targetProperty = document.getElementById(cssProperty);
+        const targetValue = targetProperty.querySelectorAll('[data-css-value-type="value"]')[0];
+        const targetUnit = targetProperty.querySelectorAll('[data-css-value-type="unit"]')[0];
+
+        let cssValue = cssValues[cssProperty];
+        cssValue = parseCssValue(cssValue);
+        console.log(cssValue);
+        // console.log(cssProperty + ": " + cssValues[cssProperty]);
+
+        if (enabledCssProperties[cssProperty] === true) {
+            if (targetUnit !== null) {
+                //
+            } else {
+                //
+            }
+            console.log("targetValue: " + targetValue);
+            console.log("targetUnit: " + targetUnit);
+        } else {
+            //clear value and disable css editor
+
+        }
+
+
+        //set css value to css editor
+
+    });
+
+    // get 
+
+    // console.log("cssValue.length: ", cssValue.length);
+    // console.log("cssValue.length: ", cssValue[350]);
+
+    // // get css editor
+    // const cssEditor = elm.ownerDocument.getElementById("cssEditor");
+
+    // // set css value to css editor
+    // cssEditor.value = cssValue.cssText;
+
 }
