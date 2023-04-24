@@ -81,7 +81,6 @@ export function convertCssUnits(propertyName, currentValue, currentUnit, convert
     let thisCurrentUnit = currentUnit.toUpperCase();
     let thisConvertUnit = convertUnit.toUpperCase();
 
-
     // convert viewport width based units and viewport height units to VW and VH
     thisCurrentUnit = vwUnits.some(unit => unit === thisCurrentUnit) ? "VW" : thisCurrentUnit;
     thisCurrentUnit = vhUnits.some(unit => unit === thisCurrentUnit) ? "VH" : thisCurrentUnit;
@@ -115,141 +114,182 @@ export function convertCssUnits(propertyName, currentValue, currentUnit, convert
 
     console.log("caseValue: " + caseValue);
 
+    const returnValue = null;
+
     switch (caseValue) {
         // px to %
         case "PX-%":
-            return { values: pxToPercentage(propertyName, currentValue), unit: convertUnit };
+            // round returned value here to keep precision while converting
+            returnValue = Math.round(pxToPercentage(propertyName, currentValue));
+            return { values: returnValue, unit: convertUnit };
         // px to em
         case "PX-EM":
-            return { values: pxToEm(currentValue), unit: convertUnit };
+            returnValue = Math.round(pxToEm(currentValue) * 100) / 100;
+            return { values: returnValue, unit: convertUnit };
         // px to rem
         case "PX-REM":
-            return { values: pxToRem(currentValue), unit: convertUnit };
+            returnValue = Math.round(pxToRem(currentValue) * 100) / 100;
+            return { values: returnValue, unit: convertUnit };
         // px to ch
         case "PX-CH":
-            return { values: pxToCh(currentValue), unit: convertUnit };
+            returnValue = Math.round(pxToCh(currentValue) * 100) / 100;
+            return { values: returnValue, unit: convertUnit };
         // px to vw
         case "PX-VW":
-            return { values: pxToVw(currentValue), unit: convertUnit };
+            returnValue = Math.round(pxToVw(currentValue) * 100) / 100;
+            return { values: returnValue, unit: convertUnit };
         // px to vh
         case "PX-VH":
-            return { values: pxToVh(currentValue), unit: convertUnit };
+            returnValue = Math.round(pxToVh(currentValue) * 100) / 100;
+            return { values: returnValue, unit: convertUnit };
         // % to px
         case "%-PX":
-            return { values: percentageToPx(propertyName, currentValue), unit: convertUnit };
+            returnValue = Math.round(percentageToPx(propertyName, currentValue));
+            return { values: returnValue, unit: convertUnit };
         // % to em
         case "%-EM":
-            return { values: percentageToEm(propertyName, currentValue), unit: convertUnit };
+            returnValue = Math.round(percentageToEm(propertyName, currentValue) * 100) / 100;
+            return { values: returnValue, unit: convertUnit };
         // % to rem
         case "%-REM":
-            return { values: percentageToRem(propertyName, currentValue), unit: convertUnit };
+            returnValue = Math.round(percentageToRem(propertyName, currentValue) * 100) / 100;
+            return { values: returnValue, unit: convertUnit };
         // % to ch
         case "%-CH":
-            return { values: percentageToCh(propertyName, currentValue), unit: convertUnit };
+            returnValue = Math.round(percentageToCh(propertyName, currentValue) * 100) / 100;
+            return { values: returnValue, unit: convertUnit };
         // % to vw
         case "%-VW":
-            return { values: percentageToVw(propertyName, currentValue), unit: convertUnit };
+            returnValue = Math.round(percentageToVw(propertyName, currentValue) * 100) / 100;
+            return { values: returnValue, unit: convertUnit };
         // % to vh
         case "%-VH":
-            return { values: percentageToVh(propertyName, currentValue), unit: convertUnit };
+            returnValue = Math.round(percentageToVh(propertyName, currentValue) * 100) / 100;
+            return { values: returnValue, unit: convertUnit };
         // em to px
         case "EM-PX":
-            return { values: emToPx(currentValue), unit: convertUnit };
+            returnValue = Math.round(emToPx(currentValue));
+            return { values: returnValue, unit: convertUnit };
         // em to %
         case "EM-%":
-            return { values: emToPercentage(propertyName, currentValue), unit: convertUnit };
+            returnValue = Math.round(emToPercentage(propertyName, currentValue));
+            return { values: returnValue, unit: convertUnit };
         // em to rem
         case "EM-REM":
-            return { values: emToRem(currentValue), unit: convertUnit };
+            returnValue = Math.round(emToRem(currentValue) * 100) / 100;
+            return { values: returnValue, unit: convertUnit };
         // em to ch
         case "EM-CH":
-            return { values: emToCh(currentValue), unit: convertUnit };
+            returnValue = Math.round(emToCh(currentValue) * 100) / 100;
+            return { values: returnValue, unit: convertUnit };
         // em to vw
         case "EM-VW":
-            return { values: emToVw(currentValue), unit: convertUnit };
+            returnValue = Math.round(emToVw(currentValue) * 100) / 100;
+            return { values: returnValue, unit: convertUnit };
         // em to vh
         case "EM-VH":
-            return { values: emToVh(currentValue), unit: convertUnit };
+            returnValue = Math.round(emToVh(currentValue) * 100) / 100;
+            return { values: returnValue, unit: convertUnit };
         // rem to px
         case "REM-PX":
-            return { values: remToPx(currentValue), unit: convertUnit };
+            returnValue = Math.round(remToPx(currentValue));
+            return { values: returnValue, unit: convertUnit };
         // rem to %
         case "REM-%":
-            return { values: remToPercentage(propertyName, currentValue), unit: convertUnit };
+            returnValue = Math.round(remToPercentage(propertyName, currentValue));
+            return { values: returnValue, unit: convertUnit };
         // rem to em
         case "REM-EM":
-            return { values: remToEm(currentValue), unit: convertUnit };
+            returnValue = Math.round(remToEm(currentValue) * 100) / 100;
+            return { values: returnValue, unit: convertUnit };
         // rem to ch
         case "REM-CH":
-            return { values: remToCh(currentValue), unit: convertUnit };
+            returnValue = Math.round(remToCh(currentValue) * 100) / 100;
+            return { values: returnValue, unit: convertUnit };
         // rem to vw
         case "REM-VW":
-            return { values: remToVw(currentValue), unit: convertUnit };
+            returnValue = Math.round(remToVw(currentValue) * 100) / 100;
+            return { values: returnValue, unit: convertUnit };
         // rem to vh
         case "REM-VH":
-            return { values: remToVh(currentValue), unit: convertUnit };
+            returnValue = Math.round(remToVh(currentValue) * 100) / 100;
+            return { values: returnValue, unit: convertUnit };
         // ch to px
         case "CH-PX":
-            return { values: chToPx(currentValue), unit: convertUnit };
+            returnValue = Math.round(chToPx(currentValue));
+            return { values: returnValue, unit: convertUnit };
         // ch to %
         case "CH-%":
-            return { values: chToPercentage(propertyName, currentValue), unit: convertUnit };
+            returnValue = Math.round(chToPercentage(propertyName, currentValue));
+            return { values: returnValue, unit: convertUnit };
         // ch to em
         case "CH-EM":
-            return { values: chToEm(currentValue), unit: convertUnit };
+            returnValue = Math.round(chToEm(currentValue) * 100) / 100;
+            return { values: returnValue, unit: convertUnit };
         // ch to rem
         case "CH-REM":
-            return { values: chToRem(currentValue), unit: convertUnit };
+            returnValue = Math.round(chToRem(currentValue) * 100) / 100;
+            return { values: returnValue, unit: convertUnit };
         // ch to vw
         case "CH-VW":
-            return { values: chToVw(currentValue), unit: convertUnit };
+            returnValue = Math.round(chToVw(currentValue) * 100) / 100;
+            return { values: returnValue, unit: convertUnit };
         // ch to vh
         case "CH-VH":
-            return { values: chToVh(currentValue), unit: convertUnit };
+            returnValue = Math.round(chToVh(currentValue) * 100) / 100;
+            return { values: returnValue, unit: convertUnit };
         // vw to px
         case "VW-PX":
-            return { values: vwToPx(currentValue), unit: convertUnit };
+            returnValue = Math.round(vwToPx(currentValue));
+            return { values: returnValue, unit: convertUnit };
         // vw to %
         case "VW-%":
-            return { values: vwToPercentage(propertyName, currentValue), unit: convertUnit };
+            returnValue = Math.round(vwToPercentage(propertyName, currentValue));
+            return { values: returnValue, unit: convertUnit };
         // vw to em
         case "VW-EM":
-            return { values: vwToEm(currentValue), unit: convertUnit };
+            returnValue = Math.round(vwToEm(currentValue) * 100) / 100;
+            return { values: returnValue, unit: convertUnit };
         // vw to rem
         case "VW-REM":
-            return { values: vwToRem(currentValue), unit: convertUnit };
+            returnValue = Math.round(vwToRem(currentValue) * 100) / 100;
+            return { values: returnValue, unit: convertUnit };
         // vw to ch
         case "VW-CH":
-            return { values: vwToCh(currentValue), unit: convertUnit };
+            returnValue = Math.round(vwToCh(currentValue) * 100) / 100;
+            return { values: returnValue, unit: convertUnit };
         // vw to vh
         case "VW-VH":
-            return { values: vwToVh(currentValue), unit: convertUnit };
+            returnValue = Math.round(vwToVh(currentValue) * 100) / 100;
+            return { values: returnValue, unit: convertUnit };
         // vh to px
         case "VH-PX":
-            return { values: vhToPx(currentValue), unit: convertUnit };
+            returnValue = Math.round(vhToPx(currentValue));
+            return { values: returnValue, unit: convertUnit };
         // vh to %
         case "VH-%":
-            return { values: vhToPercentage(propertyName, currentValue), unit: convertUnit };
+            returnValue = Math.round(vhToPercentage(propertyName, currentValue));
+            return { values: returnValue, unit: convertUnit };
         // vh to em
         case "VH-EM":
-            return { values: vhToEm(currentValue), unit: convertUnit };
+            returnValue = Math.round(vhToEm(currentValue) * 100) / 100;
+            return { values: returnValue, unit: convertUnit };
         // vh to rem
         case "VH-REM":
-            return { values: vhToRem(currentValue), unit: convertUnit };
+            returnValue = Math.round(vhToRem(currentValue) * 100) / 100;
+            return { values: returnValue, unit: convertUnit };
         // vh to ch
         case "VH-CH":
-            return { values: vhToCh(currentValue), unit: convertUnit };
+            returnValue = Math.round(vhToCh(currentValue) * 100) / 100;
+            return { values: returnValue, unit: convertUnit };
         // vh to vw
         case "VH-VW":
-            return { values: vhToVw(currentValue), unit: convertUnit };
+            returnValue = Math.round(vhToVw(currentValue) * 100) / 100;
+            return { values: returnValue, unit: convertUnit };
         default:
             return { values: currentValue, unit: currentUnit };
         // add more conditions here
     }
-
-
-
-
 }
 
 // px to a target unit
