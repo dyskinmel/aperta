@@ -2,6 +2,7 @@
     import { blurWhenEnterPressed } from "./CssEditorUtils.js";
     import { applyStyleToSelectedElement } from "./CssEditorUtils.js";
     import { parseCssValue } from "./CssEditorUtils.js";
+    import { convertCssUnits } from "./CssEditorUtils.js";
 
     // export let property;
     export let item;
@@ -11,34 +12,38 @@
 
     let inputClass = "cssSizeMenuItemInputUnit deleteArrow";
 
-    let previousValue = null;
-    let previousUnit = null;
+    // let currentValue = null;
+    let currentUnit = null;
 
     let sizeProperty = null;
     let sizeValue = null;
     let sizeUnit = null;
 
-    function saveValues(event) {
-        previousValue = sizeValue.value;
-        previousUnit = sizeUnit.value;
-        // console.log(previousValue + " " + previousUnit);
-    }
-
     function getSizeValueAndApply(event) {
-        let property = sizeProperty.id;
+        let propertyName = sizeProperty.id;
         let value = sizeValue.value;
         let unit = sizeUnit.value;
         let cssValue = `${value}${unit}`;
         if (value !== "") {
-            applyStyleToSelectedElement(property, cssValue);
+            if (isNaN(sizeValue.value)) {
+                sizeValue.value = "";
+                return;
+            }
+            applyStyleToSelectedElement(propertyName, cssValue);
         }
     }
 
+    function saveValues(event) {
+        // currentValue = sizeValue.value;
+        currentUnit = sizeUnit.value;
+        // console.log(previousValue + " " + previousUnit);
+    }
+
     function handleUnitChange(event) {
-        let property = sizeProperty.id;
-        let value = sizeValue.value;
-        let unit = sizeUnit.value;
-        let cssValue = `${value}${unit}`;
+        let propertyName = sizeProperty.id;
+        let currentValue = sizeValue.value;
+        let convertUnit = sizeUnit.value;
+        let cssValue = `${currentValue}${convertUnit}`;
 
         // apply edited style to selected element
         // if (value !== "") {
@@ -57,6 +62,8 @@
         } else {
             inputClass = "cssSizeMenuItemInputUnit deleteArrow";
             isDisabled = false;
+
+            // if previous state is None or Auto, set empty string to value
             if (sizeValue.value === "None" || sizeValue.value === "Auto") {
                 //get current style value
                 const canvas = document.getElementById("canvas");
@@ -65,24 +72,48 @@
                 const selectedElm =
                     canvasDocument.getElementById("selectedElm");
 
+                // if no element is selected, set value to empty string
                 if (selectedElm === null) {
                     sizeValue.value = "";
                     return;
                 } else {
+                    //
                     // get selected element's current style value and set it to sizeValue
-                    const currentStyleValue =
-                        canvasWindow.getComputedStyle(selectedElm)[property];
-                    console.log(currentStyleValue);
-                    console.log(parseCssValue(currentStyleValue));
-                    sizeValue.value = "";
+                    let currentStyleValue =
+                        canvasWindow.getComputedStyle(selectedElm)[
+                            propertyName
+                        ];
+
+                    // console.log(currentStyleValue);
+                    // console.log(parseCssValue(currentStyleValue));
+                    currentStyleValue = parseCssValue(currentStyleValue);
+                    // console.log(currentStyleValue["value"]);
+                    // console.log(currentStyleValue["unit"].toUpperCase());
+
+                    sizeValue.value = currentStyleValue["value"];
+                    sizeUnit.value = currentStyleValue["unit"].toUpperCase();
+
                     cssValue = `${sizeValue.value}${sizeUnit.value}`;
                 }
+            } else {
+                // convert current css unit value to target unit value
+                const convertedStyle = convertCssUnits(
+                    propertyName,
+                    currentValue,
+                    currentUnit,
+                    convertUnit
+                );
+                console.log(convertedStyle);
             }
+
             //insert else to convert units
         }
 
         console.log(cssValue);
+        // apply edited style to selected element
+        // applyStyleToSelectedElement(propertyName, cssValue);
 
+        //
         // if (unit === "Auto") {
         //     sizeValue.value = "Auto";
         //     console.log("Auto!!");

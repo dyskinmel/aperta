@@ -15,11 +15,19 @@ export function addKeydownEventListeners(elm) {
         const canvasWindow = canvas.contentWindow;
         const canvasDocument = canvasWindow.document;
         const selectedElement = canvasDocument.getElementById("selectedElm");
+
         //delete element when delete or backspace key is pressed
         if (event.keyCode === 46 || event.keyCode === 8) {
             //delete selected element except for a body element
 
             if (selectedElement.tagName !== "BODY" && selectedElement.hasAttribute("contenteditable") === false) {
+                if (selectedElement.previousElementSibling !== null) {
+                    selectElm(selectedElement.previousElementSibling);
+                    addCaptionToSelectedElm(selectedElement.previousElementSibling);
+                } else if (selectedElement.parentElement !== null) {
+                    selectElm(selectedElement.parentElement);
+                    addCaptionToSelectedElm(selectedElement.parentElement);
+                }
                 selectedElement.remove();
                 adjustBodyHeight();
             }
