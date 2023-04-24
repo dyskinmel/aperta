@@ -1,7 +1,7 @@
 import { addCaptionToSelectedElm } from "./utils";
 
 //
-// functions called by events from CssEditor
+// functions be directly called by events from CssEditor
 //
 
 // blur a text input field when the enter key is pressed. 
@@ -111,10 +111,9 @@ export function convertCssUnits(propertyName, currentValue, currentUnit, convert
     // convert current unit value to convert unit value
     //
     const caseValue = thisCurrentUnit + "-" + thisConvertUnit;
-
     console.log("caseValue: " + caseValue);
 
-    const returnValue = null;
+    let returnValue = null;
 
     switch (caseValue) {
         // px to %
@@ -422,7 +421,7 @@ function percentageToPx(propertyName, percentValue) {
 
 // % to em
 function percentageToEm(propertyName, percentValue) {
-    const pxValue = percentToPx(propertyName, percentValue);
+    const pxValue = percentageToPx(propertyName, percentValue);
     const emValue = pxToEm(pxValue);
 
     return emValue;
@@ -430,7 +429,7 @@ function percentageToEm(propertyName, percentValue) {
 
 // % to rem
 function percentToRem(propertyName, percentValue) {
-    const pxValue = percentToPx(propertyName, percentValue);
+    const pxValue = percentageToPx(propertyName, percentValue);
     const remValue = pxToRem(pxValue);
 
     return remValue;
@@ -438,21 +437,21 @@ function percentToRem(propertyName, percentValue) {
 
 // % to ch
 function percentageToCh(propertyName, percentValue) {
-    const pxValue = percentToPx(propertyName, percentValue);
+    const pxValue = percentageToPx(propertyName, percentValue);
     const chValue = pxToCh(pxValue);
 
     return chValue;
 }
 // % to vw, lvw, svw, dvw
 function percentageToVw(propertyName, percentValue) {
-    const pxValue = percentToPx(propertyName, percentValue);
+    const pxValue = percentageToPx(propertyName, percentValue);
     const vwValue = pxToVw(pxValue);
 
     return vwValue;
 }
 // % to vh, lvh, svh, dvh
 function percentageToVh(propertyName, percentValue) {
-    const pxValue = percentToPx(propertyName, percentValue);
+    const pxValue = percentageToPx(propertyName, percentValue);
     const vhValue = pxToVh(pxValue);
 
     return vhValue;

@@ -1,11 +1,11 @@
 //Event Listeners
-import { addKeydownEventListeners } from "./ElementEventListeners.js";
+// import { addKeydownEventListeners } from "./ElementEventListeners.js";
 import { addHoverEventListeners } from "./ElementEventListeners.js";
 import { addClickEventListeners } from "./ElementEventListeners.js";
 import { addDblClickEventListeners } from "./ElementEventListeners.js";
 import { addDragAndDropEventListeners } from "./ElementEventListeners.js";
 //
-import { adjustBodyHeight } from "./CanvasManager.js";
+import { adjustBodyHeight } from "./utils.js";
 //
 import { isPhrasingContentTags } from "./HtmlCategories.js";
 
@@ -14,23 +14,23 @@ import { isPhrasingContentTags } from "./HtmlCategories.js";
 //
 
 // factory function to create an element
-export function createElementManager(elm) {
+export function elementManagerFactory(elm) {
     // console.log(elm + " " + elm.tagName);
     // return new Element();
     switch (elm.tagName) {
         case "BODY":
-            return new BodyElement();
+            return new BodyElementManager();
         case "H1":
         case "H2":
         case "H3":
         case "H4":
         case "H5":
         case "H6":
-            return new HeadingElement();
+            return new HeadingElementManager();
         case "IMG":
-            return new ImgElement();
+            return new ImgElementManager();
         // add more cases here
-        default: return new Element();
+        default: return new ElementManager();
     }
 }
 
@@ -38,7 +38,7 @@ export function createElementManager(elm) {
 // Base class for all elements
 //
 
-class Element {
+class ElementManager {
     addElementToCanvas(elm, textContent) {
         // Add the element to the canvas
         const canvas = document.getElementById("canvas");
@@ -111,7 +111,7 @@ class Element {
 // Body element
 //
 
-class BodyElement extends Element {
+class BodyElementManager extends ElementManager {
     addListenerToElement(elm) {
         // addKeydownEventListeners(elm);
         addHoverEventListeners(elm);
@@ -123,7 +123,7 @@ class BodyElement extends Element {
 // Image element
 //
 
-class ImgElement extends Element {
+class ImgElementManager extends ElementManager {
     setDefaultAttributes(elm, textContent) {
         // Create an element
         // console.log(elm);
@@ -138,7 +138,7 @@ class ImgElement extends Element {
 // Heading element
 //
 
-class HeadingElement extends Element {
+class HeadingElementManager extends ElementManager {
     canBeParentOf(child) {
         return isPhrasingContentTags(child);
     }

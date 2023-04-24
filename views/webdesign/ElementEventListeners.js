@@ -1,5 +1,5 @@
-import { createElementManager } from "./Element";
-import { adjustBodyHeight } from "./CanvasManager";
+import { elementManagaerFactory } from "./ElementManager.js";
+import { adjustBodyHeight } from "./utils.js";
 import { selectElm } from "./utils.js";
 import { addCaptionToSelectedElm } from "./utils.js";
 import { addCaptionToHoveredElm } from "./utils.js";
@@ -96,14 +96,8 @@ export function addHoverEventListeners(elm) {
             return;
         }
 
-        // add hover class to hovered element
-        // elm.classList.add('hover');
-
         // add caption to hovered element
         addCaptionToHoveredElm(event.target);
-
-
-        // const offset = event.clientY - rect.top;
 
         event.stopPropagation();
     }, false);
@@ -218,7 +212,7 @@ export function addClickEventListeners(elm) {
         const hoverCaption = event.target.ownerDocument.getElementById("hoverCaption");
         delCaptionFromHoveredElm(hoverCaption);
 
-        elm.classList.remove('hover');
+        // elm.classList.remove('hover');
 
 
         // set id to selected element
@@ -523,6 +517,7 @@ export function addDblClickEventListeners(elm) {
 
     elm.addEventListener("dblclick", function () {
 
+        // moved following code to addClickEventListeners
         // delete contenteditable attribute from a current selected element
         // const canvasDocument = elm.ownerDocument;
         // const targetElements = canvasDocument.querySelector('[contenteditable="true"]');
@@ -538,9 +533,6 @@ export function addDblClickEventListeners(elm) {
             elm.setAttribute("contenteditable", "true");
             elm.setAttribute("spellcheck", "true");
         }
-
-
-
     }, false);
 }
 
@@ -570,7 +562,6 @@ export function addDragAndDropEventListeners(elm) {
         //set drag effect to move (to delete + icon while drag & drop)
         event.dataTransfer.effectAllowed = "move";
 
-
         //Set data to identify which element to swap when drop event is fired
         draggedElm = event.target;
 
@@ -592,9 +583,10 @@ export function addDragAndDropEventListeners(elm) {
         const canvasDocument = event.target.ownerDocument;
 
         //get elementManager and check if draggedElm can be parent of event.target
-        const elementManager = createElementManager(event.target);
-        console.log("can be parent of:" + elementManager.canBeParentOf(draggedElm));
-        const canBeParentOf = elementManager.canBeParentOf(draggedElm);
+        const element = elementManagerFactory(event.target);
+
+        const canBeParentOf = element.canBeParentOf(draggedElm);
+        // console.log("can be parent of:" + canBeParentOf);
 
 
         //
@@ -823,10 +815,4 @@ function setCssValuteToCssEditor(elm) {
     // // set css value to css editor
     // cssEditor.value = cssValue.cssText;
 
-}
-
-function parseCssValue(value) {
-    const patterns = [
-
-    ];
 }

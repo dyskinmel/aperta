@@ -77,19 +77,20 @@
                     sizeValue.value = "";
                     return;
                 } else {
-                    //
                     // get selected element's current style value and set it to sizeValue
+                    //
                     let currentStyleValue =
                         canvasWindow.getComputedStyle(selectedElm)[
                             propertyName
                         ];
 
-                    // console.log(currentStyleValue);
-                    // console.log(parseCssValue(currentStyleValue));
                     currentStyleValue = parseCssValue(currentStyleValue);
-                    // console.log(currentStyleValue["value"]);
-                    // console.log(currentStyleValue["unit"].toUpperCase());
 
+                    //
+                    // add convert unit feature
+                    //
+
+                    // set valut to UI
                     sizeValue.value = currentStyleValue["value"];
                     sizeUnit.value = currentStyleValue["unit"].toUpperCase();
 
@@ -104,20 +105,20 @@
                     convertUnit
                 );
                 console.log(convertedStyle);
-            }
 
-            //insert else to convert units
+                sizeValue.value = convertedStyle["values"];
+                sizeUnit.value = convertedStyle["unit"];
+
+                cssValue = convertedStyle["values"] + convertedStyle["unit"];
+            }
         }
 
         console.log(cssValue);
         // apply edited style to selected element
-        // applyStyleToSelectedElement(propertyName, cssValue);
+        applyStyleToSelectedElement(propertyName, cssValue);
 
-        //
-        // if (unit === "Auto") {
-        //     sizeValue.value = "Auto";
-        //     console.log("Auto!!");
-        // }
+        // blur to make sure next time user clicks on input, focused event will be fired
+        event.target.blur();
     }
 </script>
 
