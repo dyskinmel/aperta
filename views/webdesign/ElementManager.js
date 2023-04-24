@@ -10,7 +10,7 @@ import { adjustBodyHeight } from "./utils.js";
 import { isPhrasingContentTags } from "./HtmlCategories.js";
 
 //
-// Factory function to create an element
+// Factory function to create an element manager
 //
 
 // factory function to create an element
