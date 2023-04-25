@@ -1,22 +1,41 @@
 <script>
-    export let metaMenus = [];
+    // export let metaMenus = [];
+    export let rightSideMenuTabItems = [];
     export let activeTabValue = 1;
 
     const handleClick = (tabValue) => () => (activeTabValue = tabValue);
 </script>
 
 <ul>
-    {#each metaMenus as metaMenu}
-        <li class={activeTabValue === metaMenu.value ? "active" : ""}>
+    <!-- {#each metaMenus as metaMenu} -->
+    {#each rightSideMenuTabItems as rightSideMenuTabItems}
+        <!-- <li class={activeTabValue === metaMenu.value ? "active" : ""}> -->
+        <li
+            class={activeTabValue === rightSideMenuTabItems.value
+                ? "active"
+                : ""}
+        >
+            <!-- <span on:click={handleClick(metaMenu.value)}>{metaMenu.label}</span> -->
             <!-- svelte-ignore a11y-click-events-have-key-events -->
-            <span on:click={handleClick(metaMenu.value)}>{metaMenu.label}</span>
+            <span on:click={handleClick(rightSideMenuTabItems.value)}
+                >{rightSideMenuTabItems.label}</span
+            >
         </li>
     {/each}
 </ul>
-{#each metaMenus as metaMenu}
+
+<!-- {#each metaMenus as metaMenu}
     {#if activeTabValue == metaMenu.value}
         <div class="box">
             <svelte:component this={metaMenu.component} />
+        </div>
+    {/if}
+{/each} -->
+
+{#each rightSideMenuTabItems as rightSideMenuTabItem}
+    {#if activeTabValue == rightSideMenuTabItem.value}
+        <div class="box">
+            <svelte:component this={rightSideMenuTabItem.component} />
         </div>
     {/if}
 {/each}

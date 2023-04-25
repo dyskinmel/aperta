@@ -1,34 +1,44 @@
 //Event Listeners
-import { addKeydownEventListeners } from "./ElementEventListeners.js";
+// import { addKeydownEventListeners } from "./ElementEventListeners.js";
 import { addHoverEventListeners } from "./ElementEventListeners.js";
 import { addClickEventListeners } from "./ElementEventListeners.js";
 import { addDblClickEventListeners } from "./ElementEventListeners.js";
 import { addDragAndDropEventListeners } from "./ElementEventListeners.js";
-import { adjustBodyHeight } from "./CanvasManager.js";
+//
+import { adjustBodyHeight } from "./utils.js";
 //
 import { isPhrasingContentTags } from "./HtmlCategories.js";
 
+//
+// Factory function to create an element manager
+//
+
 // factory function to create an element
-export function createElementManager(elm) {
+export function elementManagerFactory(elm) {
     // console.log(elm + " " + elm.tagName);
     // return new Element();
     switch (elm.tagName) {
         case "BODY":
-            return new BodyElement();
+            return new BodyElementManager();
         case "H1":
         case "H2":
         case "H3":
         case "H4":
         case "H5":
         case "H6":
-            return new HeadingElement();
+            return new HeadingElementManager();
         case "IMG":
-            return new ImgElement();
-        default: return new Element();
+            return new ImgElementManager();
+        // add more cases here
+        default: return new ElementManager();
     }
 }
 
-class Element {
+//
+// Base class for all elements
+//
+
+class ElementManager {
     addElementToCanvas(elm, textContent) {
         // Add the element to the canvas
         const canvas = document.getElementById("canvas");
@@ -42,23 +52,18 @@ class Element {
             return;
         }
 
-        // migrated to setDefaultAttributes mothod
-        // // Create an element
-        // // console.log(elm);
-        // elm.textContent = textContent;
-        // // elm.classList.add("canvasItem");
-        // elm.setAttribute("draggable", "true");
-        // elm.setAttribute("data-uuid", crypto.randomUUID());
+        // set default attributes to a new element
         this.setDefaultAttributes(elm, textContent);
 
-        // Add listener to element
+        // Add event listeners to a new element
         this.addListenerToElement(elm);
 
         // Add element to canvas
         this.addElmToSelectedElm(elm, selectedElement);
-        // selectedElement.appendChild(elm);
     }
 
+    // set default attributes to a new element
+    // override this method in child classes if needed
     setDefaultAttributes(elm, textContent) {
         // Add default attributes
         elm.textContent = textContent;
@@ -66,6 +71,8 @@ class Element {
         elm.setAttribute("data-uuid", crypto.randomUUID());
     }
 
+    // default listeners to add to an element
+    // override this method in child classes if needed
     addListenerToElement(elm) {
         addHoverEventListeners(elm);
         addClickEventListeners(elm);
@@ -73,22 +80,52 @@ class Element {
         addDragAndDropEventListeners(elm);
     }
 
+    // add element to/after the selected element
     addElmToSelectedElm(elm, selectedElement) {
         if (selectedElement.tagName === "BODY") {
             // Add element to selected element
             selectedElement.appendChild(elm);
         } else {
-            // Add element to selected element
+            // Add element after selected element
             selectedElement.after(elm);
         }
         adjustBodyHeight();
     }
+
+    // check if the element can be a parent of the child element
+    // override this method in child classes 
+    // refer https://html.spec.whatwg.org/multipage/semantics.html#semantics for specifcations
+    // use methods in HtmlCategories.js to check child elements belogs to which category
+    // also add exceptional cases if needed
+    // return true if the element can be a parent of the child element
     canBeParentOf(child) {
+
         return true;
     }
+
+    getEnabledCssProperties() {
+        const enabledCssProperties = {
+            "width": true,
+            "height": true,
+            "min-width": true,
+            "min-height": true,
+            "max-width": true,
+            "max-height": true,
+        }
+        return enabledCssProperties;
+    }
+
+
 }
 
-class BodyElement extends Element {
+//
+// Child classes for elements (Categorize if possible)
+//
+
+// Body element
+//
+
+class BodyElementManager extends ElementManager {
     addListenerToElement(elm) {
         // addKeydownEventListeners(elm);
         addHoverEventListeners(elm);
@@ -97,7 +134,10 @@ class BodyElement extends Element {
     }
 }
 
-class ImgElement extends Element {
+// Image element
+//
+
+class ImgElementManager extends ElementManager {
     setDefaultAttributes(elm, textContent) {
         // Create an element
         // console.log(elm);
@@ -109,7 +149,10 @@ class ImgElement extends Element {
     }
 }
 
-class HeadingElement extends Element {
+// Heading element
+//
+
+class HeadingElementManager extends ElementManager {
     canBeParentOf(child) {
         return isPhrasingContentTags(child);
     }

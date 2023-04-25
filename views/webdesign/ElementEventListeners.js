@@ -1,19 +1,34 @@
-import { createElementManager } from "./Element";
-import { adjustBodyHeight } from "./CanvasManager";
+import { elementManagerFactory } from "./ElementManager.js";
+import { adjustBodyHeight } from "./utils.js";
+import { selectElm } from "./utils.js";
+import { addCaptionToSelectedElm } from "./utils.js";
+import { addCaptionToHoveredElm } from "./utils.js";
+import { delCaptionFromHoveredElm } from "./utils.js";
+import { setCssValueToCssEditor } from "./CssEditorUtils.js";
 
 
 // keydown event to delete selected eleemnt on canvas except for a body element
+//
+
 export function addKeydownEventListeners(elm) {
     elm.addEventListener('keydown', (event) => {
         const canvas = document.getElementById("canvas");
         const canvasWindow = canvas.contentWindow;
         const canvasDocument = canvasWindow.document;
         const selectedElement = canvasDocument.getElementById("selectedElm");
+
         //delete element when delete or backspace key is pressed
         if (event.keyCode === 46 || event.keyCode === 8) {
             //delete selected element except for a body element
 
             if (selectedElement.tagName !== "BODY" && selectedElement.hasAttribute("contenteditable") === false) {
+                if (selectedElement.previousElementSibling !== null) {
+                    selectElm(selectedElement.previousElementSibling);
+                    addCaptionToSelectedElm(selectedElement.previousElementSibling);
+                } else if (selectedElement.parentElement !== null) {
+                    selectElm(selectedElement.parentElement);
+                    addCaptionToSelectedElm(selectedElement.parentElement);
+                }
                 selectedElement.remove();
                 adjustBodyHeight();
             }
@@ -68,6 +83,8 @@ export function addKeydownEventListeners(elm) {
 
 
 //Hover activate: add hover class to hovered element to highlight
+//
+
 export function addHoverEventListeners(elm) {
 
     elm.addEventListener("mouseover", (event) => {
@@ -80,14 +97,8 @@ export function addHoverEventListeners(elm) {
             return;
         }
 
-        // add hover class to hovered element
-        // elm.classList.add('hover');
-
         // add caption to hovered element
         addCaptionToHoveredElm(event.target);
-
-
-        // const offset = event.clientY - rect.top;
 
         event.stopPropagation();
     }, false);
@@ -98,76 +109,75 @@ export function addHoverEventListeners(elm) {
         event.preventDefault();
 
         // delete old hovered element before creating a new one
-        delCaptionFromHoveredElm();
-
+        delCaptionFromHoveredElm(event.target);
 
         event.stopPropagation();
     }, false);
 }
 
-function addCaptionToHoveredElm(elm) {
-    // delete old hovered element before creating a new one
-    let hoverCaption = elm.ownerDocument.getElementById("hoverCaption");
+// function addCaptionToHoveredElm(elm) {
+//     // delete old hovered element before creating a new one
+//     let hoverCaption = elm.ownerDocument.getElementById("hoverCaption");
 
-    // if (hoverCaption !== null) {
-    //     hoverCaption.remove();
-    // }
-    delCaptionFromHoveredElm(hoverCaption);
+//     // if (hoverCaption !== null) {
+//     //     hoverCaption.remove();
+//     // }
+//     delCaptionFromHoveredElm(hoverCaption);
 
-    // get position of hovered element
-    const rect = elm.getBoundingClientRect();
+//     // get position of hovered element
+//     const rect = elm.getBoundingClientRect();
 
-    const canvas = document.getElementById("canvas");
-    const canvasWindow = canvas.contentWindow;
-    const absoluteRectTop = rect.top + canvasWindow.scrollY;
-    const absoluteRectBottom = rect.bottom + canvasWindow.scrollY;
-    const absoluteRectLeft = rect.left + canvasWindow.scrollX;
-    const absoluteRectRight = rect.right + canvasWindow.scrollX;
+//     const canvas = document.getElementById("canvas");
+//     const canvasWindow = canvas.contentWindow;
+//     const absoluteRectTop = rect.top + canvasWindow.scrollY;
+//     const absoluteRectBottom = rect.bottom + canvasWindow.scrollY;
+//     const absoluteRectLeft = rect.left + canvasWindow.scrollX;
+//     const absoluteRectRight = rect.right + canvasWindow.scrollX;
 
-    // create a label to show tagName
-    hoverCaption = document.createElement("div");
-    hoverCaption.textContent = elm.tagName;
-    hoverCaption.id = "hoverCaption";
-    hoverCaption.style.left = absoluteRectLeft + "px";
-    // new_elm.style.position = "absolute";
-    // new_elm.style.color = "#1bbcf1";
-    // new_elm.style.fontSize = "10px";
-    // new_elm.style.fontWeight = "normal";
+//     // create a label to show tagName
+//     hoverCaption = document.createElement("div");
+//     hoverCaption.textContent = elm.tagName;
+//     hoverCaption.id = "hoverCaption";
+//     hoverCaption.style.left = absoluteRectLeft + "px";
+//     // new_elm.style.position = "absolute";
+//     // new_elm.style.color = "#1bbcf1";
+//     // new_elm.style.fontSize = "10px";
+//     // new_elm.style.fontWeight = "normal";
 
-    // set position of hovered element
-    if (elm.tagName === "BODY") {
-        hoverCaption.style.top = absoluteRectTop + "px";
-    } else if (rect.top < 50) {
-        hoverCaption.style.top = absoluteRectBottom + 3 + "px";
-    } else {
-        hoverCaption.style.top = absoluteRectTop - 16 + "px";
-    }
+//     // set position of hovered element
+//     if (elm.tagName === "BODY") {
+//         hoverCaption.style.top = absoluteRectTop + "px";
+//     } else if (rect.top < 50) {
+//         hoverCaption.style.top = absoluteRectBottom + 3 + "px";
+//     } else {
+//         hoverCaption.style.top = absoluteRectTop - 16 + "px";
+//     }
 
-    elm.ownerDocument.body.after(hoverCaption);
+//     elm.ownerDocument.body.after(hoverCaption);
 
-    // add outline to hovered element
-    const hoverOutline = document.createElement("div");
-    hoverOutline.id = "hoverOutline";
-    hoverOutline.style.left = absoluteRectLeft + "px";
-    hoverOutline.style.top = absoluteRectTop + "px";
-    hoverOutline.style.width = absoluteRectRight - absoluteRectLeft + "px";
-    hoverOutline.style.height = absoluteRectBottom - absoluteRectTop + "px";
+//     // add outline to hovered element
+//     const hoverOutline = document.createElement("div");
+//     hoverOutline.id = "hoverOutline";
+//     hoverOutline.style.left = absoluteRectLeft + "px";
+//     hoverOutline.style.top = absoluteRectTop + "px";
+//     hoverOutline.style.width = absoluteRectRight - absoluteRectLeft + "px";
+//     hoverOutline.style.height = absoluteRectBottom - absoluteRectTop + "px";
 
-    hoverCaption.after(hoverOutline);
+//     hoverCaption.after(hoverOutline);
 
-    console.log("Hovered");
-}
+//     console.log("Hovered");
+// }
 
-function delCaptionFromHoveredElm() {
-    // let hoverCaption = elm.ownerDocument.getElementById("hoverCaption");
-    const hoverCaption = event.target.ownerDocument.getElementById("hoverCaption");
-    const hoverOutline = event.target.ownerDocument.getElementById("hoverOutline");
+// function delCaptionFromHoveredElm() {
+//     // let hoverCaption = elm.ownerDocument.getElementById("hoverCaption");
+//     const hoverCaption = event.target.ownerDocument.getElementById("hoverCaption");
+//     const hoverOutline = event.target.ownerDocument.getElementById("hoverOutline");
 
-    if (hoverCaption !== null && hoverOutline !== null) {
-        hoverCaption.remove();
-        hoverOutline.remove();
-    }
-}
+//     if (hoverCaption !== null && hoverOutline !== null) {
+//         hoverCaption.remove();
+//         hoverOutline.remove();
+//     }
+// }
 
 //
 // Click and related functions
@@ -175,6 +185,8 @@ function delCaptionFromHoveredElm() {
 
 
 //Click: add select class to clicked element to target other events
+//
+
 export function addClickEventListeners(elm) {
 
     elm.addEventListener("click", (event) => {
@@ -201,91 +213,89 @@ export function addClickEventListeners(elm) {
         const hoverCaption = event.target.ownerDocument.getElementById("hoverCaption");
         delCaptionFromHoveredElm(hoverCaption);
 
-        elm.classList.remove('hover');
-
-
         // set id to selected element
         selectElm(event.target);
+
+        // set selected element's css value to css editor
+        setCssValueToCssEditor(elm);
 
         // add caption to selected element
         addCaptionToSelectedElm(event.target);
 
         // addListenersToChangeSizeMarginPadding(canvasDocument, rect);
 
-        // console.log(elm);
-        setCssValuteToCssEditor(elm);
 
         event.stopPropagation();
     }, false);
 }
 
-function selectElm(elm) {
-    const selectedElement = elm.ownerDocument.getElementById("selectedElm");
+// function selectElm(elm) {
+//     const selectedElement = elm.ownerDocument.getElementById("selectedElm");
 
-    if (selectedElement !== null) {
-        //remove selectedElement id from previously selected element
-        selectedElement.removeAttribute("id");
-    }
+//     if (selectedElement !== null) {
+//         //remove selectedElement id from previously selected element
+//         selectedElement.removeAttribute("id");
+//     }
 
-    elm.id = "selectedElm";
-}
+//     elm.id = "selectedElm";
+// }
 
-function addCaptionToSelectedElm(elm) {
-    // delete old label and menu before creating a new one
-    let selectCaption = elm.ownerDocument.getElementById("selectCaption");
-    let selectOutline = elm.ownerDocument.getElementById("selectOutline");
+// function addCaptionToSelectedElm(elm) {
+//     // delete old label and menu before creating a new one
+//     let selectCaption = elm.ownerDocument.getElementById("selectCaption");
+//     let selectOutline = elm.ownerDocument.getElementById("selectOutline");
 
-    if (selectCaption !== null && selectOutline !== null) {
-        selectCaption.remove();
-        selectOutline.remove();
-    }
+//     if (selectCaption !== null && selectOutline !== null) {
+//         selectCaption.remove();
+//         selectOutline.remove();
+//     }
 
-    // get position of hovered element
-    const rect = elm.getBoundingClientRect();
+//     // get position of hovered element
+//     const rect = elm.getBoundingClientRect();
 
-    const canvas = document.getElementById("canvas");
-    const canvasWindow = canvas.contentWindow;
-    const absoluteRectTop = rect.top + canvasWindow.scrollY;
-    const absoluteRectBottom = rect.bottom + canvasWindow.scrollY;
-    const absoluteRectLeft = rect.left + canvasWindow.scrollX;
-    const absoluteRectRight = rect.right + canvasWindow.scrollX;
+//     const canvas = document.getElementById("canvas");
+//     const canvasWindow = canvas.contentWindow;
+//     const absoluteRectTop = rect.top + canvasWindow.scrollY;
+//     const absoluteRectBottom = rect.bottom + canvasWindow.scrollY;
+//     const absoluteRectLeft = rect.left + canvasWindow.scrollX;
+//     const absoluteRectRight = rect.right + canvasWindow.scrollX;
 
-    // create a new label and menu element
-    selectCaption = document.createElement("div");
-    selectCaption.textContent = elm.tagName;
-    selectCaption.id = "selectCaption";
-    selectCaption.style.left = absoluteRectLeft - 1 + "px";
-    // new_elm.style.position = "absolute";
-    // new_elm.style.color = "#1bbcf1";
-    // new_elm.style.fontSize = "10px";
-    // new_elm.style.fontWeight = "normal";
+//     // create a new label and menu element
+//     selectCaption = document.createElement("div");
+//     selectCaption.textContent = elm.tagName;
+//     selectCaption.id = "selectCaption";
+//     selectCaption.style.left = absoluteRectLeft - 1 + "px";
+//     // new_elm.style.position = "absolute";
+//     // new_elm.style.color = "#1bbcf1";
+//     // new_elm.style.fontSize = "10px";
+//     // new_elm.style.fontWeight = "normal";
 
-    // set position of hovered element
-    if (elm.tagName === "BODY") {
-        selectCaption.style.top = absoluteRectTop + "px";
-    } else if (rect.top < 50) {
-        selectCaption.style.top = absoluteRectBottom + 3 + "px";
-    } else {
-        selectCaption.style.top = absoluteRectTop - 16 + "px";
-    }
+//     // set position of hovered element
+//     if (elm.tagName === "BODY") {
+//         selectCaption.style.top = absoluteRectTop + "px";
+//     } else if (rect.top < 50) {
+//         selectCaption.style.top = absoluteRectBottom + 3 + "px";
+//     } else {
+//         selectCaption.style.top = absoluteRectTop - 16 + "px";
+//     }
 
-    elm.ownerDocument.body.after(selectCaption);
+//     elm.ownerDocument.body.after(selectCaption);
 
-    // add Outline to selected element
-    selectOutline = document.createElement("div");
-    selectOutline.id = "selectOutline";
-    selectOutline.style.left = absoluteRectLeft + "px";
-    selectOutline.style.top = absoluteRectTop + "px";
-    selectOutline.style.width = absoluteRectRight - absoluteRectLeft + "px";
-    selectOutline.style.height = absoluteRectBottom - absoluteRectTop + "px";
+//     // add Outline to selected element
+//     selectOutline = document.createElement("div");
+//     selectOutline.id = "selectOutline";
+//     selectOutline.style.left = absoluteRectLeft + "px";
+//     selectOutline.style.top = absoluteRectTop + "px";
+//     selectOutline.style.width = absoluteRectRight - absoluteRectLeft + "px";
+//     selectOutline.style.height = absoluteRectBottom - absoluteRectTop + "px";
 
-    selectCaption.after(selectOutline);
+//     selectCaption.after(selectOutline);
 
-}
+// }
 
-function addOutlineToSelectedElm(elm) {
-    elm.classList.add("selectedElm");
-}
+// function addOutlineToSelectedElm(elm) {
+//     elm.classList.add("selectedElm");
+// }
 
 function addListenersToChangeSizeMarginPadding() {
     const canvas = document.getElementById("canvas");
@@ -505,25 +515,11 @@ function addListenersToChangeSizeMarginPadding() {
 export function addDblClickEventListeners(elm) {
 
     elm.addEventListener("dblclick", function () {
-
-        // delete contenteditable attribute from a current selected element
-        // const canvasDocument = elm.ownerDocument;
-        // const targetElements = canvasDocument.querySelector('[contenteditable="true"]');
-
-        // if (targetElements !== null) {
-        //     targetElements.removeAttribute("contenteditable");
-        //     targetElements.removeAttribute("spellcheck");
-        // }
-
-        // console.log(elm.tagName);
-
+        // add contenteditable attributes to a double clicked element
         if (elm.tagName !== "BODY") {
             elm.setAttribute("contenteditable", "true");
             elm.setAttribute("spellcheck", "true");
         }
-
-
-
     }, false);
 }
 
@@ -553,7 +549,6 @@ export function addDragAndDropEventListeners(elm) {
         //set drag effect to move (to delete + icon while drag & drop)
         event.dataTransfer.effectAllowed = "move";
 
-
         //Set data to identify which element to swap when drop event is fired
         draggedElm = event.target;
 
@@ -575,9 +570,10 @@ export function addDragAndDropEventListeners(elm) {
         const canvasDocument = event.target.ownerDocument;
 
         //get elementManager and check if draggedElm can be parent of event.target
-        const elementManager = createElementManager(event.target);
-        console.log("can be parent of:" + elementManager.canBeParentOf(draggedElm));
-        const canBeParentOf = elementManager.canBeParentOf(draggedElm);
+        const element = elementManagerFactory(event.target);
+
+        const canBeParentOf = element.canBeParentOf(draggedElm);
+        // console.log("can be parent of:" + canBeParentOf);
 
 
         //
@@ -781,35 +777,65 @@ export function addDragAndDropEventListeners(elm) {
 
 
 
-function setCssValuteToCssEditor(elm) {
-    const cssItems = [
-        "width",
-        "height",
-        "min-width",
-        "min-height",
-        "max-width",
-        "max-height",
-    ]
+// function setCssValueToCssEditor(elm) {
+//     //all css property items in css editor
+//     const cssProperties = [
+//         "width",
+//         "height",
+//         "min-width",
+//         "min-height",
+//         "max-width",
+//         "max-height",
+//         //add more css properties here
+//     ]
 
-    // get css value from selected element
-    const cssValue = elm.ownerDocument.defaultView.getComputedStyle(elm);
+//     // get css value from selected element
+//     const cssValues = elm.ownerDocument.defaultView.getComputedStyle(elm);
+
+//     //get disabled css property items
+//     const elmManager = elementManagerFactory(elm);
+//     const enabledCssProperties = elmManager.getEnabledCssProperties();
+
+//     // console.log("cssValue: ", cssValue);
+//     // console.log(enabledCssProperties[cssProperties[0]]);
+
+//     cssProperties.forEach((cssProperty) => {
+//         //get css editor
+//         const targetProperty = document.getElementById(cssProperty);
+//         const targetValue = targetProperty.querySelectorAll('[data-css-value-type="value"]')[0];
+//         const targetUnit = targetProperty.querySelectorAll('[data-css-value-type="unit"]')[0];
+
+//         let cssValue = cssValues[cssProperty];
+//         cssValue = 
+//         console.log(cssProperty + ": " + cssValues[cssProperty]);
+
+//         if (enabledCssProperties[cssProperty] === true) {
+//             if(targetUnit !== null){
+//                 //
+//             } else{
+//                 //
+//             }
+//             console.log("targetValue: " + targetValue);
+//             console.log("targetUnit: " + targetUnit);
+//         } else {
+//             //clear value and disable css editor
+
+//         }
 
 
+//         //set css value to css editor
 
-    console.log("cssValue: ", cssValue);
-    // console.log("cssValue.length: ", cssValue.length);
-    // console.log("cssValue.length: ", cssValue[350]);
+//     });
 
-    // // get css editor
-    // const cssEditor = elm.ownerDocument.getElementById("cssEditor");
+//     // get 
 
-    // // set css value to css editor
-    // cssEditor.value = cssValue.cssText;
+//     // console.log("cssValue.length: ", cssValue.length);
+//     // console.log("cssValue.length: ", cssValue[350]);
 
-}
+//     // // get css editor
+//     // const cssEditor = elm.ownerDocument.getElementById("cssEditor");
 
-function parseCssValue(value) {
-    const patterns = [
+//     // // set css value to css editor
+//     // cssEditor.value = cssValue.cssText;
 
-    ];
-}
+// }

@@ -1,6 +1,6 @@
 <script>
     import { onMount } from "svelte";
-    import { createElementManager } from "./Element.js";
+    import { elementManagerFactory } from "./ElementManager.js";
     import { addKeydownEventListeners } from "./ElementEventListeners.js";
 
     let canvas;
@@ -10,8 +10,8 @@
         addKeydownEventListeners(canvasWindow);
         const canvasBody = canvasWindow.document.body;
 
-        const elm_manager = createElementManager(canvasBody);
-        elm_manager.addListenerToElement(canvasBody);
+        const elm = elementManagerFactory(canvasBody);
+        elm.addListenerToElement(canvasBody);
     };
 </script>
 

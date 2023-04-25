@@ -100,11 +100,4 @@
         outline: 1px solid gray;
     }
 
-    /* input[name="left_navigation"] {
-        display: none;
-    } */
-
-    /* .leftMenu_component {
-        display: none;
-    } */
 </style>
