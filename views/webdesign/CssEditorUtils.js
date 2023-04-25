@@ -74,6 +74,7 @@ export function parseCssValue(value) {
 
 export function convertCssUnits(propertyName, currentValue, currentUnit, convertUnit) {
     console.log(propertyName + ": " + currentValue + " " + currentUnit + " → " + convertUnit);
+
     // css units based on viewport
     const vwUnits = ["VW", "SVW", "LVW", "DVW"];
     const vhUnits = ["VH", "SVH", "LVH", "DVH"];
@@ -94,6 +95,10 @@ export function convertCssUnits(propertyName, currentValue, currentUnit, convert
     const isBothVhUnits = (currentUnit === "VH" && convertUnit === "VH");
 
 
+    // if the current value is blank, return the current value
+    if (currentValue === "") {
+        return { values: currentValue, unit: convertUnit };
+    }
     // if the current unit is the same as the target unit, return the current value
     if (currentUnit === convertUnit) {
         return { values: currentValue, unit: currentUnit };
@@ -105,7 +110,6 @@ export function convertCssUnits(propertyName, currentValue, currentUnit, convert
     }
     // if both current unit and target unit are viewport height units, return the current value
     if (isBothVhUnits) {
-
         return { values: currentValue, unit: convertUnit };
     }
 
@@ -325,6 +329,7 @@ function pxToEm(pxValue) {
     const selectedElement = canvasDocument.getElementById("selectedElm");
     const parentElement = selectedElement.parentElement;
     const parentFontSize = parseFloat(getComputedStyle(parentElement).fontSize);
+    console.log("parentFontSize: " + parentFontSize + "px");
 
     const emValue = pxValue / parentFontSize;
 
@@ -749,12 +754,29 @@ function vhToCh(vhValue) {
 
 // check if the property is a height property
 function ifHeightProperty(propertyName) {
-    return propertyName.includes("height") || propertyName.includes("top") || propertyName.includes("bottom") || propertyName.includes("VH");
+    const heightProperties = [
+        "height",
+        "min-height",
+        "max-height",
+        "margin-top",
+        "margin-bottom",
+        "padding-top",
+        "padding-bottom",
+        "VH",
+    ];
+
+    const isHeightProperty = heightProperties.some(unit => unit.includes(propertyName));
+    return isHeightProperty;
+
+    // return propertyName.includes("height") || propertyName.includes("top") || propertyName.includes("bottom") || propertyName.includes("VH");
 }
+
 
 //
 //
 //
+
+// set css value to css editor when a element is selected
 
 export function setCssValueToCssEditor(elm) {
     //all css property items in css editor
@@ -787,13 +809,28 @@ export function setCssValueToCssEditor(elm) {
         let cssValue = cssValues[cssProperty];
         cssValue = parseCssValue(cssValue);
         console.log(cssValue);
-        // console.log(cssProperty + ": " + cssValues[cssProperty]);
+        console.log(cssProperty + ": " + cssValue.value + cssValue.unit);
 
         if (enabledCssProperties[cssProperty] === true) {
+            //enable css editor for the css property
+
+            //set css value to css editor
             if (targetUnit !== null) {
-                //
+                if (cssValue.unit !== undefined) {
+                    targetValue.value = cssValue.value;
+                    targetUnit.value = cssValue.unit.toUpperCase();
+                    // const event = new Event('change');
+                    // targetUnit.dispatchEvent(event);
+
+                } else {
+                    targetUnit.value = cssValue.value.toUpperCase();
+                    const event = new Event('change');
+                    targetUnit.dispatchEvent(event);
+                }
+
+
             } else {
-                //
+                //just set css value to css editor
             }
             console.log("targetValue: " + targetValue);
             console.log("targetUnit: " + targetUnit);
