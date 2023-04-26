@@ -8,6 +8,7 @@ import { addDragAndDropEventListeners } from "./ElementEventListeners.js";
 import { adjustBodyHeight } from "./utils.js";
 //
 import { isPhrasingContentTags } from "./HtmlCategories.js";
+import { CanvasWrapper } from "./utils.js";
 
 //
 // Factory function to create an element manager
@@ -41,14 +42,16 @@ export function elementManagerFactory(elm) {
 class ElementManager {
     addElementToCanvas(elm, textContent) {
         // Add the element to the canvas
-        const canvas = document.getElementById("canvas");
+        const canvasWrapper = new CanvasWrapper();
+        const selectedElm = canvasWrapper.getSelectedElement();
 
-        const canvasWindow = canvas.contentWindow;
-        const canvasDocument = canvasWindow.document;
-        const selectedElement = canvasDocument.getElementById("selectedElm");
+        // const canvas = document.getElementById("canvas");
+        // const canvasWindow = canvas.contentWindow;
+        // const canvasDocument = canvasWindow.document;
+        // const selectedElement = canvasDocument.getElementById("selectedElm");
 
         // return if no element is selected
-        if (selectedElement === null) {
+        if (selectedElm === null) {
             return;
         }
 
@@ -59,7 +62,7 @@ class ElementManager {
         this.addListenerToElement(elm);
 
         // Add element to canvas
-        this.addElmToSelectedElm(elm, selectedElement);
+        this.addElmToSelectedElm(elm, selectedElm);
     }
 
     // set default attributes to a new element
@@ -81,13 +84,13 @@ class ElementManager {
     }
 
     // add element to/after the selected element
-    addElmToSelectedElm(elm, selectedElement) {
-        if (selectedElement.tagName === "BODY") {
+    addElmToSelectedElm(elm, selectedElm) {
+        if (selectedElm.tagName === "BODY") {
             // Add element to selected element
-            selectedElement.appendChild(elm);
+            selectedElm.appendChild(elm);
         } else {
             // Add element after selected element
-            selectedElement.after(elm);
+            selectedElm.after(elm);
         }
         adjustBodyHeight();
     }

@@ -1,37 +1,114 @@
 <script>
-    import CssSizeMenuItem from "./CssSizeMenuItem.svelte";
+    import CssDimensionInput from "./CssDimensionInput.svelte";
+    // import CssSizeMenuItem from "./CssSizeMenuItem.svelte";
 
+    // declare menu items which will be passed to CssDimensionInput to create the inputs
     const menuItems = [
         {
             label: "Width",
             value: "width",
+            options: [
+                "PX",
+                "%",
+                "EM",
+                "REM",
+                "CH",
+                "VW",
+                "VH",
+                "DVW",
+                "DVH",
+                "AUTO",
+            ],
         },
         {
             label: "Height",
             value: "height",
+            options: [
+                "PX",
+                "%",
+                "EM",
+                "REM",
+                "CH",
+                "VW",
+                "VH",
+                "DVW",
+                "DVH",
+                "AUTO",
+            ],
         },
         {
             label: "Min W",
             value: "min-width",
+            options: [
+                "PX",
+                "%",
+                "EM",
+                "REM",
+                "CH",
+                "VW",
+                "VH",
+                "DVW",
+                "DVH",
+                "AUTO",
+            ],
         },
         {
             label: "Min H",
             value: "min-height",
+            options: [
+                "PX",
+                "%",
+                "EM",
+                "REM",
+                "CH",
+                "VW",
+                "VH",
+                "DVW",
+                "DVH",
+                "AUTO",
+            ],
         },
         {
             label: "Max W",
             value: "max-width",
+            options: [
+                "PX",
+                "%",
+                "EM",
+                "REM",
+                "CH",
+                "VW",
+                "VH",
+                "DVW",
+                "DVH",
+                "NONE",
+            ],
         },
         {
             label: "Max H",
             value: "max-height",
+            options: [
+                "PX",
+                "%",
+                "EM",
+                "REM",
+                "CH",
+                "VW",
+                "VH",
+                "DVW",
+                "DVH",
+                "NONE",
+            ],
         },
     ];
 
+    // declare isOpen and toggle function to toggle the menu
     let isOpen = true;
     const toggle = () => {
         isOpen = !isOpen;
     };
+
+    //
 </script>
 
 <div class="cssSizeMenuFrame">
@@ -58,7 +135,8 @@
     {#if isOpen == true}
         <div class="cssSizeMenu">
             {#each menuItems as item}
-                <CssSizeMenuItem {item} />
+                <!-- <CssSizeMenuItem {item} /> -->
+                <CssDimensionInput {item} />
             {/each}
         </div>
     {/if}

@@ -1,5 +1,6 @@
 <script>
     import { ContentfulConnector } from "./CMSConnector.js";
+    import { CanvasWrapper } from "./utils.js";
 
     let contentTypes;
     let contents;
@@ -97,11 +98,14 @@
 <br />
 <button
     on:click={() => {
-        const canvas = document.getElementById("canvas");
+        const canvasWrapper = new CanvasWrapper();
+        const selectedElm = canvasWrapper.getSelectedElement();
 
-        const canvasWindow = canvas.contentWindow;
-        const canvasDocument = canvasWindow.document;
-        const selectedElement = canvasDocument.getElementById("selectedElm");
-        selectedElement.innerHTML = entries.value;
+        // const canvas = document.getElementById("canvas");
+        // const canvasWindow = canvas.contentWindow;
+        // const canvasDocument = canvasWindow.document;
+        // const selectedElement = canvasDocument.getElementById("selectedElm");
+
+        selectedElm.innerHTML = entries.value;
     }}>link contents</button
 >

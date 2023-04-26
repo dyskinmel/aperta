@@ -3,6 +3,7 @@
     import { applyStyleToSelectedElement } from "./CssEditorUtils.js";
     import { parseCssValue } from "./CssEditorUtils.js";
     import { convertCssUnits } from "./CssEditorUtils.js";
+    import { CanvasWrapper } from "./utils.js";
 
     // export let property;
     export let item;
@@ -18,6 +19,11 @@
     let sizeProperty = null;
     let sizeValue = null;
     let sizeUnit = null;
+
+    const getUnitType = (value) => {
+        const keywords = ["NONE", "AUTO", ""];
+        return keywords.includes(value.toUpperCase()) ? "KEYWORD" : "DIMENSION";
+    };
 
     function getSizeValueAndApply(event) {
         let propertyName = sizeProperty.id;
@@ -45,34 +51,51 @@
         let convertUnit = sizeUnit.value;
         let cssValue = `${currentValue}${convertUnit}`;
 
-        // apply edited style to selected element
-        // if (value !== "") {
-        //     applyStyleToSelectedElement(property, cssValue);
-        // }
+        const currentUnitType = getUnitType(currentUnit);
+        const convertUnitType = getUnitType(convertUnit);
 
-        if (sizeUnit.value === "NONE" || sizeUnit.value === "AUTO") {
-            // console.log("None or Auto");
-            sizeValue.value = sizeUnit.value;
-            sizeUnit.value = hidden;
-            isDisabled = true;
-            inputClass = "cssSizeMenuItemInputUnit";
+        const UnitConvert = currentUnitType + "-" + convertUnitType;
 
-            //set css value to apply it to selected element
-            cssValue = sizeValue.value;
-        } else {
-            inputClass = "cssSizeMenuItemInputUnit deleteArrow";
-            isDisabled = false;
+        console.log(UnitConvert);
 
-            // if previous state is None or Auto, set empty string to value
-            if (sizeValue.value === "NONE" || sizeValue.value === "AUTO") {
+        switch (UnitConvert) {
+            case "DIMENSION-DIMENSION":
+                // convert units and apply edited style to selected element
+                //
+                event.target.classList.add("deleteArrow");
+                isDisabled = false;
+
+                const convertedStyle = convertCssUnits(
+                    propertyName,
+                    currentValue,
+                    currentUnit,
+                    convertUnit
+                );
+                // console.log(convertedStyle);
+
+                sizeValue.value = convertedStyle["values"];
+                sizeUnit.value = convertedStyle["unit"];
+
+                cssValue = convertedStyle["values"] + convertedStyle["unit"];
+                break;
+            case "KEYWORD-DIMENSION":
+                // delete arrow from select option
+                // get current style value from selected element
+                // convert units and apply edited style to selected element
+
+                // delete arrow from select option
+                event.target.classList.add("deleteArrow");
+                isDisabled = false;
+
                 //get current style value
-                const canvas = document.getElementById("canvas");
-                const canvasWindow = canvas.contentWindow;
-                const canvasDocument = canvasWindow.document;
-                const selectedElm =
-                    canvasDocument.getElementById("selectedElm");
+                const canvasWrapper = new CanvasWrapper();
+                const selectedElm = canvasWrapper.getSelectedElement();
+                // const canvas = document.getElementById("canvas");
+                // const canvasWindow = canvas.contentWindow;
+                // const canvasDocument = canvasWindow.document;
+                // const selectedElm =
+                //     canvasDocument.getElementById("selectedElm");
 
-                // if no element is selected, set value to empty string
                 if (selectedElm === null) {
                     sizeValue.value = "";
                     return;
@@ -102,24 +125,50 @@
 
                     cssValue = `${sizeValue.value}${sizeUnit.value}`;
                 }
-            } else {
-                // convert current css unit value to target unit value
-                const convertedStyle = convertCssUnits(
-                    propertyName,
+                // cssValue = convertCssUnits(
+                //     currentValue,
+                //     currentUnit,
+                //     convertUnit
+                // );
+                break;
+            case "DIMENSION-KEYWORD":
+                // add arrow to select option
+                // set value to NONE or AUTO
+                // disable editing on input form
+                // set css value to apply it to selected element
+
+                sizeValue.value = sizeUnit.value;
+                sizeUnit.value = hidden;
+                isDisabled = true;
+                event.target.classList.remove("deleteArrow");
+
+                //set css value to apply it to selected element
+                cssValue = sizeValue.value;
+
+                break;
+            case "KEYWORD-KEYWORD":
+                // add arrow to select option
+                // set value to NONE or AUTO
+                // disable editing on input form
+                // set css value to apply it to selected element
+
+                sizeValue.value = sizeUnit.value;
+                sizeUnit.value = hidden;
+                isDisabled = true;
+                event.target.classList.remove("deleteArrow");
+
+                //set css value to apply it to selected element
+                cssValue = sizeValue.value;
+                break;
+            default:
+                cssValue = convertCssUnits(
                     currentValue,
                     currentUnit,
                     convertUnit
                 );
-                // console.log(convertedStyle);
-
-                sizeValue.value = convertedStyle["values"];
-                sizeUnit.value = convertedStyle["unit"];
-
-                cssValue = convertedStyle["values"] + convertedStyle["unit"];
-            }
+                break;
         }
 
-        // console.log(cssValue);
         // apply edited style to selected element
         applyStyleToSelectedElement(propertyName, cssValue);
 
@@ -147,26 +196,15 @@
         {/if} -->
 
         <select
-            class={inputClass}
+            class="cssSizeMenuItemInputUnit deleteArrow"
             data-css-value-type="unit"
             bind:this={sizeUnit}
             on:focus={saveValues}
             on:change={handleUnitChange}
         >
-            <option>PX</option>
-            <option>%</option>
-            <option>EM</option>
-            <option>REM</option>
-            <option>CH</option>
-            <option>VW</option>
-            <option>VH</option>
-            <option>DVW</option>
-            <option>DVH</option>
-            {#if item.value == "max-height" || item.value == "max-width"}
-                <option>NONE</option>
-            {:else if item.value == "height" || item.value == "width" || item.value == "min-height" || item.value == "min-width"}
-                <option>AUTO</option>
-            {/if}
+            {#each item.options as option}
+                <option>{option}</option>
+            {/each}
             <option bind:this={hidden} hidden />
         </select>
     </div>
