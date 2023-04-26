@@ -63,7 +63,7 @@
             return;
         }
 
-        console.log(UnitConvert);
+        // console.log(UnitConvert);
 
         switch (UnitConvert) {
             case "DIMENSION-DIMENSION":
@@ -196,11 +196,6 @@
             on:keydown={blurWhenEnterPressed}
             on:blur={getSizeValueAndApply}
         />
-        <!-- {#if isAuto === true}
-            auto is true;
-        {:else}
-            auto is false
-        {/if} -->
 
         <select
             class="cssSizeMenuItemInputUnit deleteArrow"
