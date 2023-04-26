@@ -3,6 +3,7 @@
     import { applyStyleToSelectedElement } from "./CssEditorUtils.js";
     import { parseCssValue } from "./CssEditorUtils.js";
     import { convertCssUnits } from "./CssEditorUtils.js";
+    import { CanvasWrapper } from "./utils.js";
 
     // export let property;
     export let item;
@@ -87,11 +88,13 @@
                 isDisabled = false;
 
                 //get current style value
-                const canvas = document.getElementById("canvas");
-                const canvasWindow = canvas.contentWindow;
-                const canvasDocument = canvasWindow.document;
-                const selectedElm =
-                    canvasDocument.getElementById("selectedElm");
+                const canvasWrapper = new CanvasWrapper();
+                const selectedElm = canvasWrapper.getSelectedElement();
+                // const canvas = document.getElementById("canvas");
+                // const canvasWindow = canvas.contentWindow;
+                // const canvasDocument = canvasWindow.document;
+                // const selectedElm =
+                //     canvasDocument.getElementById("selectedElm");
 
                 if (selectedElm === null) {
                     sizeValue.value = "";
@@ -143,8 +146,20 @@
                 cssValue = sizeValue.value;
 
                 break;
-            // case "KEYWORD-KEYWORD":
-            //     break;
+            case "KEYWORD-KEYWORD":
+                // add arrow to select option
+                // set value to NONE or AUTO
+                // disable editing on input form
+                // set css value to apply it to selected element
+
+                sizeValue.value = sizeUnit.value;
+                sizeUnit.value = hidden;
+                isDisabled = true;
+                event.target.classList.remove("deleteArrow");
+
+                //set css value to apply it to selected element
+                cssValue = sizeValue.value;
+                break;
             default:
                 cssValue = convertCssUnits(
                     currentValue,
@@ -155,7 +170,7 @@
         }
 
         // apply edited style to selected element
-        //applyStyleToSelectedElement(propertyName, cssValue);
+        applyStyleToSelectedElement(propertyName, cssValue);
 
         // blur to make sure next time user clicks on input, focused event will be fired
         event.target.blur();

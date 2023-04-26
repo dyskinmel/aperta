@@ -1,5 +1,6 @@
 import { addCaptionToSelectedElm } from "./utils";
 import { elementManagerFactory } from "./ElementManager";
+import { CanvasWrapper } from "./utils";
 
 //
 // functions be directly called by events from CssEditor
@@ -14,17 +15,19 @@ export function blurWhenEnterPressed(event) {
 
 // apply edited css value on CssEditor to the selected element
 export function applyStyleToSelectedElement(property, cssValue) {
-    const canvas = document.getElementById("canvas");
-    const canvasWindow = canvas.contentWindow;
-    const canvasDocument = canvasWindow.document;
-    const selectedElement = canvasDocument.getElementById("selectedElm");
+    // const canvas = document.getElementById("canvas");
+    // const canvasWindow = canvas.contentWindow;
+    // const canvasDocument = canvasWindow.document;
+    // const selectedElement = canvasDocument.getElementById("selectedElm");
+    const canvasWrapper = new CanvasWrapper();
+    const selectedElm = canvasWrapper.getSelectedElement();
 
-    if (selectedElement !== null) {
-        selectedElement.style[property] = cssValue;
+    if (selectedElm !== null) {
+        selectedElm.style[property] = cssValue;
     }
 
     // refresh caption and outline to reflect a style change
-    addCaptionToSelectedElm(selectedElement);
+    addCaptionToSelectedElm(selectedElm);
 }
 
 //
@@ -74,6 +77,8 @@ export function parseCssValue(value) {
 
 export function convertCssUnits(propertyName, currentValue, currentUnit, convertUnit) {
     console.log(propertyName + ": " + currentValue + " " + currentUnit + " → " + convertUnit);
+    // 
+    const canvasWrapper = new CanvasWrapper();
 
     // css units based on viewport
     const vwUnits = ["VW", "SVW", "LVW", "DVW"];
@@ -124,171 +129,171 @@ export function convertCssUnits(propertyName, currentValue, currentUnit, convert
         // px to %
         case "PX-%":
             // round returned value here to keep precision while converting
-            returnValue = Math.round(pxToPercentage(propertyName, currentValue));
+            returnValue = Math.round(pxToPercentage(propertyName, currentValue, canvasWrapper));
             return { values: returnValue, unit: convertUnit };
         // px to em
         case "PX-EM":
-            returnValue = Math.round(pxToEm(currentValue) * 100) / 100;
+            returnValue = Math.round(pxToEm(currentValue, canvasWrapper) * 100) / 100;
             return { values: returnValue, unit: convertUnit };
         // px to rem
         case "PX-REM":
-            returnValue = Math.round(pxToRem(currentValue) * 100) / 100;
+            returnValue = Math.round(pxToRem(currentValue, canvasWrapper) * 100) / 100;
             return { values: returnValue, unit: convertUnit };
         // px to ch
         case "PX-CH":
-            returnValue = Math.round(pxToCh(currentValue) * 100) / 100;
+            returnValue = Math.round(pxToCh(currentValue, canvasWrapper) * 100) / 100;
             return { values: returnValue, unit: convertUnit };
         // px to vw
         case "PX-VW":
-            returnValue = Math.round(pxToVw(currentValue) * 100) / 100;
+            returnValue = Math.round(pxToVw(currentValue, canvasWrapper) * 100) / 100;
             return { values: returnValue, unit: convertUnit };
         // px to vh
         case "PX-VH":
-            returnValue = Math.round(pxToVh(currentValue) * 100) / 100;
+            returnValue = Math.round(pxToVh(currentValue, canvasWrapper) * 100) / 100;
             return { values: returnValue, unit: convertUnit };
         // % to px
         case "%-PX":
-            returnValue = Math.round(percentageToPx(propertyName, currentValue));
+            returnValue = Math.round(percentageToPx(propertyName, currentValue, canvasWrapper));
             return { values: returnValue, unit: convertUnit };
         // % to em
         case "%-EM":
-            returnValue = Math.round(percentageToEm(propertyName, currentValue) * 100) / 100;
+            returnValue = Math.round(percentageToEm(propertyName, currentValue, canvasWrapper) * 100) / 100;
             return { values: returnValue, unit: convertUnit };
         // % to rem
         case "%-REM":
-            returnValue = Math.round(percentageToRem(propertyName, currentValue) * 100) / 100;
+            returnValue = Math.round(percentageToRem(propertyName, currentValue, canvasWrapper) * 100) / 100;
             return { values: returnValue, unit: convertUnit };
         // % to ch
         case "%-CH":
-            returnValue = Math.round(percentageToCh(propertyName, currentValue) * 100) / 100;
+            returnValue = Math.round(percentageToCh(propertyName, currentValue, canvasWrapper) * 100) / 100;
             return { values: returnValue, unit: convertUnit };
         // % to vw
         case "%-VW":
-            returnValue = Math.round(percentageToVw(propertyName, currentValue) * 100) / 100;
+            returnValue = Math.round(percentageToVw(propertyName, currentValue, canvasWrapper) * 100) / 100;
             return { values: returnValue, unit: convertUnit };
         // % to vh
         case "%-VH":
-            returnValue = Math.round(percentageToVh(propertyName, currentValue) * 100) / 100;
+            returnValue = Math.round(percentageToVh(propertyName, currentValue, canvasWrapper) * 100) / 100;
             return { values: returnValue, unit: convertUnit };
         // em to px
         case "EM-PX":
-            returnValue = Math.round(emToPx(currentValue));
+            returnValue = Math.round(emToPx(currentValue, canvasWrapper));
             return { values: returnValue, unit: convertUnit };
         // em to %
         case "EM-%":
-            returnValue = Math.round(emToPercentage(propertyName, currentValue));
+            returnValue = Math.round(emToPercentage(propertyName, currentValue, canvasWrapper));
             return { values: returnValue, unit: convertUnit };
         // em to rem
         case "EM-REM":
-            returnValue = Math.round(emToRem(currentValue) * 100) / 100;
+            returnValue = Math.round(emToRem(currentValue, canvasWrapper) * 100) / 100;
             return { values: returnValue, unit: convertUnit };
         // em to ch
         case "EM-CH":
-            returnValue = Math.round(emToCh(currentValue) * 100) / 100;
+            returnValue = Math.round(emToCh(currentValue, canvasWrapper) * 100) / 100;
             return { values: returnValue, unit: convertUnit };
         // em to vw
         case "EM-VW":
-            returnValue = Math.round(emToVw(currentValue) * 100) / 100;
+            returnValue = Math.round(emToVw(currentValue, canvasWrapper) * 100) / 100;
             return { values: returnValue, unit: convertUnit };
         // em to vh
         case "EM-VH":
-            returnValue = Math.round(emToVh(currentValue) * 100) / 100;
+            returnValue = Math.round(emToVh(currentValue, canvasWrapper) * 100) / 100;
             return { values: returnValue, unit: convertUnit };
         // rem to px
         case "REM-PX":
-            returnValue = Math.round(remToPx(currentValue));
+            returnValue = Math.round(remToPx(currentValue, canvasWrapper));
             return { values: returnValue, unit: convertUnit };
         // rem to %
         case "REM-%":
-            returnValue = Math.round(remToPercentage(propertyName, currentValue));
+            returnValue = Math.round(remToPercentage(propertyName, currentValue, canvasWrapper));
             return { values: returnValue, unit: convertUnit };
         // rem to em
         case "REM-EM":
-            returnValue = Math.round(remToEm(currentValue) * 100) / 100;
+            returnValue = Math.round(remToEm(currentValue, canvasWrapper) * 100) / 100;
             return { values: returnValue, unit: convertUnit };
         // rem to ch
         case "REM-CH":
-            returnValue = Math.round(remToCh(currentValue) * 100) / 100;
+            returnValue = Math.round(remToCh(currentValue, canvasWrapper) * 100) / 100;
             return { values: returnValue, unit: convertUnit };
         // rem to vw
         case "REM-VW":
-            returnValue = Math.round(remToVw(currentValue) * 100) / 100;
+            returnValue = Math.round(remToVw(currentValue, canvasWrapper) * 100) / 100;
             return { values: returnValue, unit: convertUnit };
         // rem to vh
         case "REM-VH":
-            returnValue = Math.round(remToVh(currentValue) * 100) / 100;
+            returnValue = Math.round(remToVh(currentValue, canvasWrapper) * 100) / 100;
             return { values: returnValue, unit: convertUnit };
         // ch to px
         case "CH-PX":
-            returnValue = Math.round(chToPx(currentValue));
+            returnValue = Math.round(chToPx(currentValue, canvasWrapper));
             return { values: returnValue, unit: convertUnit };
         // ch to %
         case "CH-%":
-            returnValue = Math.round(chToPercentage(propertyName, currentValue));
+            returnValue = Math.round(chToPercentage(propertyName, currentValue, canvasWrapper));
             return { values: returnValue, unit: convertUnit };
         // ch to em
         case "CH-EM":
-            returnValue = Math.round(chToEm(currentValue) * 100) / 100;
+            returnValue = Math.round(chToEm(currentValue, canvasWrapper) * 100) / 100;
             return { values: returnValue, unit: convertUnit };
         // ch to rem
         case "CH-REM":
-            returnValue = Math.round(chToRem(currentValue) * 100) / 100;
+            returnValue = Math.round(chToRem(currentValue, canvasWrapper) * 100) / 100;
             return { values: returnValue, unit: convertUnit };
         // ch to vw
         case "CH-VW":
-            returnValue = Math.round(chToVw(currentValue) * 100) / 100;
+            returnValue = Math.round(chToVw(currentValue, canvasWrapper) * 100) / 100;
             return { values: returnValue, unit: convertUnit };
         // ch to vh
         case "CH-VH":
-            returnValue = Math.round(chToVh(currentValue) * 100) / 100;
+            returnValue = Math.round(chToVh(currentValue, canvasWrapper) * 100) / 100;
             return { values: returnValue, unit: convertUnit };
         // vw to px
         case "VW-PX":
-            returnValue = Math.round(vwToPx(currentValue));
+            returnValue = Math.round(vwToPx(currentValue, canvasWrapper));
             return { values: returnValue, unit: convertUnit };
         // vw to %
         case "VW-%":
-            returnValue = Math.round(vwToPercentage(propertyName, currentValue));
+            returnValue = Math.round(vwToPercentage(propertyName, currentValue, canvasWrapper));
             return { values: returnValue, unit: convertUnit };
         // vw to em
         case "VW-EM":
-            returnValue = Math.round(vwToEm(currentValue) * 100) / 100;
+            returnValue = Math.round(vwToEm(currentValue, canvasWrapper) * 100) / 100;
             return { values: returnValue, unit: convertUnit };
         // vw to rem
         case "VW-REM":
-            returnValue = Math.round(vwToRem(currentValue) * 100) / 100;
+            returnValue = Math.round(vwToRem(currentValue, canvasWrapper) * 100) / 100;
             return { values: returnValue, unit: convertUnit };
         // vw to ch
         case "VW-CH":
-            returnValue = Math.round(vwToCh(currentValue) * 100) / 100;
+            returnValue = Math.round(vwToCh(currentValue, canvasWrapper) * 100) / 100;
             return { values: returnValue, unit: convertUnit };
         // vw to vh
         case "VW-VH":
-            returnValue = Math.round(vwToVh(currentValue) * 100) / 100;
+            returnValue = Math.round(vwToVh(currentValue, canvasWrapper) * 100) / 100;
             return { values: returnValue, unit: convertUnit };
         // vh to px
         case "VH-PX":
-            returnValue = Math.round(vhToPx(currentValue));
+            returnValue = Math.round(vhToPx(currentValue, canvasWrapper));
             return { values: returnValue, unit: convertUnit };
         // vh to %
         case "VH-%":
-            returnValue = Math.round(vhToPercentage(propertyName, currentValue));
+            returnValue = Math.round(vhToPercentage(propertyName, currentValue, canvasWrapper));
             return { values: returnValue, unit: convertUnit };
         // vh to em
         case "VH-EM":
-            returnValue = Math.round(vhToEm(currentValue) * 100) / 100;
+            returnValue = Math.round(vhToEm(currentValue, canvasWrapper) * 100) / 100;
             return { values: returnValue, unit: convertUnit };
         // vh to rem
         case "VH-REM":
-            returnValue = Math.round(vhToRem(currentValue) * 100) / 100;
+            returnValue = Math.round(vhToRem(currentValue, canvasWrapper) * 100) / 100;
             return { values: returnValue, unit: convertUnit };
         // vh to ch
         case "VH-CH":
-            returnValue = Math.round(vhToCh(currentValue) * 100) / 100;
+            returnValue = Math.round(vhToCh(currentValue, canvasWrapper) * 100) / 100;
             return { values: returnValue, unit: convertUnit };
         // vh to vw
         case "VH-VW":
-            returnValue = Math.round(vhToVw(currentValue) * 100) / 100;
+            returnValue = Math.round(vhToVw(currentValue, canvasWrapper) * 100) / 100;
             return { values: returnValue, unit: convertUnit };
         default:
             return { values: currentValue, unit: currentUnit };
@@ -300,11 +305,11 @@ export function convertCssUnits(propertyName, currentValue, currentUnit, convert
 //
 
 // px to %
-function pxToPercentage(propertyName, pxValue) {
-    const canvas = document.getElementById("canvas");
-    const canvasWindow = canvas.contentWindow;
-    const canvasDocument = canvasWindow.document;
-    const selectedElement = canvasDocument.getElementById("selectedElm");
+function pxToPercentage(propertyName, pxValue, canvasWrapper) {
+    // const canvas = document.getElementById("canvas");
+    // const canvasWindow = canvas.contentWindow;
+    // const canvasDocument = canvasWindow.document;
+    const selectedElement = canvasWrapper.getSelectedElement();
     const parentElement = selectedElement.parentElement;
     let parentSize = null;
 
@@ -322,11 +327,11 @@ function pxToPercentage(propertyName, pxValue) {
 }
 
 // px to em
-function pxToEm(pxValue) {
-    const canvas = document.getElementById("canvas");
-    const canvasWindow = canvas.contentWindow;
-    const canvasDocument = canvasWindow.document;
-    const selectedElement = canvasDocument.getElementById("selectedElm");
+function pxToEm(pxValue, canvasWrapper) {
+    // const canvas = document.getElementById("canvas");
+    // const canvasWindow = canvas.contentWindow;
+    // const canvasDocument = canvasWindow.document;
+    const selectedElement = canvasWrapper.getSelectedElement();
     const parentElement = selectedElement.parentElement;
     const parentFontSize = parseFloat(getComputedStyle(parentElement).fontSize);
     console.log("parentFontSize: " + parentFontSize + "px");
@@ -337,10 +342,11 @@ function pxToEm(pxValue) {
 }
 
 // px to rem
-function pxToRem(pxValue) {
-    const canvas = document.getElementById("canvas");
-    const canvasWindow = canvas.contentWindow;
-    const canvasDocument = canvasWindow.document;
+function pxToRem(pxValue, canvasWrapper) {
+    // const canvas = document.getElementById("canvas");
+    // const canvasWindow = canvas.contentWindow;
+    // const canvasDocument = canvasWindow.document;
+    const canvasDocument = canvasWrapper.getCanvasDocument();
     const rootElement = canvasDocument.documentElement;
     const rootFontSize = parseFloat(getComputedStyle(rootElement).fontSize);
 
@@ -350,11 +356,14 @@ function pxToRem(pxValue) {
 }
 
 // px to ch
-function pxToCh(pxValue) {
-    const canvas = document.getElementById("canvas");
-    const canvasWindow = canvas.contentWindow;
-    const canvasDocument = canvasWindow.document;
-    const selectedElement = canvasDocument.getElementById("selectedElm");
+function pxToCh(pxValue, canvasWrapper) {
+    // const canvas = document.getElementById("canvas");
+    // const canvasWindow = canvas.contentWindow;
+    // const canvasDocument = canvasWindow.document;
+    // const selectedElement = canvasDocument.getElementById("selectedElm");
+
+    const canvasWindow = canvasWrapper.getCanvasWindow();
+    const selectedElement = canvasWrapper.getSelectedElement();
 
     const computedStyle = canvasWindow.getComputedStyle(selectedElement);
     const fontSize = parseFloat(computedStyle.fontSize);
@@ -373,10 +382,12 @@ function pxToCh(pxValue) {
 }
 
 // px to vw, lvw, svw, dvw
-function pxToVw(pxValue) {
-    const canvas = document.getElementById("canvas");
-    const canvasWindow = canvas.contentWindow;
-    const canvasDocument = canvasWindow.document;
+function pxToVw(pxValue, canvasWrapper) {
+    // const canvas = document.getElementById("canvas");
+    // const canvasWindow = canvas.contentWindow;
+    // const canvasDocument = canvasWindow.document;
+    const canvasWindow = canvasWrapper.getCanvasWindow();
+    const canvasDocument = canvasWrapper.getCanvasDocument();
 
     const viewportWidth = canvasWindow.innerWidth || canvasDocument.documentElement.clientWidth || canvasDocument.body.clientWidth;
 
@@ -386,10 +397,12 @@ function pxToVw(pxValue) {
 }
 
 // px to vh, lvh, svh, dvh
-function pxToVh(pxValue) {
-    const canvas = document.getElementById("canvas");
-    const canvasWindow = canvas.contentWindow;
-    const canvasDocument = canvasWindow.document;
+function pxToVh(pxValue, canvasWrapper) {
+    // const canvas = document.getElementById("canvas");
+    // const canvasWindow = canvas.contentWindow;
+    // const canvasDocument = canvasWindow.document;
+    const canvasWindow = canvasWrapper.getCanvasWindow();
+    const canvasDocument = canvasWrapper.getCanvasDocument();
 
     const viewportHeight = canvasWindow.innerHeight || canvasDocument.documentElement.clientHeight || canvasDocument.body.clientHeight;
 
@@ -403,11 +416,12 @@ function pxToVh(pxValue) {
 // 
 
 // % to px
-function percentageToPx(propertyName, percentValue) {
-    const canvas = document.getElementById("canvas");
-    const canvasWindow = canvas.contentWindow;
-    const canvasDocument = canvasWindow.document;
-    const selectedElement = canvasDocument.getElementById("selectedElm");
+function percentageToPx(propertyName, percentValue, canvasWrapper) {
+    // const canvas = document.getElementById("canvas");
+    // const canvasWindow = canvas.contentWindow;
+    // const canvasDocument = canvasWindow.document;
+    // const selectedElement = canvasDocument.getElementById("selectedElm");
+    const selectedElement = canvasWrapper.getSelectedElement();
     const parentElement = selectedElement.parentElement;
     let parentSize = null;
 
@@ -426,39 +440,39 @@ function percentageToPx(propertyName, percentValue) {
 
 
 // % to em
-function percentageToEm(propertyName, percentValue) {
-    const pxValue = percentageToPx(propertyName, percentValue);
-    const emValue = pxToEm(pxValue);
+function percentageToEm(propertyName, percentValue, canvasWrapper) {
+    const pxValue = percentageToPx(propertyName, percentValue, canvasWrapper);
+    const emValue = pxToEm(pxValue, canvasWrapper);
 
     return emValue;
 }
 
 // % to rem
-function percentToRem(propertyName, percentValue) {
-    const pxValue = percentageToPx(propertyName, percentValue);
-    const remValue = pxToRem(pxValue);
+function percentToRem(propertyName, percentValue, canvasWrapper) {
+    const pxValue = percentageToPx(propertyName, percentValue, canvasWrapper);
+    const remValue = pxToRem(pxValue, canvasWrapper);
 
     return remValue;
 }
 
 // % to ch
-function percentageToCh(propertyName, percentValue) {
-    const pxValue = percentageToPx(propertyName, percentValue);
-    const chValue = pxToCh(pxValue);
+function percentageToCh(propertyName, percentValue, canvasWrapper) {
+    const pxValue = percentageToPx(propertyName, percentValue, canvasWrapper);
+    const chValue = pxToCh(pxValue, canvasWrapper);
 
     return chValue;
 }
 // % to vw, lvw, svw, dvw
-function percentageToVw(propertyName, percentValue) {
-    const pxValue = percentageToPx(propertyName, percentValue);
-    const vwValue = pxToVw(pxValue);
+function percentageToVw(propertyName, percentValue, canvasWrapper) {
+    const pxValue = percentageToPx(propertyName, percentValue, canvasWrapper);
+    const vwValue = pxToVw(pxValue, canvasWrapper);
 
     return vwValue;
 }
 // % to vh, lvh, svh, dvh
-function percentageToVh(propertyName, percentValue) {
-    const pxValue = percentageToPx(propertyName, percentValue);
-    const vhValue = pxToVh(pxValue);
+function percentageToVh(propertyName, percentValue, canvasWrapper) {
+    const pxValue = percentageToPx(propertyName, percentValue, canvasWrapper);
+    const vhValue = pxToVh(pxValue, canvasWrapper);
 
     return vhValue;
 }
@@ -467,11 +481,12 @@ function percentageToVh(propertyName, percentValue) {
 //
 
 // em to px
-function emToPx(emValue) {
-    const canvas = document.getElementById("canvas");
-    const canvasWindow = canvas.contentWindow;
-    const canvasDocument = canvasWindow.document;
-    const selectedElement = canvasDocument.getElementById("selectedElm");
+function emToPx(emValue, canvasWrapper) {
+    // const canvas = document.getElementById("canvas");
+    // const canvasWindow = canvas.contentWindow;
+    // const canvasDocument = canvasWindow.document;
+    // const selectedElement = canvasDocument.getElementById("selectedElm");
+    const selectedElement = canvasWrapper.getSelectedElement();
     const parentElement = selectedElement.parentElement;
     const parentFontSize = parseFloat(getComputedStyle(parentElement).fontSize);
 
@@ -481,42 +496,41 @@ function emToPx(emValue) {
 }
 
 // em to %
-function emToPercentage(propertyName, emValue) {
-    const pxValue = emToPx(emValue);
-    const percentValue = pxToPercent(propertyName, pxValue);
+function emToPercentage(propertyName, emValue, canvasWrapper) {
+    const pxValue = emToPx(emValue, canvasWrapper);
+    const percentValue = pxToPercentage(propertyName, pxValue, canvasWrapper);
 
     return percentValue;
 }
 
 // em to rem
-function emToRem(emValue) {
-    const pxValue = emToPx(emValue);
-    const remValue = pxToRem(pxValue);
+function emToRem(emValue, canvasWrapper) {
+    const pxValue = emToPx(emValue, canvasWrapper);
+    const remValue = pxToRem(pxValue, canvasWrapper);
 
     return remValue;
 }
 
 // em to ch
-function emToCh(emValue) {
-    const pxValue = emToPx(emValue);
-
-    const chValue = pxToCh(pxValue);
+function emToCh(emValue, canvasWrapper) {
+    const pxValue = emToPx(emValue, canvasWrapper);
+    const chValue = pxToCh(pxValue, canvasWrapper);
 
     return chValue;
 }
 
 // em to vw, lvw, svw, dvw
-function emToVw(emValue) {
-    const pxValue = emToPx(emValue);
-    const vwValue = pxToVw(pxValue);
+function emToVw(emValue, canvasWrapper) {
+    const pxValue = emToPx(emValue, canvasWrapper);
+    const vwValue = pxToVw(pxValue, canvasWrapper);
 
     return vwValue;
 }
 
 // em to vh, lvh, svh, dvh
-function emToVh(emValue) {
-    const pxValue = emToPx(emValue);
-    const vhValue = pxToVh(pxValue);
+function emToVh(emValue, canvasWrapper) {
+    const pxValue = emToPx(emValue, canvasWrapper);
+    const vhValue = pxToVh(pxValue, canvasWrapper);
 
     return vhValue;
 }
@@ -525,10 +539,11 @@ function emToVh(emValue) {
 //
 
 // rem to px
-function remToPx(remValue) {
-    const canvas = document.getElementById("canvas");
-    const canvasWindow = canvas.contentWindow;
-    const canvasDocument = canvasWindow.document;
+function remToPx(remValue, canvasWrapper) {
+    // const canvas = document.getElementById("canvas");
+    // const canvasWindow = canvas.contentWindow;
+    // const canvasDocument = canvasWindow.document;
+    const canvasDocument = canvasWrapper.getCanvasDocument();
     const rootElement = canvasDocument.documentElement;
     const rootFontSize = parseFloat(getComputedStyle(rootElement).fontSize);
 
@@ -538,41 +553,41 @@ function remToPx(remValue) {
 }
 
 // rem to %
-function remToPercentage(propertyName, remValue) {
-    const pxValue = remToPx(remValue);
-    const percentValue = pxToPercent(propertyName, pxValue);
+function remToPercentage(propertyName, remValue, canvasWrapper) {
+    const pxValue = remToPx(remValue, canvasWrapper);
+    const percentValue = pxToPercentage(propertyName, pxValue, canvasWrapper);
 
     return percentValue;
 }
 
 // rem to em
-function remToEm(remValue) {
-    const pxValue = remToPx(remValue);
-    const emValue = pxToEm(pxValue);
+function remToEm(remValue, canvasWrapper) {
+    const pxValue = remToPx(remValue, canvasWrapper);
+    const emValue = pxToEm(pxValue, canvasWrapper);
 
     return emValue;
 }
 
 // rem to ch
-function remToCh(remValue) {
-    const pxValue = remToPx(remValue);
-    const chValue = pxToCh(pxValue);
+function remToCh(remValue, canvasWrapper) {
+    const pxValue = remToPx(remValue, canvasWrapper);
+    const chValue = pxToCh(pxValue, canvasWrapper);
 
     return chValue;
 }
 
 // rem to vw, lvw, svw, dvw
-function remToVw(remValue) {
-    const pxValue = remToPx(remValue);
-    const vwValue = pxToVw(pxValue);
+function remToVw(remValue, canvasWrapper) {
+    const pxValue = remToPx(remValue, canvasWrapper);
+    const vwValue = pxToVw(pxValue, canvasWrapper);
 
     return vwValue;
 }
 
 // rem to vh, lvh, svh, dvh
-function remToVh(remValue) {
-    const pxValue = remToPx(remValue);
-    const vhValue = pxToVh(pxValue);
+function remToVh(remValue, canvasWrapper) {
+    const pxValue = remToPx(remValue, canvasWrapper);
+    const vhValue = pxToVh(pxValue, canvasWrapper);
 
     return vhValue;
 }
@@ -582,11 +597,13 @@ function remToVh(remValue) {
 //
 
 // ch to px
-function chToPx(chValue) {
-    const canvas = document.getElementById("canvas");
-    const canvasWindow = canvas.contentWindow;
-    const canvasDocument = canvasWindow.document;
-    const selectedElement = canvasDocument.getElementById("selectedElm");
+function chToPx(chValue, canvasWrapper) {
+    // const canvas = document.getElementById("canvas");
+    // const canvasWindow = canvas.contentWindow;
+    // const canvasDocument = canvasWindow.document;
+    // const selectedElement = canvasDocument.getElementById("selectedElm");
+    const canvasWindow = canvasWrapper.getCanvasWindow();
+    const selectedElement = canvasWrapper.getSelectedElement();
 
     const computedStyle = canvasWindow.getComputedStyle(selectedElement);
     const fontSize = parseFloat(computedStyle.fontSize);
@@ -606,36 +623,36 @@ function chToPx(chValue) {
 
 // ch to %
 function chToPercentage(propertyName, chValue) {
-    const pxValue = chToPx(chValue);
-    const percentValue = pxToPercent(propertyName, pxValue);
+    const pxValue = chToPx(chValue, canvasWrapper);
+    const percentValue = pxToPercentage(propertyName, pxValue, canvasWrapper);
 
     return percentValue;
 }
 // ch to em
-function chToEm(chValue) {
-    const pxValue = chToPx(chValue);
-    const emValue = pxToEm(pxValue);
+function chToEm(chValue, canvasWrapper) {
+    const pxValue = chToPx(chValue, canvasWrapper);
+    const emValue = pxToEm(pxValue, canvasWrapper);
 
     return emValue;
 }
 // ch to rem
-function chToRem(chValue) {
-    const pxValue = chToPx(chValue);
-    const remValue = pxToRem(pxValue);
+function chToRem(chValue, canvasWrapper) {
+    const pxValue = chToPx(chValue, canvasWrapper);
+    const remValue = pxToRem(pxValue, canvasWrapper);
 
     return remValue;
 }
 // ch to vw, lvw, svw, dvw
-function chToVw(chValue) {
-    const pxValue = chToPx(chValue);
-    const vwValue = pxToVw(pxValue);
+function chToVw(chValue, canvasWrapper) {
+    const pxValue = chToPx(chValue, canvasWrapper);
+    const vwValue = pxToVw(pxValue, canvasWrapper);
 
     return vwValue;
 }
 // ch to vh, lvh, svh, dvh
-function chToVh(chValue) {
-    const pxValue = chToPx(chValue);
-    const vhValue = pxToVh(pxValue);
+function chToVh(chValue, canvasWrapper) {
+    const pxValue = chToPx(chValue, canvasWrapper);
+    const vhValue = pxToVh(pxValue, canvasWrapper);
 
     return vhValue;
 }
@@ -645,10 +662,12 @@ function chToVh(chValue) {
 //
 
 // (vw, lvw, svw, dvw) to px
-function vwToPx(vwValue) {
-    const canvas = document.getElementById("canvas");
-    const canvasWindow = canvas.contentWindow;
-    const canvasDocument = canvasWindow.document;
+function vwToPx(vwValue, canvasWrapper) {
+    // const canvas = document.getElementById("canvas");
+    // const canvasWindow = canvas.contentWindow;
+    // const canvasDocument = canvasWindow.document;
+    const canvasWindow = canvasWrapper.getCanvasWindow();
+    const canvasDocument = canvasWrapper.getCanvasDocument();
 
     const viewportWidth = canvasWindow.innerWidth || canvasDocument.documentElement.clientWidth || canvasDocument.body.clientWidth;
 
@@ -658,37 +677,37 @@ function vwToPx(vwValue) {
 }
 
 // (vw, lvw, svw, dvw) to %
-function vwToPercentage(propertyName, vwValue) {
-    const pxValue = vwToPx(vwValue);
-    const percentValue = pxToPercent(propertyName, pxValue);
+function vwToPercentage(propertyName, vwValue, canvasWrapper) {
+    const pxValue = vwToPx(vwValue, canvasWrapper);
+    const percentValue = pxToPercentage(propertyName, pxValue, canvasWrapper);
 
     return percentValue;
 }
 // (vw, lvw, svw, dvw) to em
-function vwToEm(vwValue) {
-    const pxValue = vwToPx(vwValue);
-    const emValue = pxToEm(pxValue);
+function vwToEm(vwValue, canvasWrapper) {
+    const pxValue = vwToPx(vwValue, canvasWrapper);
+    const emValue = pxToEm(pxValue, canvasWrapper);
 
     return emValue;
 }
 // (vw, lvw, svw, dvw) to rem
-function vwToRem(vwValue) {
-    const pxValue = vwToPx(vwValue);
-    const remValue = pxToRem(pxValue);
+function vwToRem(vwValue, canvasWrapper) {
+    const pxValue = vwToPx(vwValue, canvasWrapper);
+    const remValue = pxToRem(pxValue, canvasWrapper);
 
     return remValue;
 }
 // (vw, lvw, svw, dvw) to ch
-function vwToCh(vwValue) {
-    const pxValue = vwToPx(vwValue);
-    const chValue = pxToCh(pxValue);
+function vwToCh(vwValue, canvasWrapper) {
+    const pxValue = vwToPx(vwValue, canvasWrapper);
+    const chValue = pxToCh(pxValue, canvasWrapper);
 
     return chValue;
 }
 // (vw, lvw, svw, dvw) to vh, lvh, svh, dvh
-function vwToVh(vwValue) {
-    const pxValue = vwToPx(vwValue);
-    const vhValue = pxToVh(pxValue);
+function vwToVh(vwValue, canvasWrapper) {
+    const pxValue = vwToPx(vwValue, canvasWrapper);
+    const vhValue = pxToVh(pxValue, canvasWrapper);
 
     return vhValue;
 }
@@ -697,10 +716,12 @@ function vwToVh(vwValue) {
 //
 
 // (vh, lvh, svh, dvh) to px
-function vhToPx(vhValue) {
-    const canvas = document.getElementById("canvas");
-    const canvasWindow = canvas.contentWindow;
-    const canvasDocument = canvasWindow.document;
+function vhToPx(vhValue, canvasWrapper) {
+    // const canvas = document.getElementById("canvas");
+    // const canvasWindow = canvas.contentWindow;
+    // const canvasDocument = canvasWindow.document;
+    const canvasWindow = canvasWrapper.getCanvasWindow();
+    const canvasDocument = canvasWrapper.getCanvasDocument();
 
     const viewportHeight = canvasWindow.innerHeight || canvasDocument.documentElement.clientHeight || canvasDocument.body.clientHeight;
 
@@ -710,40 +731,40 @@ function vhToPx(vhValue) {
 }
 
 // (vh, lvh, svh, dvh) to %
-function vhToPercentage(propertyName, vhValue) {
-    const pxValue = vhToPx(vhValue);
-    const percentValue = pxToPercent(propertyName, pxValue);
+function vhToPercentage(propertyName, vhValue, canvasWrapper) {
+    const pxValue = vhToPx(vhValue, canvasWrapper);
+    const percentValue = pxToPercentage(propertyName, pxValue, canvasWrapper);
 
     return percentValue;
 }
 
 // (vh, lvh, svh, dvh) to em
-function vhToEm(vhValue) {
-    const pxValue = vhToPx(vhValue);
-    const emValue = pxToEm(pxValue);
+function vhToEm(vhValue, canvasWrapper) {
+    const pxValue = vhToPx(vhValue, canvasWrapper);
+    const emValue = pxToEm(pxValue, canvasWrapper);
 
     return emValue;
 }
 
 // (vh, lvh, svh, dvh) to rem
-function vhToRem(vhValue) {
-    const pxValue = vhToPx(vhValue);
-    const remValue = pxToRem(pxValue);
+function vhToRem(vhValue, canvasWrapper) {
+    const pxValue = vhToPx(vhValue, canvasWrapper);
+    const remValue = pxToRem(pxValue, canvasWrapper);
 
     return remValue;
 }
 
 // (vh, lvh, svh, dvh) to vw, lvw, svw, dvw
-function vhToVw(vhValue) {
-    const pxValue = vhToPx(vhValue);
-    const vwValue = pxToVw(pxValue);
+function vhToVw(vhValue, canvasWrapper) {
+    const pxValue = vhToPx(vhValue, canvasWrapper);
+    const vwValue = pxToVw(pxValue, canvasWrapper);
 
     return vwValue;
 }
 // (vh, lvh, svh, dvh) to ch
-function vhToCh(vhValue) {
-    const pxValue = vhToPx(vhValue);
-    const chValue = pxToCh(pxValue);
+function vhToCh(vhValue, canvasWrapper) {
+    const pxValue = vhToPx(vhValue, canvasWrapper);
+    const chValue = pxToCh(pxValue, canvasWrapper);
 
     return chValue;
 }

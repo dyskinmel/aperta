@@ -79,14 +79,22 @@ export function delCaptionFromHoveredElm(elm) {
 // change state of selected elements
 //
 export function selectElm(elm) {
-    const selectedElement = elm.ownerDocument.getElementById("selectedElm");
+    const canvasWrapper = new CanvasWrapper();
+    const selectedElm = canvasWrapper.getSelectedElement();
 
-    if (selectedElement !== null) {
+    console.log("selectedElm: " + selectedElm);
+
+    // const selectedElement = elm.ownerDocument.getElementById("selectedElm");
+    // const selectedElement = elm.ownerDocument.querySelectorAll('[data-aperta-selected-element="true"]')[0];
+
+    if (selectedElm !== undefined) {
         //remove selectedElement id from previously selected element
-        selectedElement.removeAttribute("id");
+        // selectedElm.removeAttribute("id");
+        selectedElm.removeAttribute(canvasWrapper.getSelectedElementAttributeName());
     }
 
-    elm.id = "selectedElm";
+    // elm.id = "selectedElm";
+    elm.setAttribute(canvasWrapper.getSelectedElementAttributeName(), "true");
 }
 
 // add caption to selected element
@@ -144,6 +152,43 @@ export function addCaptionToSelectedElm(elm) {
 
 }
 
+//
+//
+//
+
+export class CanvasWrapper {
+    constructor() {
+        this.canvas = document.getElementById("canvas");
+        this.canvasWindow = this.canvas.contentWindow;
+        this.canvasDocument = this.canvasWindow.document;
+        // this.selectedElement = this.canvasDocument.getElementById("selectedElm");
+        this.selectedElement = this.canvasDocument.querySelectorAll('[data-aperta-selected-element="true"]')[0];
+    }
+
+    getCanvas() {
+        return this.canvas;
+    }
+
+    getCanvasWindow() {
+        return this.canvasWindow;
+    }
+
+    getCanvasDocument() {
+        return this.canvasDocument;
+    }
+
+    getSelectedElement() {
+        return this.selectedElement;
+    }
+    getSelectedElementAttributeName() {
+        // return "selectedElm";
+        return "data-aperta-selected-element";
+    }
+    isSelectedElement(elm) {
+        // return elm.id === "selectedElm";
+        return elm === this.selectedElement;
+    }
+}
 
 
 //
@@ -167,5 +212,6 @@ export function adjustBodyHeight() {
         // canvasBody.style.height = 'auto';
     }
 }
+
 
 

@@ -102,10 +102,13 @@
         },
     ];
 
+    // declare isOpen and toggle function to toggle the menu
     let isOpen = true;
     const toggle = () => {
         isOpen = !isOpen;
     };
+
+    //
 </script>
 
 <div class="cssSizeMenuFrame">
