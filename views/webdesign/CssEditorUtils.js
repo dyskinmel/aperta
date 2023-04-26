@@ -793,7 +793,7 @@ export function setCssValueToCssEditor(elm) {
     // get css value from selected element
     const cssValues = elm.ownerDocument.defaultView.getComputedStyle(elm);
 
-    //get disabled css property items
+    //get disabled css property list
     const elmManager = elementManagerFactory(elm);
     const enabledCssProperties = elmManager.getEnabledCssProperties();
 
@@ -806,37 +806,45 @@ export function setCssValueToCssEditor(elm) {
         const targetValue = targetProperty.querySelectorAll('[data-css-value-type="value"]')[0];
         const targetUnit = targetProperty.querySelectorAll('[data-css-value-type="unit"]')[0];
 
+        //fire focus event on target unit to set value to currentUnit on CssDimensionInput.svelte
+        const event = new Event('focus');
+        targetUnit.dispatchEvent(event);
+
+        //
         let cssValue = cssValues[cssProperty];
         cssValue = parseCssValue(cssValue);
         console.log(cssValue);
         console.log(cssProperty + ": " + cssValue.value + cssValue.unit);
 
-        if (enabledCssProperties[cssProperty] === true) {
-            //enable css editor for the css property
+        switch (enabledCssProperties[cssProperty]) {
+            case true:
+                // enable input field (add later)
 
-            //set css value to css editor
-            if (targetUnit !== null) {
+                //set css value to css editor
                 if (cssValue.unit !== undefined) {
+                    // add both css value and unit if unit value is defined
                     targetValue.value = cssValue.value;
                     targetUnit.value = cssValue.unit.toUpperCase();
                     // const event = new Event('change');
                     // targetUnit.dispatchEvent(event);
 
+
                 } else {
+                    // add only css value if unit value is undefined (value would be KEYWORD value such as "AUTO" and "NONE")
                     targetUnit.value = cssValue.value.toUpperCase();
+                    // dispatch change event on CssDimensionInput.svelte select element to change UI 
                     const event = new Event('change');
                     targetUnit.dispatchEvent(event);
                 }
 
+                break;
 
-            } else {
-                //just set css value to css editor
-            }
-            console.log("targetValue: " + targetValue);
-            console.log("targetUnit: " + targetUnit);
-        } else {
-            //clear value and disable css editor
+            //if css property is disabled
+            case false:
+                // clear value and disable input field (add later)
 
+
+                break;
         }
 
 
