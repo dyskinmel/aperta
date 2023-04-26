@@ -165,6 +165,8 @@ export class CanvasWrapper {
         this.selectedElement = this.canvasDocument.querySelectorAll('[data-aperta-selected-element="true"]')[0];
     }
 
+    //getters
+
     getCanvas() {
         return this.canvas;
     }
@@ -184,15 +186,22 @@ export class CanvasWrapper {
         // return "selectedElm";
         return "data-aperta-selected-element";
     }
+
+    //bool functions
     isSelectedElement(elm) {
         // return elm.id === "selectedElm";
         return elm === this.selectedElement;
     }
+
+    isSelectedElementNull() {
+        return this.selectedElement === undefined;
+    }
+
 }
 
 
 //
-//
+// related canvas appearance
 //
 
 export function adjustBodyHeight() {

@@ -56,6 +56,13 @@
 
         const UnitConvert = currentUnitType + "-" + convertUnitType;
 
+        const canvasWrapper = new CanvasWrapper();
+
+        //stop this function if there is no selected element
+        if (canvasWrapper.isSelectedElementNull()) {
+            return;
+        }
+
         console.log(UnitConvert);
 
         switch (UnitConvert) {
@@ -88,7 +95,7 @@
                 isDisabled = false;
 
                 //get current style value
-                const canvasWrapper = new CanvasWrapper();
+
                 const selectedElm = canvasWrapper.getSelectedElement();
                 // const canvas = document.getElementById("canvas");
                 // const canvasWindow = canvas.contentWindow;
