@@ -81,23 +81,33 @@ body {
     padding-right: 4px;
 }
 
-#draggedOverOutline {
+.draggedOverOutline {
     position: absolute;
     box-sizing: border-box;
-    outline: 1px dashed rgb(103, 167, 213);
+    /* outline: 1px dashed rgb(103, 167, 213); */
+    border: 1px dashed rgb(103, 167, 213);
     z-index: -1;
 }
 
 .isAtTop {
     border-top: 2px solid rgb(0, 120, 206);
+    border-bottom: 1px dashed rgb(103, 167, 213);
+    border-right: 1px dashed rgb(103, 167, 213);
+    border-left: 1px dashed rgb(103, 167, 213);
+    z-index: -1;
 }
 
 .middle {
     border: 2px solid rgb(0, 120, 206);
+    z-index: -1;
 }
 
 .isAtBottom {
+    border-top: 1px dashed rgb(103, 167, 213);
     border-bottom: 2px solid rgb(0, 120, 206);
+    border-right: 1px dashed rgb(103, 167, 213);
+    border-left: 1px dashed rgb(103, 167, 213);
+    z-index: -1;
 }
 
 /* #hoveredElm {

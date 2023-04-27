@@ -190,7 +190,7 @@
         <input
             type="text"
             class="cssSizeMenuItemInput"
-            data-css-value-type="value"
+            data-aperta-css-value-type="value"
             disabled={isDisabled}
             bind:this={sizeValue}
             on:keydown={blurWhenEnterPressed}
@@ -199,7 +199,7 @@
 
         <select
             class="cssSizeMenuItemInputUnit deleteArrow"
-            data-css-value-type="unit"
+            data-aperta-css-value-type="unit"
             bind:this={sizeUnit}
             on:focus={saveValues}
             on:change={handleUnitChange}

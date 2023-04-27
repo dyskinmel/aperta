@@ -3,3 +3,41 @@
 /* https: //www.w3.org/Style/CSS/current-work */
 /* Checked initial value from following specification page */
 /* https: //www.w3.org/TR/css-2022/#properties */
+
+/* template */
+
+/* .template {
+    height: auto;
+    width: auto;
+    min-height: 0;
+    min-width: 0;
+    max-height: none;
+    max-width: none;
+} */
+
+body {
+    height: auto;
+    width: auto;
+    min-height: 0;
+    min-width: 0;
+    max-height: none;
+    max-width: none;
+}
+
+div {
+    height: auto;
+    width: auto;
+    min-height: 0;
+    min-width: 0;
+    max-height: none;
+    max-width: none;
+}
+
+h1 {
+    height: auto;
+    width: auto;
+    min-height: 0;
+    min-width: 0;
+    max-height: none;
+    max-width: none;
+}

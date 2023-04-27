@@ -476,6 +476,7 @@ export function addDragAndDropEventListeners(elm) {
         if (draggedOverOutline === null) {
             draggedOverOutline = document.createElement("div");
             draggedOverOutline.id = "draggedOverOutline";
+            draggedOverOutline.classList = "draggedOverOutline";
             const absoluteRectTop = rect.top + canvasWindow.scrollY;
             const absoluteRectBottom = rect.bottom + canvasWindow.scrollY;
             const absoluteRectLeft = rect.left + canvasWindow.scrollX;
@@ -539,6 +540,9 @@ export function addDragAndDropEventListeners(elm) {
                 }
                 // console.log("middle");
             }
+
+
+
         }
         //only allow user to insert an element as a sibling
         else {

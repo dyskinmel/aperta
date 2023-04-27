@@ -165,8 +165,12 @@ export class CanvasWrapper {
         this.selectedElement = this.canvasDocument.querySelectorAll('[data-aperta-selected-element="true"]')[0];
     }
 
-    //getters
+    //update
+    updateSelectedElement() {
+        this.selectedElement = this.canvasDocument.querySelectorAll('[data-aperta-selected-element="true"]')[0];
+    }
 
+    //getters
     getCanvas() {
         return this.canvas;
     }
