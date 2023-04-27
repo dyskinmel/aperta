@@ -82,8 +82,6 @@ export function selectElm(elm) {
     const canvasWrapper = new CanvasWrapper();
     const selectedElm = canvasWrapper.getSelectedElement();
 
-    console.log("selectedElm: " + selectedElm);
-
     // const selectedElement = elm.ownerDocument.getElementById("selectedElm");
     // const selectedElement = elm.ownerDocument.querySelectorAll('[data-aperta-selected-element="true"]')[0];
 
@@ -165,6 +163,12 @@ export class CanvasWrapper {
         this.selectedElement = this.canvasDocument.querySelectorAll('[data-aperta-selected-element="true"]')[0];
     }
 
+    //update
+    updateSelectedElement() {
+        this.selectedElement = this.canvasDocument.querySelectorAll('[data-aperta-selected-element="true"]')[0];
+    }
+
+    //getters
     getCanvas() {
         return this.canvas;
     }
@@ -184,15 +188,22 @@ export class CanvasWrapper {
         // return "selectedElm";
         return "data-aperta-selected-element";
     }
+
+    //bool functions
     isSelectedElement(elm) {
         // return elm.id === "selectedElm";
         return elm === this.selectedElement;
     }
+
+    isSelectedElementNull() {
+        return this.selectedElement === undefined;
+    }
+
 }
 
 
 //
-//
+// related canvas appearance
 //
 
 export function adjustBodyHeight() {

@@ -6,9 +6,10 @@
     const girdRow = elementList.elements.length / 3;
     const toggle = () => (isOpen = !isOpen);
     const clickEvent = (event) => {
-        const elm = document.createElement(event.target.dataset.htag);
-        const elm_manager = elementManagerFactory(elm);
-        elm_manager.addElementToCanvas(elm, event.target.textContent);
+        const htag = event.target.dataset.htag;
+        const elm_manager = elementManagerFactory(htag);
+        console.log(elm_manager);
+        elm_manager.addElementToCanvas(htag, event.target.textContent);
     };
 </script>
 

@@ -1,10 +1,10 @@
 import { elementManagerFactory } from "./ElementManager.js";
+import { setCssValueToCssEditor } from "./CssEditorUtils.js";
 import { adjustBodyHeight } from "./utils.js";
 import { selectElm } from "./utils.js";
 import { addCaptionToSelectedElm } from "./utils.js";
 import { addCaptionToHoveredElm } from "./utils.js";
 import { delCaptionFromHoveredElm } from "./utils.js";
-import { setCssValueToCssEditor } from "./CssEditorUtils.js";
 import { CanvasWrapper } from "./utils.js";
 
 
@@ -17,8 +17,10 @@ export function addKeydownEventListeners(elm) {
         // const canvasWindow = canvas.contentWindow;
         // const canvasDocument = canvasWindow.document;
         // const selectedElement = canvasDocument.getElementById("selectedElm");
+
+
         const canvasWrapper = new CanvasWrapper();
-        const selectedElm = canvasWrapper.getselectedElm();
+        const selectedElm = canvasWrapper.getSelectedElement();
 
         //delete element when delete or backspace key is pressed
         if (event.keyCode === 46 || event.keyCode === 8) {
@@ -48,6 +50,7 @@ export function addKeydownEventListeners(elm) {
 
         if (event.key === "ArrowUp") {
             //change selected element to previous sibling element or parent element
+            event.preventDefault();
 
             if (selectedElm.tagName === "BODY") return;
 
@@ -61,6 +64,7 @@ export function addKeydownEventListeners(elm) {
         }
         if (event.key === "ArrowDown") {
             //change selected element to next sibling element or first child element
+            event.preventDefault();
 
             if (selectedElm.tagName == "BODY") {
                 selectElm(selectedElm.firstElementChild);
@@ -452,7 +456,7 @@ export function addDragAndDropEventListeners(elm) {
         const canvasDocument = event.target.ownerDocument;
 
         //get elementManager and check if draggedElm can be parent of event.target
-        const element = elementManagerFactory(event.target);
+        const element = elementManagerFactory(event.target.tagName);
 
         const canBeParentOf = element.canBeParentOf(draggedElm);
         // console.log("can be parent of:" + canBeParentOf);
@@ -472,6 +476,7 @@ export function addDragAndDropEventListeners(elm) {
         if (draggedOverOutline === null) {
             draggedOverOutline = document.createElement("div");
             draggedOverOutline.id = "draggedOverOutline";
+            draggedOverOutline.classList = "draggedOverOutline";
             const absoluteRectTop = rect.top + canvasWindow.scrollY;
             const absoluteRectBottom = rect.bottom + canvasWindow.scrollY;
             const absoluteRectLeft = rect.left + canvasWindow.scrollX;
@@ -535,6 +540,9 @@ export function addDragAndDropEventListeners(elm) {
                 }
                 // console.log("middle");
             }
+
+
+
         }
         //only allow user to insert an element as a sibling
         else {

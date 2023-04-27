@@ -56,7 +56,14 @@
 
         const UnitConvert = currentUnitType + "-" + convertUnitType;
 
-        console.log(UnitConvert);
+        const canvasWrapper = new CanvasWrapper();
+
+        //stop this function if there is no selected element
+        if (canvasWrapper.isSelectedElementNull()) {
+            return;
+        }
+
+        // console.log(UnitConvert);
 
         switch (UnitConvert) {
             case "DIMENSION-DIMENSION":
@@ -88,7 +95,7 @@
                 isDisabled = false;
 
                 //get current style value
-                const canvasWrapper = new CanvasWrapper();
+
                 const selectedElm = canvasWrapper.getSelectedElement();
                 // const canvas = document.getElementById("canvas");
                 // const canvasWindow = canvas.contentWindow;
@@ -183,21 +190,16 @@
         <input
             type="text"
             class="cssSizeMenuItemInput"
-            data-css-value-type="value"
+            data-aperta-css-value-type="value"
             disabled={isDisabled}
             bind:this={sizeValue}
             on:keydown={blurWhenEnterPressed}
             on:blur={getSizeValueAndApply}
         />
-        <!-- {#if isAuto === true}
-            auto is true;
-        {:else}
-            auto is false
-        {/if} -->
 
         <select
             class="cssSizeMenuItemInputUnit deleteArrow"
-            data-css-value-type="unit"
+            data-aperta-css-value-type="unit"
             bind:this={sizeUnit}
             on:focus={saveValues}
             on:change={handleUnitChange}

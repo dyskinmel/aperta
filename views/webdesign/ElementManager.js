@@ -15,11 +15,12 @@ import { CanvasWrapper } from "./utils.js";
 //
 
 // factory function to create an element
-export function elementManagerFactory(elm) {
+export function elementManagerFactory(htag) {
     // console.log(elm + " " + elm.tagName);
     // return new Element();
-    switch (elm.tagName) {
+    switch (htag) {
         case "BODY":
+            console.log("body" + htag)
             return new BodyElementManager();
         case "H1":
         case "H2":
@@ -27,6 +28,7 @@ export function elementManagerFactory(elm) {
         case "H4":
         case "H5":
         case "H6":
+            console.log("heading" + htag);
             return new HeadingElementManager();
         case "IMG":
             return new ImgElementManager();
@@ -40,29 +42,33 @@ export function elementManagerFactory(elm) {
 //
 
 class ElementManager {
-    addElementToCanvas(elm, textContent) {
+    addElementToCanvas(htag, textContent) {
         // Add the element to the canvas
         const canvasWrapper = new CanvasWrapper();
         const selectedElm = canvasWrapper.getSelectedElement();
 
-        // const canvas = document.getElementById("canvas");
-        // const canvasWindow = canvas.contentWindow;
-        // const canvasDocument = canvasWindow.document;
-        // const selectedElement = canvasDocument.getElementById("selectedElm");
-
         // return if no element is selected
-        if (selectedElm === null) {
+        if (canvasWrapper.isSelectedElementNull()) {
             return;
         }
 
+        this.elm = this.createElement(htag);
+
         // set default attributes to a new element
-        this.setDefaultAttributes(elm, textContent);
+        this.setDefaultAttributes(this.elm, textContent);
 
         // Add event listeners to a new element
-        this.addListenerToElement(elm);
+        this.addListenerToElement(this.elm);
 
         // Add element to canvas
-        this.addElmToSelectedElm(elm, selectedElm);
+        this.addElmToSelectedElm(this.elm, selectedElm);
+    }
+
+    //create a new element
+    // override this method in child classes to create component consists of multiple elements
+    createElement(htag) {
+        const elm = document.createElement(htag);
+        return elm;
     }
 
     // set default attributes to a new element
@@ -159,5 +165,4 @@ class HeadingElementManager extends ElementManager {
     canBeParentOf(child) {
         return isPhrasingContentTags(child);
     }
-
 }
