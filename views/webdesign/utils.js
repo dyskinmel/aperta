@@ -82,8 +82,6 @@ export function selectElm(elm) {
     const canvasWrapper = new CanvasWrapper();
     const selectedElm = canvasWrapper.getSelectedElement();
 
-    console.log("selectedElm: " + selectedElm);
-
     // const selectedElement = elm.ownerDocument.getElementById("selectedElm");
     // const selectedElement = elm.ownerDocument.querySelectorAll('[data-aperta-selected-element="true"]')[0];
 

@@ -52,6 +52,12 @@ export function setCssValueToCssEditor(elm) {
     // get css value from selected element
     const cssValues = elm.ownerDocument.defaultView.getComputedStyle(elm);
 
+    const styleSheet = elm.ownerDocument.styleSheets;
+    console.log(styleSheet.length);
+    for (let i = 0; i < styleSheet.length; i++) {
+        console.log(styleSheet[i]);
+    }
+
     //get disabled css property list
     const elmManager = elementManagerFactory(elm);
     const enabledCssProperties = elmManager.getEnabledCssProperties();
@@ -72,8 +78,8 @@ export function setCssValueToCssEditor(elm) {
         //
         let cssValue = cssValues[cssProperty];
         cssValue = parseCssValue(cssValue);
-        console.log(cssValue);
-        console.log(cssProperty + ": " + cssValue.value + cssValue.unit);
+        // console.log(cssValue);
+        // console.log(cssProperty + ": " + cssValue.value + cssValue.unit);
 
         switch (enabledCssProperties[cssProperty]) {
             case true:
