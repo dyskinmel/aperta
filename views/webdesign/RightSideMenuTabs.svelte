@@ -1,7 +1,16 @@
 <script>
+    import { CanvasWrapper } from "./utils";
     // export let metaMenus = [];
     export let rightSideMenuTabItems = [];
     export let activeTabValue = 1;
+
+    let isElementSelected = false;
+
+    export function checkIfElementIsSelected() {
+        const canvasWrapper = new CanvasWrapper();
+        isElementSelected = canvasWrapper.isElementSelected();
+        console.log("isElementSelected: " + isElementSelected);
+    }
 
     const handleClick = (tabValue) => () => (activeTabValue = tabValue);
 </script>

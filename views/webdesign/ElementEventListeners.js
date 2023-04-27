@@ -6,6 +6,7 @@ import { addCaptionToSelectedElm } from "./utils.js";
 import { addCaptionToHoveredElm } from "./utils.js";
 import { delCaptionFromHoveredElm } from "./utils.js";
 import { CanvasWrapper } from "./utils.js";
+// import { checkIfElementIsSelected } from "./RightSideMenuTabs.svelte";
 
 
 // keydown event to delete selected eleemnt on canvas except for a body element
@@ -166,6 +167,8 @@ export function addClickEventListeners(elm) {
         // set selected element's css value to css editor
         setCssValueToCssEditor(elm);
 
+        // updateCssEditor();
+
         // add caption to selected element
         addCaptionToSelectedElm(event.target);
 
@@ -175,6 +178,12 @@ export function addClickEventListeners(elm) {
         event.stopPropagation();
     }, false);
 }
+
+
+
+// function updateCssEditor() {
+//     checkIfElementIsSelected();
+// }
 
 
 

@@ -561,7 +561,7 @@ function percentageToEm(propertyName, percentValue, canvasWrapper) {
 }
 
 // % to rem
-function percentToRem(propertyName, percentValue, canvasWrapper) {
+function percentageToRem(propertyName, percentValue, canvasWrapper) {
     const pxValue = percentageToPx(propertyName, percentValue, canvasWrapper);
     const remValue = pxToRem(pxValue, canvasWrapper);
 
