@@ -456,7 +456,7 @@ export function addDragAndDropEventListeners(elm) {
         const canvasDocument = event.target.ownerDocument;
 
         //get elementManager and check if draggedElm can be parent of event.target
-        const element = elementManagerFactory(event.target);
+        const element = elementManagerFactory(event.target.tagName);
 
         const canBeParentOf = element.canBeParentOf(draggedElm);
         // console.log("can be parent of:" + canBeParentOf);

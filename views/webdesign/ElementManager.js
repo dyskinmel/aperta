@@ -20,6 +20,7 @@ export function elementManagerFactory(htag) {
     // return new Element();
     switch (htag) {
         case "BODY":
+            console.log("body" + htag)
             return new BodyElementManager();
         case "H1":
         case "H2":
@@ -27,6 +28,7 @@ export function elementManagerFactory(htag) {
         case "H4":
         case "H5":
         case "H6":
+            console.log("heading" + htag);
             return new HeadingElementManager();
         case "IMG":
             return new ImgElementManager();
@@ -163,5 +165,4 @@ class HeadingElementManager extends ElementManager {
     canBeParentOf(child) {
         return isPhrasingContentTags(child);
     }
-
 }
