@@ -3,7 +3,7 @@ import { elementManagerFactory } from "./ElementManager";
 import { CanvasWrapper } from "./utils";
 
 //
-// functions be directly called by events on CssEditor
+// 
 //
 
 // blur a text input field when the enter key is pressed. 
@@ -31,12 +31,8 @@ export function applyStyleToSelectedElement(property, cssValue) {
 }
 
 //
-// functions to be called by events on Canvas
+// 
 //
-
-
-//　
-
 
 
 // set css value to css editor when a element is selected
