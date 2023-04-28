@@ -16,7 +16,7 @@
     export function checkIfElementSelected() {
         const canvasWrapper = new CanvasWrapper();
         isElementSelected = canvasWrapper.isElementSelected();
-        console.log("isElementSelected: " + isElementSelected);
+        // console.log("isElementSelected: " + isElementSelected);
     }
 
     const handleClick = (tabValue) => () => (activeTabValue = tabValue);
