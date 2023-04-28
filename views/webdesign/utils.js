@@ -91,8 +91,20 @@ export function selectElm(elm) {
         selectedElm.removeAttribute(canvasWrapper.getSelectedElementAttributeName());
     }
 
-    // elm.id = "selectedElm";
-    elm.setAttribute(canvasWrapper.getSelectedElementAttributeName(), "true");
+    // add selectedElement attribute to newly selected element
+    canvasWrapper.updateSelectedElement(elm);
+
+    // migrated this to canvasWrapper.updateSelectedElement(elm)
+    // elm.setAttribute(canvasWrapper.getSelectedElementAttributeName(), "true");
+
+    const elementSelectedEvent = new CustomEvent("elementSelected");
+    // const elementSelectedEvent = new CustomEvent("elementSelected", {
+    //     target: elm
+    // });
+
+    document.dispatchEvent(elementSelectedEvent);
+
+
 }
 
 // add caption to selected element
@@ -154,17 +166,33 @@ export function addCaptionToSelectedElm(elm) {
 //
 //
 
+// consider to make this class singleton
 export class CanvasWrapper {
+    // constructor() {
+    //     this.canvas = document.getElementById("canvas");
+    //     this.canvasWindow = this.canvas.contentWindow;
+    //     this.canvasDocument = this.canvasWindow.document;
+    //     // this.selectedElement = this.canvasDocument.getElementById("selectedElm");
+    //     this.selectedElement = this.canvasDocument.querySelectorAll('[data-aperta-selected-element="true"]')[0];
+    // }
+
     constructor() {
-        this.canvas = document.getElementById("canvas");
-        this.canvasWindow = this.canvas.contentWindow;
-        this.canvasDocument = this.canvasWindow.document;
-        // this.selectedElement = this.canvasDocument.getElementById("selectedElm");
-        this.selectedElement = this.canvasDocument.querySelectorAll('[data-aperta-selected-element="true"]')[0];
+        if (CanvasWrapper.instance == null) {
+            this.selectedElementAttributeName = "data-aperta-selected-element";
+            this.canvas = document.getElementById("canvas");
+            this.canvasWindow = this.canvas.contentWindow;
+            this.canvasDocument = this.canvasWindow.document;
+            // this.selectedElement = this.canvasDocument.getElementById("selectedElm");
+            this.selectedElement = this.canvasDocument.querySelectorAll('[data-aperta-selected-element="true"]')[0];
+            CanvasWrapper.instance = this;
+        } else {
+            return CanvasWrapper.instance;
+        }
     }
 
     //update
-    updateSelectedElement() {
+    updateSelectedElement(elm) {
+        elm.setAttribute(this.selectedElementAttributeName, "true");
         this.selectedElement = this.canvasDocument.querySelectorAll('[data-aperta-selected-element="true"]')[0];
     }
 
@@ -197,6 +225,10 @@ export class CanvasWrapper {
 
     isSelectedElementNull() {
         return this.selectedElement === undefined;
+    }
+
+    isElementSelected() {
+        return this.selectedElement !== undefined;
     }
 
 }

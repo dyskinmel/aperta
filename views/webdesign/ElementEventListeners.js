@@ -164,8 +164,9 @@ export function addClickEventListeners(elm) {
         // set id to selected element
         selectElm(event.target);
 
+        // migrate this function to each CssEditor component
         // set selected element's css value to css editor
-        setCssValueToCssEditor(elm);
+        // setCssValueToCssEditor(elm);
 
         // updateCssEditor();
 
