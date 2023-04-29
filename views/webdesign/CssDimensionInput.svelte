@@ -1,4 +1,5 @@
 <script>
+    import { onMount } from "svelte";
     import { blurWhenEnterPressed } from "./CssEditorUtils.js";
     import { applyStyleToSelectedElement } from "./CssEditorUtils.js";
     import { parseCssValue } from "./CssEditorUtils.js";
@@ -19,6 +20,21 @@
     let sizeProperty = null;
     let sizeValue = null;
     let sizeUnit = null;
+
+    // const cssStyleReader = new CssStyleReader();
+
+    onMount(() => {
+        // getCssStyle();
+        document.addEventListener("elementSelected", (event) => {
+            event.detail.targetStyle.getAppliedRule();
+            // console.log("chatched elementSelected event@CSSDimensionInput");
+            // getCssStyle();
+        });
+    });
+
+    function getCssStyle() {
+        cssStyleReader.getAppliedRule();
+    }
 
     const getUnitType = (value) => {
         const keywords = ["NONE", "AUTO", ""];

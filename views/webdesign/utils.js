@@ -1,5 +1,5 @@
 
-
+import { CssStyleReader } from "./CssStyleManager.js";
 
 //
 // hovered elements related functions
@@ -92,17 +92,24 @@ export function selectElm(elm) {
     }
 
     // add selectedElement attribute to newly selected element
-    canvasWrapper.updateSelectedElement(elm);
+    elm.setAttribute(canvasWrapper.getSelectedElementAttributeName(), "true");
 
-    // migrated this to canvasWrapper.updateSelectedElement(elm)
-    // elm.setAttribute(canvasWrapper.getSelectedElementAttributeName(), "true");
+    const cssStyleReader = new CssStyleReader();
+    console.log(cssStyleReader);
 
-    const elementSelectedEvent = new CustomEvent("elementSelected");
+    const elementSelectedEvent = new CustomEvent("elementSelected", {
+        detail: {
+            target: elm,
+            targetStyle: cssStyleReader,
+        }
+    });
+    document.dispatchEvent(elementSelectedEvent);
+
     // const elementSelectedEvent = new CustomEvent("elementSelected", {
     //     target: elm
     // });
 
-    document.dispatchEvent(elementSelectedEvent);
+
 
 
 }
@@ -166,35 +173,34 @@ export function addCaptionToSelectedElm(elm) {
 //
 //
 
-// consider to make this class singleton
 export class CanvasWrapper {
-    // constructor() {
-    //     this.canvas = document.getElementById("canvas");
-    //     this.canvasWindow = this.canvas.contentWindow;
-    //     this.canvasDocument = this.canvasWindow.document;
-    //     // this.selectedElement = this.canvasDocument.getElementById("selectedElm");
-    //     this.selectedElement = this.canvasDocument.querySelectorAll('[data-aperta-selected-element="true"]')[0];
-    // }
-
     constructor() {
-        if (CanvasWrapper.instance == null) {
-            this.selectedElementAttributeName = "data-aperta-selected-element";
-            this.canvas = document.getElementById("canvas");
-            this.canvasWindow = this.canvas.contentWindow;
-            this.canvasDocument = this.canvasWindow.document;
-            // this.selectedElement = this.canvasDocument.getElementById("selectedElm");
-            this.selectedElement = this.canvasDocument.querySelectorAll('[data-aperta-selected-element="true"]')[0];
-            CanvasWrapper.instance = this;
-        } else {
-            return CanvasWrapper.instance;
-        }
-    }
-
-    //update
-    updateSelectedElement(elm) {
-        elm.setAttribute(this.selectedElementAttributeName, "true");
+        this.canvas = document.getElementById("canvas");
+        this.canvasWindow = this.canvas.contentWindow;
+        this.canvasDocument = this.canvasWindow.document;
+        // this.selectedElement = this.canvasDocument.getElementById("selectedElm");
         this.selectedElement = this.canvasDocument.querySelectorAll('[data-aperta-selected-element="true"]')[0];
     }
+
+    // constructor() {
+    //     if (CanvasWrapper.instance == null) {
+    //         this.selectedElementAttributeName = "data-aperta-selected-element";
+    //         this.canvas = document.getElementById("canvas");
+    //         this.canvasWindow = this.canvas.contentWindow;
+    //         this.canvasDocument = this.canvasWindow.document;
+    //         // this.selectedElement = this.canvasDocument.getElementById("selectedElm");
+    //         this.selectedElement = this.canvasDocument.querySelectorAll('[data-aperta-selected-element="true"]')[0];
+    //         CanvasWrapper.instance = this;
+    //     } else {
+    //         return CanvasWrapper.instance;
+    //     }
+    // }
+
+    //update
+    // updateSelectedElement(elm) {
+    //     elm.setAttribute(this.selectedElementAttributeName, "true");
+    //     this.selectedElement = this.canvasDocument.querySelectorAll('[data-aperta-selected-element="true"]')[0];
+    // }
 
     //getters
     getCanvas() {
