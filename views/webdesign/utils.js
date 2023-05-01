@@ -95,7 +95,7 @@ export function selectElm(elm) {
     elm.setAttribute(canvasWrapper.getSelectedElementAttributeName(), "true");
 
     const cssStyleReader = new CssStyleReader();
-    console.log(cssStyleReader);
+    // console.log(cssStyleReader);
 
     const elementSelectedEvent = new CustomEvent("elementSelected", {
         detail: {

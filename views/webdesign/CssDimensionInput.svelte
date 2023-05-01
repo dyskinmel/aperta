@@ -26,14 +26,14 @@
     onMount(() => {
         // getCssStyle();
         document.addEventListener("elementSelected", (event) => {
-            event.detail.targetStyle.getAppliedRule();
+            // event.detail.targetStyle.getAppliedRule();
             // console.log("chatched elementSelected event@CSSDimensionInput");
             // getCssStyle();
         });
     });
 
     function getCssStyle() {
-        cssStyleReader.getAppliedRule();
+        // cssStyleReader.getAppliedRule();
     }
 
     const getUnitType = (value) => {
