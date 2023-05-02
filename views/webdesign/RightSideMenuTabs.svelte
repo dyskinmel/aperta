@@ -1,7 +1,26 @@
 <script>
+    import { onMount } from "svelte";
+    // import { createEventDispatcher } from "svelte";
+    import { CanvasWrapper } from "./utils";
     // export let metaMenus = [];
     export let rightSideMenuTabItems = [];
     export let activeTabValue = 1;
+
+    // const dispatch = createEventDispatcher();
+
+    let isElementSelected = false;
+
+    onMount(() => {
+        document.addEventListener("elementSelected", (event) => {
+            showTabItemsIfElementSelected();
+        });
+    });
+
+    export function showTabItemsIfElementSelected() {
+        const canvasWrapper = new CanvasWrapper();
+        isElementSelected = canvasWrapper.isElementSelected();
+        // console.log("isElementSelected: " + isElementSelected);
+    }
 
     const handleClick = (tabValue) => () => (activeTabValue = tabValue);
 </script>
@@ -24,13 +43,19 @@
     {/each}
 </ul>
 
-<!-- {#each metaMenus as metaMenu}
-    {#if activeTabValue == metaMenu.value}
-        <div class="box">
-            <svelte:component this={metaMenu.component} />
-        </div>
-    {/if}
-{/each} -->
+<!-- {#if isElementSelected}
+    {#each rightSideMenuTabItems as rightSideMenuTabItem}
+        {#if activeTabValue == rightSideMenuTabItem.value}
+            <div class="box">
+                <svelte:component this={rightSideMenuTabItem.component} />
+            </div>
+        {/if}
+    {/each}
+{:else}
+    <div class="box">
+        <p>Nothing selected</p>
+    </div>
+{/if} -->
 
 {#each rightSideMenuTabItems as rightSideMenuTabItem}
     {#if activeTabValue == rightSideMenuTabItem.value}
