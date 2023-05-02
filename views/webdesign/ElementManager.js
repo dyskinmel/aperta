@@ -77,7 +77,7 @@ class ElementManager {
         // Add default attributes
         elm.textContent = textContent;
         elm.setAttribute("draggable", "true");
-        elm.setAttribute("data-uuid", crypto.randomUUID());
+        elm.setAttribute("data-aperta-uuid", crypto.randomUUID());
 
         //following styles are for development purposes delete later 
         elm.style.height = "auto";
@@ -160,7 +160,7 @@ class ImgElementManager extends ElementManager {
         elm.alt = textContent + ": placeholder";
         // elm.classList.add("canvasItem");
         elm.setAttribute("draggable", "true");
-        elm.setAttribute("data-uuid", crypto.randomUUID());
+        elm.setAttribute("data-aperta-uuid", crypto.randomUUID());
     }
 }
 

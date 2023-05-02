@@ -151,7 +151,7 @@ export function addClickEventListeners(elm) {
 
         let targetElements = canvasDocument.querySelector('[contenteditable="true"]');
         if (targetElements !== null) {
-            if (elm.getAttribute('data-uuid') !== targetElements.getAttribute('data-uuid')) {
+            if (elm.getAttribute('data-aperta-uuid') !== targetElements.getAttribute('data-aperta-uuid')) {
                 targetElements.removeAttribute("contenteditable");
                 targetElements.removeAttribute("spellcheck");
             }
@@ -475,7 +475,7 @@ export function addDragAndDropEventListeners(elm) {
 
 
         //
-        if (event.target.getAttribute("data-uuid") === draggedElm.getAttribute("data-uuid")) {
+        if (event.target.getAttribute("data-aperta-uuid") === draggedElm.getAttribute("data-aperta-uuid")) {
             //console.log("same element");
             return;
         }
@@ -614,7 +614,7 @@ export function addDragAndDropEventListeners(elm) {
 
         //break if dragged element is same as element being dropped on
         //also break if previousState is null
-        if (event.target.getAttribute("data-uuid") === draggedElm.getAttribute("data-uuid") || previousState === null) {
+        if (event.target.getAttribute("data-aperta-uuid") === draggedElm.getAttribute("data-aperta-uuid") || previousState === null) {
             //console.log("same element");
             return;
         }
