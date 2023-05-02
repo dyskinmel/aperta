@@ -1,9 +1,9 @@
 // made based on
 // https://html.spec.whatwg.org/multipage/dom.html#content-models
-// based on 6 April 2023 version
+// 6 April 2023 version
 
 //Following functions are used to check if the element is in the category
-//functions mainly used in the Element.js to check if the element can be parent of the element
+//functions mainly used in the ElementManager.js to check if the element can be parent of the element
 
 
 // Metadata content

@@ -38,7 +38,7 @@ export function elementManagerFactory(htag) {
 }
 
 //
-// Base class for all elements
+// Base class for all HTML elements
 //
 
 class ElementManager {
@@ -64,7 +64,7 @@ class ElementManager {
         this.addElmToSelectedElm(this.elm, selectedElm);
     }
 
-    //create a new element
+    // create a new element
     // override this method in child classes to create component consists of multiple elements
     createElement(htag) {
         const elm = document.createElement(htag);
@@ -79,14 +79,14 @@ class ElementManager {
         elm.setAttribute("draggable", "true");
         elm.setAttribute("data-uuid", crypto.randomUUID());
 
-        //delete following 
+        //following styles are for development purposes delete later 
         elm.style.height = "auto";
         elm.style.width = "auto";
         elm.classList.add("aperta-element");
 
     }
 
-    // default listeners to add to an element
+    // default event listeners add to an element
     // override this method in child classes if needed
     addListenerToElement(elm) {
         addHoverEventListeners(elm);

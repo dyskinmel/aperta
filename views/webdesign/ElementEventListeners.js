@@ -433,7 +433,7 @@ export function addDragAndDropEventListeners(elm) {
 
     //Dragging: enable drag and drop element swapping
     elm.addEventListener('dragstart', (event) => {
-        //set transparent image to prevent to show default drag image
+        //set transparent image to prevent to show a default drag image
         const transparentImage = new Image();
         transparentImage.src =
             "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7";
@@ -448,7 +448,9 @@ export function addDragAndDropEventListeners(elm) {
         // const canvasWrapper = new CanvasWrapper();
         // console.log(canvasWrapper.isSelectedElement(draggedElm));
 
-        //set selectedElm id to draggedElm if draggedElm is not selectedElm
+        //change draggedElm as selectedElm if draggedElm is not selectedElm
+        // const canvasWrapper = new CanvasWrapper();
+        // if (!canvasWrapper.isSelectedElement(draggedElm)) {
         if (draggedElm.id !== "selectedElm") {
             // set id to selected element
             selectElm(event.target);
