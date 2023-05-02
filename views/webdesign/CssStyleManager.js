@@ -80,6 +80,8 @@ export class CssStyleReader {
 
         // check css style and get property with highest priority (considering specificity and !important)
         //
+
+        // consider to change this part of code to support multiple css files in the future
         objectKeys = Object.keys(this.effectiveRules);
         for (let i = 0; i < objectKeys.length; i++) {
 
@@ -156,6 +158,7 @@ export class CssStyleReader {
 
         // check default css rule if no element style and css rule to apply
         //
+
         if (appliedPropertyValue === null) {
             objectKeys = Object.keys(this.effectiveDefaultRules);
             for (let i = 0; i < objectKeys.length; i++) {
