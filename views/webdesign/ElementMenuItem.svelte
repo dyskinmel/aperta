@@ -8,7 +8,7 @@
     const clickEvent = (event) => {
         const htag = event.target.dataset.htag;
         const elm_manager = elementManagerFactory(htag);
-        console.log(elm_manager);
+        // console.log(elm_manager);
         elm_manager.addElementToCanvas(htag, event.target.textContent);
     };
 </script>

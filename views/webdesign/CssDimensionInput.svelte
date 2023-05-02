@@ -26,7 +26,8 @@
     onMount(() => {
         // getCssStyle();
         document.addEventListener("elementSelected", (event) => {
-            // event.detail.targetStyle.getAppliedRule();
+            // console.log(sizeProperty.id);
+            event.detail.targetStyle.getAppliedRule(sizeProperty.id);
             // console.log("chatched elementSelected event@CSSDimensionInput");
             // getCssStyle();
         });

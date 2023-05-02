@@ -8,7 +8,7 @@ export class CssStyleReader {
     constructor() {
         //initialize
 
-        //get canvas document
+        //get canvas document and selected element
         this.canvasWrapper = new CanvasWrapper();
 
         this.canvasDocument = this.canvasWrapper.getCanvasDocument();
@@ -30,15 +30,17 @@ export class CssStyleReader {
         this.effectiveRules = null;
         // this.rulesWithPseudo = null;
 
-
-
         this.defaultCssFileName = "apertaDefault.css";
         this.defaultStyleSheet = null;
         this.defaultRules = null;
+        this.effectiveDefaultRules = null;
 
-        this.appliedDefaultRules = null;
+        // console.log(this.selectedElm.style.length);
+        // this.getAppliedRule("height");
 
-        //get css style sheet
+
+        //get css style from style sheet
+        //
         this.styleSheets = this.canvasDocument.styleSheets;
         // console.log(this.styleSheets);
         for (let i = 0; i < this.styleSheets.length; i++) {
@@ -46,30 +48,115 @@ export class CssStyleReader {
                 this.defaultStyleSheet = this.styleSheets[i];
                 this.defaultRules = this.defaultStyleSheet.cssRules || this.defaultStyleSheet.rules;
 
+                this.effectiveDefaultRules = this.getEffectiveRules(this.defaultRules);
+
                 // console.log(this.defaultStyleSheet);
             }
             if (this.styleSheets[i].href.endsWith(this.cssFileName)) {
                 this.StyleSheet = this.styleSheets[i];
                 this.rules = this.StyleSheet.cssRules || this.StyleSheet.rules;
 
-                this.getEffectiveRules(this.rules);
+                this.effectiveRules = this.getEffectiveRules(this.rules);
 
             }
         }
+    }
+
+    // return applied css style of propety, selector and if !important is set
+    getAppliedRule(propertyName) {
+        // console.log(propertyName);
+        // console.log(this.effectiveRules);
+        // console.log(Object.keys(this.effectiveRules));
+        const objectKeys = Object.keys(this.effectiveRules);
+
+        let isAppliedImportant = false;
+        let appliedSpecificity = 0;
+        let appliedPropertyValue = null;
+        let appliedRule = null;
+
+
+        // check css style and get property with highest priority (considering specificity and !important)
+        //
+        for (let i = 0; i < objectKeys.length; i++) {
+
+            //ignore if ObjectKeys and selectorToMatch are not the same (ignore selector with pseudo elements and classes)
+            if (objectKeys[i] === this.effectiveRules[objectKeys[i]].selectorToMatch) {
+                // console.log(this.effectiveRules[objectKeys[i]]);
+                const propertyValue = this.effectiveRules[objectKeys[i]].style[propertyName];
+
+
+                // if propertyValue is not empty, check if !important is set
+                if (propertyValue !== "") {
+                    const propertySpecificity = this.effectiveRules[objectKeys[i]].specificity;
+                    const isImportant = this.isStyleImportant(this.effectiveRules[objectKeys[i]], propertyName);
+                    // console.log(objectKeys[i] + ":  " + propertyName + ":  " + propertyValue + " isImportant: " + isImportant);
+
+
+                    // when both rules have !important, check which rule has higher specificity
+                    if (isImportant && isAppliedImportant) {
+                        if (appliedSpecificity <= propertySpecificity) {
+                            isAppliedImportant = isImportant;
+                            appliedSpecificity = propertySpecificity;
+                            appliedPropertyValue = propertyValue;
+                            appliedRule = this.effectiveRules[objectKeys[i]];
+                        }
+                    }
+                    //if previous rule does not have !important, and current rule has !important, set the current rule as applied rule
+                    else if (isImportant && !isAppliedImportant) {
+                        isAppliedImportant = isImportant;
+                        appliedSpecificity = propertySpecificity;
+                        appliedPropertyValue = propertyValue;
+                        appliedRule = this.effectiveRules[objectKeys[i]];
+                    }
+                    // if both rules do not have !important, check which rule has higher specificity
+                    else if (!isImportant && !isAppliedImportant) {
+                        if (appliedSpecificity <= propertySpecificity) {
+                            isAppliedImportant = isImportant;
+                            appliedSpecificity = propertySpecificity;
+                            appliedPropertyValue = propertyValue;
+                            appliedRule = this.effectiveRules[objectKeys[i]];
+                        }
+                    }
+                    // if previous rule has !important, ignore the new rule
+
+                }
+            }
+        }
+        console.log(propertyName + ":  propertyValue:  " + appliedPropertyValue + "  isAppliedImportant:  " + isAppliedImportant);
+
+
+        // check element inline style and get property with highest priority (considering !important)
+        // 
+
+
+
+        // check default css rule if no element style and css rule to apply
+        //
+
+
+    }
+
+    // bool 
+    isStyleImportant(cssRule, propertyName) {
+        // const propertyValue = cssRule.style.getPropertyValue(propertyName);
+        const priority = cssRule.style.getPropertyPriority(propertyName);
+        return priority === 'important';
+        // return {
+        //     value: propertyValue,
+        //     important: priority === 'important',
+        // };
     }
 
     getEffectiveRules(rules) {
         // console.log(this.defaultRules);
         // console.log(this.rules);
         // let includePseudo = null;
-        let effectiveRule = {};
         let effectiveRules = {};
 
         for (let j = 0; j < rules.length; j++) {
+            // set selectorText without pseudo element and class
             rules[j].selectorToMatch = this.removePseudo(rules[j].selectorText);
-            // console.log(this.removePseudo(rules[j].selectorText));
-            // console.log("before :  " + rules[j].selectorText);
-            // console.log("after :  " + this.removePseudo(rules[j].selectorText));
+
             if (this.selectedElm.matches(rules[j].selectorToMatch)) {
                 // add speficity to rules
                 rules[j].specificity = this.getSpecificity(rules[j].selectorText);
@@ -81,19 +168,31 @@ export class CssStyleReader {
                 // effectiveRules 
             }
         }
-        console.log(effectiveRules);
+        // console.log(effectiveRules);
+        // console.log(Object.keys(effectiveRules));
+        return effectiveRules;
     }
 
     getSpecificity(selectorText) {
         const result = calculate(selectorText);
-        console.log(result);
+        // console.log(result);
         const specificityArray = result[0].specificityArray;
-
         const specificityValue = specificityArray[0] * 1000 + specificityArray[1] * 100 + specificityArray[2] * 10 + specificityArray[3];
 
-        // console.log(specificityValue);
         return specificityValue;
     }
+
+
+
+    // isInlineStyleImportant() {
+    //     const importantFlag = "!important";
+    //     if (propertyValue.includes(importantFlag)) {
+    //         console.log(propertyValue);
+    //         importantRule = propertyValue.replace(importantFlag, "").trim();
+    //     }
+
+    // }
+
 
     removePseudo(selectorText) {
         const pseudoElementRegex = /::(before|after|first-letter|first-line|selection|backdrop|placeholder|marker|spelling-error|grammar-error)/i;
