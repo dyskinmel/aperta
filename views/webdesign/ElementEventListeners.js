@@ -182,12 +182,6 @@ export function addClickEventListeners(elm) {
 
 
 
-// function updateCssEditor() {
-//     checkIfElementIsSelected();
-// }
-
-
-
 function addListenersToChangeSizeMarginPadding() {
     // const canvas = document.getElementById("canvas");
     // const canvasWindow = canvas.contentWindow;

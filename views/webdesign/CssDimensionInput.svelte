@@ -27,7 +27,10 @@
         // getCssStyle();
         document.addEventListener("elementSelected", (event) => {
             // console.log(sizeProperty.id);
-            event.detail.targetStyle.getAppliedRule(sizeProperty.id);
+            const appliedRule = event.detail.targetStyle.getAppliedRule(
+                sizeProperty.id
+            );
+            // console.log(appliedRule);
             // console.log("chatched elementSelected event@CSSDimensionInput");
             // getCssStyle();
         });
@@ -114,6 +117,7 @@
                 //get current style value
 
                 const selectedElm = canvasWrapper.getSelectedElement();
+                const canvasWindow = canvasWrapper.getCanvasWindow();
                 // const canvas = document.getElementById("canvas");
                 // const canvasWindow = canvas.contentWindow;
                 // const canvasDocument = canvasWindow.document;

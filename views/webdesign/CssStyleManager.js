@@ -97,46 +97,49 @@ export class CssStyleReader {
         // consider to change this part of code to support multiple css files in the future
         objectKeys = Object.keys(this.effectiveRules);
         if (appliedPropertyValue === null) {
-            for (let i = 0; i < objectKeys.length; i++) {
+            for (let i = 0; i < objectKeys.length / 2; i++) {
+                const stringKey = this.effectiveRules[i];
+                const selectorText = this.effectiveRules[stringKey].selectorText;
+                const selectorToMatch = this.effectiveRules[stringKey].selectorToMatch;
 
                 //ignore if ObjectKeys and selectorToMatch are not the same (ignore selector with pseudo elements and classes)
-                if (objectKeys[i] === this.effectiveRules[objectKeys[i]].selectorToMatch) {
+                if (selectorText === selectorToMatch) {
                     // console.log(this.effectiveRules[objectKeys[i]]);
-                    const propertyValue = this.effectiveRules[objectKeys[i]].style[propertyName];
+                    const propertyValue = this.effectiveRules[stringKey].style[propertyName];
 
                     // if propertyValue is not empty, check if !important is set
                     if (propertyValue !== "") {
-                        const propertySpecificity = this.effectiveRules[objectKeys[i]].specificity;
-                        const isImportant = this.isImportant(this.effectiveRules[objectKeys[i]].style, propertyName);
+                        const propertySpecificity = this.effectiveRules[stringKey].specificity;
+                        const isImportant = this.isImportant(this.effectiveRules[stringKey].style, propertyName);
                         // console.log(objectKeys[i] + ":  " + propertyName + ":  " + propertyValue + " isImportant: " + isImportant);
 
 
                         // when both rules have !important, check which rule has higher specificity
                         if (isImportant && isAppliedImportant) {
                             if (appliedSpecificity <= propertySpecificity) {
-                                appliedSelector = objectKeys[i];
+                                appliedSelector = selectorText;
                                 appliedPropertyValue = propertyValue;
                                 isAppliedImportant = isImportant;
                                 appliedSpecificity = propertySpecificity;
-                                appliedRule = this.effectiveRules[objectKeys[i]];
+                                appliedRule = this.effectiveRules[stringKey];
                             }
                         }
                         //if previous rule does not have !important, and current rule has !important, set the current rule as applied rule
                         else if (isImportant && !isAppliedImportant) {
-                            appliedSelector = objectKeys[i];
+                            appliedSelector = selectorText;
                             appliedPropertyValue = propertyValue;
                             isAppliedImportant = isImportant;
                             appliedSpecificity = propertySpecificity;
-                            appliedRule = this.effectiveRules[objectKeys[i]];
+                            appliedRule = this.effectiveRules[stringKey];
                         }
                         // if both rules do not have !important, check which rule has higher specificity
                         else if (!isImportant && !isAppliedImportant) {
                             if (appliedSpecificity <= propertySpecificity) {
-                                appliedSelector = objectKeys[i];
+                                appliedSelector = selectorText;
                                 appliedPropertyValue = propertyValue;
                                 isAppliedImportant = isImportant;
                                 appliedSpecificity = propertySpecificity;
-                                appliedRule = this.effectiveRules[objectKeys[i]];
+                                appliedRule = this.effectiveRules[stringKey];
                             }
                         }
                         // if previous rule has !important, ignore the new rule
@@ -145,7 +148,6 @@ export class CssStyleReader {
                 }
             }
         }
-
         // console.log("Selector:  " + appliedSelector + "  propertyName:  " + propertyName + ":  propertyValue:  " + appliedPropertyValue + "  isAppliedImportant:  " + isAppliedImportant);
 
 
@@ -155,18 +157,21 @@ export class CssStyleReader {
 
         if (appliedPropertyValue === null) {
             objectKeys = Object.keys(this.effectiveDefaultRules);
-            for (let i = 0; i < objectKeys.length; i++) {
-                const propertyValue = this.effectiveDefaultRules[objectKeys[i]].style[propertyName];
+            console.log(objectKeys);
+            for (let i = 0; i < objectKeys.length / 2; i++) {
+                const stringKey = this.effectiveDefaultRules[i];
+                const selectorText = this.effectiveDefaultRules[stringKey].selectorText;
+                const propertyValue = this.effectiveDefaultRules[stringKey].style[propertyName];
                 if (propertyValue !== "") {
-                    const propertySpecificity = this.effectiveDefaultRules[objectKeys[i]].specificity;
-                    const isImportant = this.isImportant(this.effectiveDefaultRules[objectKeys[i]].style, propertyName);
+                    const propertySpecificity = this.effectiveDefaultRules[stringKey].specificity;
+                    const isImportant = this.isImportant(this.effectiveDefaultRules[stringKey].style, propertyName);
                     // console.log(objectKeys[i] + ":  " + propertyName + ":  " + propertyValue + " isImportant: " + isImportant);
                     if (appliedSpecificity <= propertySpecificity) {
-                        appliedSelector = objectKeys[i];
+                        appliedSelector = selectorText;
                         appliedPropertyValue = propertyValue;
                         isAppliedImportant = isImportant;
                         appliedSpecificity = propertySpecificity;
-                        appliedRule = this.effectiveDefaultRules[objectKeys[i]];
+                        appliedRule = this.effectiveDefaultRules[stringKey];
                     }
                 }
                 // const propertyValue = this.effectiveDefaultRules[propertyName];
@@ -174,7 +179,7 @@ export class CssStyleReader {
 
             }
         }
-        console.log("Selector:  " + appliedSelector + "  propertyName:  " + propertyName + ":  propertyValue:  " + appliedPropertyValue + "  isAppliedImportant:  " + isAppliedImportant);
+        // console.log("Selector:  " + appliedSelector + "  propertyName:  " + propertyName + ":  propertyValue:  " + appliedPropertyValue + "  isAppliedImportant:  " + isAppliedImportant);
 
         return { appliedSelector, appliedPropertyValue, isAppliedImportant };
         // return { appliedSelector, appliedPropertyValue, isAppliedImportant, appliedRule };
@@ -195,6 +200,7 @@ export class CssStyleReader {
         // console.log(this.rules);
         // let includePseudo = null;
         let effectiveRules = {};
+        let numberOfRules = 0;
 
         for (let j = 0; j < rules.length; j++) {
             // set selectorText without pseudo element and class
@@ -203,7 +209,10 @@ export class CssStyleReader {
             if (this.selectedElm.matches(rules[j].selectorToMatch)) {
                 // add speficity to rules
                 rules[j].specificity = this.getSpecificity(rules[j].selectorText);
+
+                effectiveRules[numberOfRules] = rules[j].selectorText;
                 effectiveRules[rules[j].selectorText] = rules[j];
+                numberOfRules++;
                 // effectiveRule = { [rules[j].selectorText]: rules[j] };
                 // console.log(effectiveRule);
 
@@ -211,7 +220,8 @@ export class CssStyleReader {
                 // effectiveRules 
             }
         }
-        // console.log(effectiveRules);
+        console.log(effectiveRules);
+        // console.log(numberOfRules);
         // console.log(Object.keys(effectiveRules));
         return effectiveRules;
     }
@@ -224,17 +234,6 @@ export class CssStyleReader {
 
         return specificityValue;
     }
-
-
-
-    // isInlineStyleImportant() {
-    //     const importantFlag = "!important";
-    //     if (propertyValue.includes(importantFlag)) {
-    //         console.log(propertyValue);
-    //         importantRule = propertyValue.replace(importantFlag, "").trim();
-    //     }
-
-    // }
 
 
     removePseudo(selectorText) {
