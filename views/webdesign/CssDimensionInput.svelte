@@ -30,7 +30,34 @@
             const appliedRule = event.detail.targetStyle.getAppliedRule(
                 sizeProperty.id
             );
-            // console.log(appliedRule);
+            // console.log(appliedRule["appliedPropertyValue"]);
+
+            console.log(appliedRule);
+
+            if (appliedRule["appliedPropertyValue"] === null) {
+                return;
+            }
+
+            const parsedCssValue = parseCssValue(
+                appliedRule["appliedPropertyValue"]
+            );
+            // console.log(parsedCssValue);
+
+            //add condiiton for when NaN value is returned
+            if (isNaN(parsedCssValue["value"])) {
+                sizeValue.value = parsedCssValue["value"].toUpperCase();
+                sizeUnit.value = hidden;
+                isDisabled = true;
+                sizeUnit.classList.remove("deleteArrow");
+
+                // return;
+            } else {
+                sizeValue.value = parsedCssValue["value"];
+                sizeUnit.value = parsedCssValue["unit"].toUpperCase();
+                isDisabled = false;
+                sizeUnit.classList.add("deleteArrow");
+            }
+
             // console.log("chatched elementSelected event@CSSDimensionInput");
             // getCssStyle();
         });
@@ -168,7 +195,7 @@
                 sizeValue.value = sizeUnit.value;
                 sizeUnit.value = hidden;
                 isDisabled = true;
-                event.target.classList.remove("deleteArrow");
+                sizeUnit.classList.remove("deleteArrow");
 
                 //set css value to apply it to selected element
                 cssValue = sizeValue.value;

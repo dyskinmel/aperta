@@ -157,7 +157,7 @@ export class CssStyleReader {
 
         if (appliedPropertyValue === null) {
             objectKeys = Object.keys(this.effectiveDefaultRules);
-            console.log(objectKeys);
+            // console.log(objectKeys);
             for (let i = 0; i < objectKeys.length / 2; i++) {
                 const stringKey = this.effectiveDefaultRules[i];
                 const selectorText = this.effectiveDefaultRules[stringKey].selectorText;
