@@ -75,9 +75,7 @@ export class CssStyleReader {
         let appliedSelector = null;
         let appliedRule = null;
 
-        // check default css rule if no element style and css rule to apply
-        //
-        Objectkeys = Object.keys(this.effectiveDefaultRules);
+
 
 
         // check css style and get property with highest priority (considering specificity and !important)
@@ -93,7 +91,7 @@ export class CssStyleReader {
                 // if propertyValue is not empty, check if !important is set
                 if (propertyValue !== "") {
                     const propertySpecificity = this.effectiveRules[objectKeys[i]].specificity;
-                    const isImportant = this.isStyleImportant(this.effectiveRules[objectKeys[i]].style, propertyName);
+                    const isImportant = this.isImportant(this.effectiveRules[objectKeys[i]].style, propertyName);
                     // console.log(objectKeys[i] + ":  " + propertyName + ":  " + propertyValue + " isImportant: " + isImportant);
 
 
@@ -130,14 +128,14 @@ export class CssStyleReader {
                 }
             }
         }
-        // console.log(propertyName + ":  propertyValue:  " + appliedPropertyValue + "  isAppliedImportant:  " + isAppliedImportant);
+        // console.log("Selector:  " + appliedSelector + "  propertyName:  " + propertyName + ":  propertyValue:  " + appliedPropertyValue + "  isAppliedImportant:  " + isAppliedImportant);
 
 
         // check element inline style and get property with highest priority (considering !important)
-        // 
+        // (consider to bring this to top of the function to avoid checking inline style if css style has !important)
         const propertyValue = this.selectedElm.style[propertyName];
         if (propertyValue !== "") {
-            const isImportant = this.isStyleImportant(this.selectedElm.style, propertyName);
+            const isImportant = this.isImportant(this.selectedElm.style, propertyName);
 
             //if rule from css style sheet has !important and inline style does not have !important, keep the rule from css style sheet
             if (isAppliedImportant && !isImportant) {
@@ -151,10 +149,35 @@ export class CssStyleReader {
                 appliedRule = this.selectedElm.style;
             }
             //
+        }
+        // console.log("Selector:  " + appliedSelector + "  propertyName:  " + propertyName + ":  propertyValue:  " + appliedPropertyValue + "  isAppliedImportant:  " + isAppliedImportant);
+        // console.log(this.selectedElm.style);
 
+
+        // check default css rule if no element style and css rule to apply
+        //
+        if (appliedPropertyValue === null) {
+            objectKeys = Object.keys(this.effectiveDefaultRules);
+            for (let i = 0; i < objectKeys.length; i++) {
+                const propertyValue = this.effectiveDefaultRules[objectKeys[i]].style[propertyName];
+                if (propertyValue !== "") {
+                    const propertySpecificity = this.effectiveDefaultRules[objectKeys[i]].specificity;
+                    const isImportant = this.isImportant(this.effectiveDefaultRules[objectKeys[i]].style, propertyName);
+                    // console.log(objectKeys[i] + ":  " + propertyName + ":  " + propertyValue + " isImportant: " + isImportant);
+                    if (appliedSpecificity <= propertySpecificity) {
+                        appliedSelector = objectKeys[i];
+                        appliedPropertyValue = propertyValue;
+                        isAppliedImportant = isImportant;
+                        appliedSpecificity = propertySpecificity;
+                        appliedRule = this.effectiveDefaultRules[objectKeys[i]];
+                    }
+                }
+                // const propertyValue = this.effectiveDefaultRules[propertyName];
+                // console.log(this.effectiveDefaultRules);
+
+            }
         }
         console.log("Selector:  " + appliedSelector + "  propertyName:  " + propertyName + ":  propertyValue:  " + appliedPropertyValue + "  isAppliedImportant:  " + isAppliedImportant);
-        // console.log(this.selectedElm.style);
 
 
 
@@ -164,8 +187,7 @@ export class CssStyleReader {
     }
 
     // bool 
-    isStyleImportant(cssStyle, propertyName) {
-        // const propertyValue = cssRule.style.getPropertyValue(propertyName);
+    isImportant(cssStyle, propertyName) {
         const priority = cssStyle.getPropertyPriority(propertyName);
         return priority === 'important';
         // return {
