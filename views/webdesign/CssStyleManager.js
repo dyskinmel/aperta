@@ -76,6 +76,19 @@ export class CssStyleReader {
         let appliedRule = null;
 
 
+        // check element inline style and set value if it has property value
+        // 
+        const propertyValue = this.selectedElm.style[propertyName];
+        if (propertyValue !== "") {
+            const isImportant = this.isImportant(this.selectedElm.style, propertyName);
+
+            appliedSelector = "inlineStyle";
+            appliedPropertyValue = propertyValue;
+            isAppliedImportant = isImportant;
+            appliedRule = this.selectedElm.style;
+        }
+        // console.log("Selector:  " + appliedSelector + "  propertyName:  " + propertyName + ":  propertyValue:  " + appliedPropertyValue + "  isAppliedImportant:  " + isAppliedImportant);
+        // console.log(this.selectedElm.style);
 
 
         // check css style and get property with highest priority (considering specificity and !important)
@@ -83,77 +96,58 @@ export class CssStyleReader {
 
         // consider to change this part of code to support multiple css files in the future
         objectKeys = Object.keys(this.effectiveRules);
-        for (let i = 0; i < objectKeys.length; i++) {
+        if (appliedPropertyValue === null) {
+            for (let i = 0; i < objectKeys.length; i++) {
 
-            //ignore if ObjectKeys and selectorToMatch are not the same (ignore selector with pseudo elements and classes)
-            if (objectKeys[i] === this.effectiveRules[objectKeys[i]].selectorToMatch) {
-                // console.log(this.effectiveRules[objectKeys[i]]);
-                const propertyValue = this.effectiveRules[objectKeys[i]].style[propertyName];
+                //ignore if ObjectKeys and selectorToMatch are not the same (ignore selector with pseudo elements and classes)
+                if (objectKeys[i] === this.effectiveRules[objectKeys[i]].selectorToMatch) {
+                    // console.log(this.effectiveRules[objectKeys[i]]);
+                    const propertyValue = this.effectiveRules[objectKeys[i]].style[propertyName];
 
-                // if propertyValue is not empty, check if !important is set
-                if (propertyValue !== "") {
-                    const propertySpecificity = this.effectiveRules[objectKeys[i]].specificity;
-                    const isImportant = this.isImportant(this.effectiveRules[objectKeys[i]].style, propertyName);
-                    // console.log(objectKeys[i] + ":  " + propertyName + ":  " + propertyValue + " isImportant: " + isImportant);
+                    // if propertyValue is not empty, check if !important is set
+                    if (propertyValue !== "") {
+                        const propertySpecificity = this.effectiveRules[objectKeys[i]].specificity;
+                        const isImportant = this.isImportant(this.effectiveRules[objectKeys[i]].style, propertyName);
+                        // console.log(objectKeys[i] + ":  " + propertyName + ":  " + propertyValue + " isImportant: " + isImportant);
 
 
-                    // when both rules have !important, check which rule has higher specificity
-                    if (isImportant && isAppliedImportant) {
-                        if (appliedSpecificity <= propertySpecificity) {
+                        // when both rules have !important, check which rule has higher specificity
+                        if (isImportant && isAppliedImportant) {
+                            if (appliedSpecificity <= propertySpecificity) {
+                                appliedSelector = objectKeys[i];
+                                appliedPropertyValue = propertyValue;
+                                isAppliedImportant = isImportant;
+                                appliedSpecificity = propertySpecificity;
+                                appliedRule = this.effectiveRules[objectKeys[i]];
+                            }
+                        }
+                        //if previous rule does not have !important, and current rule has !important, set the current rule as applied rule
+                        else if (isImportant && !isAppliedImportant) {
                             appliedSelector = objectKeys[i];
                             appliedPropertyValue = propertyValue;
                             isAppliedImportant = isImportant;
                             appliedSpecificity = propertySpecificity;
                             appliedRule = this.effectiveRules[objectKeys[i]];
                         }
-                    }
-                    //if previous rule does not have !important, and current rule has !important, set the current rule as applied rule
-                    else if (isImportant && !isAppliedImportant) {
-                        appliedSelector = objectKeys[i];
-                        appliedPropertyValue = propertyValue;
-                        isAppliedImportant = isImportant;
-                        appliedSpecificity = propertySpecificity;
-                        appliedRule = this.effectiveRules[objectKeys[i]];
-                    }
-                    // if both rules do not have !important, check which rule has higher specificity
-                    else if (!isImportant && !isAppliedImportant) {
-                        if (appliedSpecificity <= propertySpecificity) {
-                            appliedSelector = objectKeys[i];
-                            appliedPropertyValue = propertyValue;
-                            isAppliedImportant = isImportant;
-                            appliedSpecificity = propertySpecificity;
-                            appliedRule = this.effectiveRules[objectKeys[i]];
+                        // if both rules do not have !important, check which rule has higher specificity
+                        else if (!isImportant && !isAppliedImportant) {
+                            if (appliedSpecificity <= propertySpecificity) {
+                                appliedSelector = objectKeys[i];
+                                appliedPropertyValue = propertyValue;
+                                isAppliedImportant = isImportant;
+                                appliedSpecificity = propertySpecificity;
+                                appliedRule = this.effectiveRules[objectKeys[i]];
+                            }
                         }
-                    }
-                    // if previous rule has !important, ignore the new rule
+                        // if previous rule has !important, ignore the new rule
 
+                    }
                 }
             }
         }
+
         // console.log("Selector:  " + appliedSelector + "  propertyName:  " + propertyName + ":  propertyValue:  " + appliedPropertyValue + "  isAppliedImportant:  " + isAppliedImportant);
 
-
-        // check element inline style and get property with highest priority (considering !important)
-        // (consider to bring this to top of the function to avoid checking inline style if css style has !important)
-        const propertyValue = this.selectedElm.style[propertyName];
-        if (propertyValue !== "") {
-            const isImportant = this.isImportant(this.selectedElm.style, propertyName);
-
-            //if rule from css style sheet has !important and inline style does not have !important, keep the rule from css style sheet
-            if (isAppliedImportant && !isImportant) {
-                //do nothing
-            }
-            // else set inline style as applied style
-            else {
-                appliedSelector = "inlineStyle";
-                appliedPropertyValue = propertyValue;
-                isAppliedImportant = isImportant;
-                appliedRule = this.selectedElm.style;
-            }
-            //
-        }
-        // console.log("Selector:  " + appliedSelector + "  propertyName:  " + propertyName + ":  propertyValue:  " + appliedPropertyValue + "  isAppliedImportant:  " + isAppliedImportant);
-        // console.log(this.selectedElm.style);
 
 
         // check default css rule if no element style and css rule to apply
@@ -182,11 +176,8 @@ export class CssStyleReader {
         }
         console.log("Selector:  " + appliedSelector + "  propertyName:  " + propertyName + ":  propertyValue:  " + appliedPropertyValue + "  isAppliedImportant:  " + isAppliedImportant);
 
-
-
-
-
-
+        return { appliedSelector, appliedPropertyValue, isAppliedImportant };
+        // return { appliedSelector, appliedPropertyValue, isAppliedImportant, appliedRule };
     }
 
     // bool 
