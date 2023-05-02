@@ -448,10 +448,10 @@ export function addDragAndDropEventListeners(elm) {
         // const canvasWrapper = new CanvasWrapper();
         // console.log(canvasWrapper.isSelectedElement(draggedElm));
 
-        //change draggedElm as selectedElm if draggedElm is not selectedElm
-        // const canvasWrapper = new CanvasWrapper();
-        // if (!canvasWrapper.isSelectedElement(draggedElm)) {
-        if (draggedElm.id !== "selectedElm") {
+        //change state of draggedElm to selectedElm if draggedElm is not selectedElm
+        const canvasWrapper = new CanvasWrapper();
+        if (!canvasWrapper.isSelectedElement(draggedElm)) {
+            // if (draggedElm.id !== "selectedElm") {
             // set id to selected element
             selectElm(event.target);
 
