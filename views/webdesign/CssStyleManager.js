@@ -220,7 +220,7 @@ export class CssStyleReader {
                 // effectiveRules 
             }
         }
-        console.log(effectiveRules);
+        // console.log(effectiveRules);
         // console.log(numberOfRules);
         // console.log(Object.keys(effectiveRules));
         return effectiveRules;

@@ -27,12 +27,17 @@
         // getCssStyle();
         document.addEventListener("elementSelected", (event) => {
             // console.log(sizeProperty.id);
+            // console.log(sizeProperty);
+
+            if (sizeProperty === null) {
+                return;
+            }
             const appliedRule = event.detail.targetStyle.getAppliedRule(
                 sizeProperty.id
             );
             // console.log(appliedRule["appliedPropertyValue"]);
 
-            console.log(appliedRule);
+            // console.log(appliedRule);
 
             if (appliedRule["appliedPropertyValue"] === null) {
                 return;

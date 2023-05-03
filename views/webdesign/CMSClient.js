@@ -19,10 +19,10 @@ export class ContentfulClient extends CmsClient {
     async getContentType() {
         const url = "https://cdn.contentful.com/spaces/rvj0gs4gb6wz/environments/master/content_types?access_token=4jj76mhuV9M5drJOAwzDx6Lpuv1eN8TLE4DHc6hN4hw";
         const response = await fetch(url);
-        const contentType = await response.json();
-        const obj = JSON.parse(JSON.stringify(contentType));
+        const contentTypeJSON = await response.json();
+        this.contentTypes = JSON.parse(JSON.stringify(contentTypeJSON));
         // console.log(obj);
-        return obj;
+        return this.contentTypes;
         // fetch(url).then(response => response.json()).then(contentType => {
         //     const obj = JSON.parse(JSON.stringify(contentType));
         //     //console.log(obj);

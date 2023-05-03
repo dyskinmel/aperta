@@ -1,28 +1,57 @@
 <script>
-    let tags = [];
+    import CssSelectorModal from "./CssSelectorModal.svelte";
+
+    let showModal = false;
+
+    function openModal() {
+        showModal = true;
+    }
+    function closeModal() {
+        showModal = false;
+    }
+
+    function addNewSelector(event) {
+        // console.log(event.detail.value);
+        selectorTags = [...selectorTags, event.detail.value];
+        closeModal();
+    }
+
+    //
+    let selectorTags = [];
+    let pseudoTags = [];
     let inputValue = "";
 
     function addTag() {
         if (inputValue.trim()) {
-            tags = [...tags, inputValue.trim()];
+            selectorTags = [...selectorTags, inputValue.trim()];
             inputValue = "";
         }
     }
 
     function removeTag(tag) {
-        tags = tags.filter((t) => t !== tag);
+        selectorTags = selectorTags.filter((t) => t !== tag);
     }
 </script>
 
-<input
+<!-- <input
     type="text"
     bind:value={inputValue}
     placeholder="Type a tag and press Enter"
     on:keydown={(e) => e.key === "Enter" && addTag()}
-/>
+/> -->
+
+<button on:click={openModal}>Add</button>
+
+{#if showModal}
+    <CssSelectorModal on:cancel={closeModal} on:add={addNewSelector} />
+    <!-- <CssSelectorModal on:cancel={closeModal}>
+        <h2>Modal Title</h2>
+        <p>Modal content</p>
+    </CssSelectorModal> -->
+{/if}
 
 <div class="tags-container">
-    {#each tags as tag (tag)}
+    {#each selectorTags as tag (tag)}
         <div class="tag">
             {tag}
             <!-- svelte-ignore a11y-click-events-have-key-events -->
