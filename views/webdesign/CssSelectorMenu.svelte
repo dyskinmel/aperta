@@ -10,8 +10,10 @@
         showModal = false;
     }
 
-    function addNewSelector(event) {
+    function updateSelector(event) {
         // console.log(event.detail.value);
+        // const index = selectorTags.indexOf(event.detail.value);
+
         selectorTags = [...selectorTags, event.detail.value];
         closeModal();
     }
@@ -43,7 +45,7 @@
 <button on:click={openModal}>Add</button>
 
 {#if showModal}
-    <CssSelectorModal on:cancel={closeModal} on:add={addNewSelector} />
+    <CssSelectorModal on:cancel={closeModal} on:add={updateSelector} />
     <!-- <CssSelectorModal on:cancel={closeModal}>
         <h2>Modal Title</h2>
         <p>Modal content</p>
