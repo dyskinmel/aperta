@@ -23,7 +23,7 @@
             placeholder="Type selector and press Enter"
         />
         <button on:click={cancel}>Cancel</button>
-        <button on:click={add}>Submit</button>
+        <button on:click={add}>Add</button>
     </div>
 </div>
 

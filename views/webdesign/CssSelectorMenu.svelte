@@ -1,27 +1,34 @@
 <script>
     import CssSelectorModal from "./CssSelectorModal.svelte";
-
+    //
     let showModal = false;
+    //
+    let selectorTags = [];
+    let pseudoTags = [];
+    //
+    let inputValue = "";
 
-    function openModal() {
+    function openModal(event, tagValue = "") {
+        inputValue = tagValue;
         showModal = true;
     }
+
     function closeModal() {
+        inputValue = "";
         showModal = false;
     }
 
     function updateSelector(event) {
         // console.log(event.detail.value);
         // const index = selectorTags.indexOf(event.detail.value);
+        // console.log("inputValue: ", inputValue);
+        if (inputValue !== "") {
+        } else {
+            selectorTags = [...selectorTags, event.detail.value];
+        }
 
-        selectorTags = [...selectorTags, event.detail.value];
         closeModal();
     }
-
-    //
-    let selectorTags = [];
-    let pseudoTags = [];
-    let inputValue = "";
 
     function addTag() {
         if (inputValue.trim()) {
@@ -32,6 +39,13 @@
 
     function removeTag(tag) {
         selectorTags = selectorTags.filter((t) => t !== tag);
+    }
+
+    //
+    let ddOpen = false;
+
+    function toggleDD() {
+        ddOpen = !ddOpen;
     }
 </script>
 
@@ -57,7 +71,7 @@
         <div class="tag">
             {tag}
             <!-- svelte-ignore a11y-click-events-have-key-events -->
-            <span class="tag-remove" on:click={() => removeTag(tag)}>×</span>
+            <span class="tag-ddmenu" on:click={() => removeTag(tag)}>∨</span>
         </div>
     {/each}
 </div>
@@ -77,7 +91,7 @@
         padding: 4px 8px;
     }
 
-    .tag-remove {
+    .tag-ddmenu {
         margin-left: 4px;
         cursor: pointer;
     }
