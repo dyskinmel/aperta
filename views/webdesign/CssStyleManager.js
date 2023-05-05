@@ -97,7 +97,8 @@ export class CssStyleReader {
         // consider to change this part of code to support multiple css files in the future
         objectKeys = Object.keys(this.effectiveRules);
         if (appliedPropertyValue === null) {
-            for (let i = 0; i < objectKeys.length / 2; i++) {
+            for (let i = objectKeys.length / 2 - 1; i >= 0; i--) {
+                // for (let i = 0; i < objectKeys.length / 2; i++) {
                 const stringKey = this.effectiveRules[i];
                 const selectorText = this.effectiveRules[stringKey].selectorText;
                 const selectorToMatch = this.effectiveRules[stringKey].selectorToMatch;
@@ -158,7 +159,8 @@ export class CssStyleReader {
         if (appliedPropertyValue === null) {
             objectKeys = Object.keys(this.effectiveDefaultRules);
             // console.log(objectKeys);
-            for (let i = 0; i < objectKeys.length / 2; i++) {
+            for (let i = objectKeys.length / 2 - 1; i >= 0; i--) {
+                // for (let i = 0; i < objectKeys.length / 2; i++) {
                 const stringKey = this.effectiveDefaultRules[i];
                 const selectorText = this.effectiveDefaultRules[stringKey].selectorText;
                 const propertyValue = this.effectiveDefaultRules[stringKey].style[propertyName];
@@ -238,7 +240,8 @@ export class CssStyleReader {
 
     removePseudo(selectorText) {
         const pseudoElementRegex = /::(before|after|first-letter|first-line|selection|backdrop|placeholder|marker|spelling-error|grammar-error)/i;
-        const pseudoClassRegex = /:(active|hover|focus|visited|link|enabled|disabled|checked|indeterminate|valid|invalid|required|optional|read-only|read-write|first-child|last-child|nth-child|nth-last-child|first-of-type|last-of-type|nth-of-type|nth-last-of-type|only-child|only-of-type|target|root|empty|not|lang|dir|is|where|has|scope|fullscreen|current|past|future)/i;
+        const pseudoClassRegex = /:(active|hover|focus|visited|link|enabled|disabled|checked|indeterminate|valid|invalid|required|optional|read-only|read-write|first-child|last-child|nth-child|nth-last-child|first-of-type|last-of-type|nth-of-type|nth-last-of-type|only-child|only-of-type|target|root|empty|not|lang|dir|is|where|has|scope|fullscreen|current|past|future)\(.*?\)/i;
+        // const pseudoClassRegex = /:(active|hover|focus|visited|link|enabled|disabled|checked|indeterminate|valid|invalid|required|optional|read-only|read-write|first-child|last-child|nth-child|nth-last-child|first-of-type|last-of-type|nth-of-type|nth-last-of-type|only-child|only-of-type|target|root|empty|not|lang|dir|is|where|has|scope|fullscreen|current|past|future)/i;
 
         const cleanedSelector = selectorText
             .replace(pseudoElementRegex, '')
