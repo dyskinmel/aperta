@@ -23,6 +23,10 @@
         // const index = selectorTags.indexOf(event.detail.value);
         // console.log("inputValue: ", inputValue);
         if (inputValue !== "") {
+            const index = selectorTags.indexOf(inputValue);
+            if (index !== -1) {
+                selectorTags[index] = event.detail.value;
+            }
         } else {
             selectorTags = [...selectorTags, event.detail.value];
         }
