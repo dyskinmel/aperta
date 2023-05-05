@@ -6,7 +6,7 @@
             elements: [
                 {
                     name: "Div",
-                    tag: "div",
+                    tag: "DIV",
                 },
             ],
         },
@@ -15,19 +15,19 @@
             elements: [
                 {
                     name: "Heading",
-                    tag: "h1",
+                    tag: "H1",
                 },
                 {
                     name: "Paragraph",
-                    tag: "p",
+                    tag: "P",
                 },
                 {
                     name: "Text link",
-                    tag: "a",
+                    tag: "A",
                 },
                 {
                     name: "Text",
-                    tag: "span",
+                    tag: "SPAN",
                 },
             ],
         },
@@ -36,7 +36,7 @@
             elements: [
                 {
                     name: "Image",
-                    tag: "img",
+                    tag: "IMG",
                 },
             ],
         },

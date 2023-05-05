@@ -1,9 +1,15 @@
 // made based on
 // https://html.spec.whatwg.org/multipage/dom.html#content-models
-// based on 6 April 2023 version
+// 6 April 2023 version
+
+//Following functions are used to check if the element is in the category
+//functions mainly used in the ElementManager.js to check if the element can be parent of the element
 
 
-function isMetadataContentTags(elm) {
+// Metadata content
+//
+
+export function isMetadataContentTags(elm) {
     const array = [
         "BASE",
         "LINK",
@@ -21,7 +27,10 @@ function isMetadataContentTags(elm) {
     }
 }
 
-function isFlowContentTags(elm) {
+// Flow content
+//
+
+export function isFlowContentTags(elm) {
     const array = [
         "A",
         "ABBR",
@@ -148,7 +157,10 @@ function isFlowContentTags(elm) {
     }
 }
 
-function isSectioningContentTags(elm) {
+// Sectioning content
+//
+
+export function isSectioningContentTags(elm) {
     const array = [
         "ARTICLE",
         "ASIDE",
@@ -162,7 +174,10 @@ function isSectioningContentTags(elm) {
     }
 }
 
-function isHeadingContentTags(elm) {
+// Heading content
+//
+
+export function isHeadingContentTags(elm) {
     const array = [
         "H1",
         "H2",
@@ -184,7 +199,10 @@ function isHeadingContentTags(elm) {
 
 }
 
-function isPhrasingContentTags(elm) {
+// Phrasing content
+//
+
+export function isPhrasingContentTags(elm) {
     const array = [
         "A",
         "ABBR",
@@ -267,7 +285,10 @@ function isPhrasingContentTags(elm) {
     }
 }
 
-function isEmbeddedContentTags(elm) {
+// Embedded content
+//
+
+export function isEmbeddedContentTags(elm) {
     const array = [
         "AUDIO",
         "CANVAS",
@@ -287,7 +308,10 @@ function isEmbeddedContentTags(elm) {
     }
 }
 
-function isInteractiveContentTags(elm) {
+// Interactive content
+//
+
+export function isInteractiveContentTags(elm) {
     const array = [
         "BUTTON",
         "DETAILS",
@@ -346,7 +370,10 @@ function isInteractiveContentTags(elm) {
     }
 }
 
-function isPalpableContentTags(elm) {
+// Palpable content
+//
+
+export function isPalpableContentTags(elm) {
     const array = [
         "A",
         "ABBR",

@@ -1,14 +1,15 @@
 <script>
-    import { createElementManager } from "./Element.js";
+    import { elementManagerFactory } from "./ElementManager.js";
 
     export let elementList;
     let isOpen = true;
     const girdRow = elementList.elements.length / 3;
     const toggle = () => (isOpen = !isOpen);
     const clickEvent = (event) => {
-        const elm = document.createElement(event.target.dataset.htag);
-        const elm_manager = createElementManager(elm);
-        elm_manager.addElementToCanvas(elm, event.target.textContent);
+        const htag = event.target.dataset.htag;
+        const elm_manager = elementManagerFactory(htag);
+        // console.log(elm_manager);
+        elm_manager.addElementToCanvas(htag, event.target.textContent);
     };
 </script>
 

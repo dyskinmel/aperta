@@ -13,23 +13,107 @@ body {
     background-color: white;
     width: 99%;
     height: 99%;
+    overflow-y: scroll;
+
+    /* following padding is for experiement delete later */
+    /* padding: 1px 2px 3px 4px; */
 }
+
 
 /* Default styles and animations */
 
-.hover {
+/* .hover {
     box-sizing: border-box;
     outline: 1px solid rgb(48, 165, 249);
+} */
 
-    content: "HTML Tag";
-}
-
-#hoveredElement {
+/* hoveredElmCaptionに変える */
+/* #hoverLabel {
     position: absolute;
     color: #1bbcf1;
     font-size: 10px;
     font-weight: normal;
+} */
+
+#hoverCaption {
+    position: absolute;
+    color: #1bbcf1;
+    font-size: 10px;
+    font-weight: normal;
+    padding-left: 4px;
 }
+
+#hoverOutline {
+    position: absolute;
+    box-sizing: border-box;
+    outline: 1px solid rgb(48, 165, 249);
+    z-index: -1;
+}
+
+/* #selectedElm {
+    box-sizing: border-box;
+    outline: 1px solid rgb(103, 167, 213);
+} */
+
+#selectOutline {
+    position: absolute;
+    box-sizing: border-box;
+    outline: 1px solid rgb(103, 167, 213);
+    z-index: -1;
+}
+
+/* selectedElmCaptionに変える */
+/* #selectLabel {
+    position: absolute;
+    color: #ffffff;
+    background-color: #1bbcf1;
+    font-size: 10px;
+    font-weight: normal;
+} */
+
+#selectCaption {
+    position: absolute;
+    color: #ffffff;
+    background-color: #1bbcf1;
+    font-size: 10px;
+    font-weight: normal;
+    padding-left: 4px;
+    padding-right: 4px;
+}
+
+.draggedOverOutline {
+    position: absolute;
+    box-sizing: border-box;
+    /* outline: 1px dashed rgb(103, 167, 213); */
+    border: 1px dashed rgb(103, 167, 213);
+    z-index: -1;
+}
+
+.isAtTop {
+    border-top: 2px solid rgb(0, 120, 206);
+    border-bottom: 1px dashed rgb(103, 167, 213);
+    border-right: 1px dashed rgb(103, 167, 213);
+    border-left: 1px dashed rgb(103, 167, 213);
+    z-index: -1;
+}
+
+.middle {
+    border: 2px solid rgb(0, 120, 206);
+    z-index: -1;
+}
+
+.isAtBottom {
+    border-top: 1px dashed rgb(103, 167, 213);
+    border-bottom: 2px solid rgb(0, 120, 206);
+    border-right: 1px dashed rgb(103, 167, 213);
+    border-left: 1px dashed rgb(103, 167, 213);
+    z-index: -1;
+}
+
+/* #hoveredElm {
+    box-sizing: border-box;
+    outline: 1px solid rgb(48, 165, 249);
+} */
 
 /* .hover::before {
     content: "HTML Tag";
@@ -45,27 +129,7 @@ body {
 
 } */
 
-.selected {
+/* .selected {
     box-sizing: border-box;
-    outline: 3px solid rgb(103, 167, 213);
-}
-
-#selectedElement {
-    position: absolute;
-    color: #ffffff;
-    background-color: #1bbcf1;
-    font-size: 10px;
-    font-weight: normal;
-}
-
-.isAtTop {
-    border-top: 2px solid rgb(0, 120, 206);
-}
-
-.middle {
-    border: 2px solid rgb(0, 120, 206);
-}
-
-.isAtBottom {
-    border-bottom: 2px solid rgb(0, 120, 206);
-}
+    outline: 1px solid rgb(103, 167, 213);
+} */

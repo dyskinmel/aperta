@@ -1,18 +1,17 @@
 <script>
     import { onMount } from "svelte";
-    import { createElementManager } from "./Element.js";
-    import { addKeydownEventListeners } from "./EventListenerHandler.js";
+    import { elementManagerFactory } from "./ElementManager.js";
+    import { addKeydownEventListeners } from "./ElementEventListeners.js";
 
     let canvas;
 
     const onCanvasLoad = () => {
         const canvasWindow = canvas.contentWindow;
         addKeydownEventListeners(canvasWindow);
-        const canvasDocument = canvasWindow.document;
-        const elm = canvasDocument.getElementsByTagName("body")[0];
+        const canvasBody = canvasWindow.document.body;
 
-        const elm_manager = createElementManager(elm);
-        elm_manager.addListenerToElement(elm);
+        const elm = elementManagerFactory(canvasBody);
+        elm.addListenerToElement(canvasBody);
     };
 </script>
 
