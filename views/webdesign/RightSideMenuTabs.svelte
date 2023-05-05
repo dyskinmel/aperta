@@ -8,19 +8,19 @@
 
     // const dispatch = createEventDispatcher();
 
-    let isElementSelected = false;
+    // let isElementSelected = false;
 
-    onMount(() => {
-        document.addEventListener("elementSelected", (event) => {
-            showTabItemsIfElementSelected();
-        });
-    });
+    // onMount(() => {
+    //     document.addEventListener("elementSelected", (event) => {
+    //         showTabItemsIfElementSelected();
+    //     });
+    // });
 
-    export function showTabItemsIfElementSelected() {
-        const canvasWrapper = new CanvasWrapper();
-        isElementSelected = canvasWrapper.isElementSelected();
-        // console.log("isElementSelected: " + isElementSelected);
-    }
+    // export function showTabItemsIfElementSelected() {
+    //     const canvasWrapper = new CanvasWrapper();
+    //     isElementSelected = canvasWrapper.isElementSelected();
+    //     // console.log("isElementSelected: " + isElementSelected);
+    // }
 
     const handleClick = (tabValue) => () => (activeTabValue = tabValue);
 </script>
@@ -58,23 +58,17 @@
 {/if} -->
 
 {#each rightSideMenuTabItems as rightSideMenuTabItem}
-    {#if activeTabValue == rightSideMenuTabItem.value}
-        <div class="box">
-            <svelte:component this={rightSideMenuTabItem.component} />
-        </div>
-    {/if}
+    <!-- {#if activeTabValue == rightSideMenuTabItem.value} -->
+    <div
+        class="box
+        {activeTabValue == rightSideMenuTabItem.value ? '' : 'hidden'}"
+    >
+        <svelte:component this={rightSideMenuTabItem.component} />
+    </div>
+    <!-- {/if} -->
 {/each}
 
 <style>
-    .box {
-        width: 100%;
-        height: 100%;
-        margin-bottom: 10px;
-        /* padding: 10px; */
-        border: 1px solid #dee2e6;
-        border-radius: 0 0 0.5rem 0.5rem;
-        border-top: 0;
-    }
     ul {
         display: flex;
         flex-wrap: wrap;
@@ -104,5 +98,18 @@
         color: #495057;
         background-color: #fff;
         border-color: #dee2e6 #dee2e6 #fff;
+    }
+
+    .hidden {
+        display: none;
+    }
+    .box {
+        width: 100%;
+        height: 100%;
+        margin-bottom: 10px;
+        /* padding: 10px; */
+        border: 1px solid #dee2e6;
+        border-radius: 0 0 0.5rem 0.5rem;
+        border-top: 0;
     }
 </style>

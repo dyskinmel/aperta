@@ -97,8 +97,8 @@ export class CssStyleReader {
         // consider to change this part of code to support multiple css files in the future
         objectKeys = Object.keys(this.effectiveRules);
         if (appliedPropertyValue === null) {
-            for (let i = objectKeys.length / 2 - 1; i >= 0; i--) {
-                // for (let i = 0; i < objectKeys.length / 2; i++) {
+            // for (let i = objectKeys.length / 2 - 1; i >= 0; i--) {
+            for (let i = 0; i < objectKeys.length / 2; i++) {
                 const stringKey = this.effectiveRules[i];
                 const selectorText = this.effectiveRules[stringKey].selectorText;
                 const selectorToMatch = this.effectiveRules[stringKey].selectorToMatch;
@@ -159,8 +159,8 @@ export class CssStyleReader {
         if (appliedPropertyValue === null) {
             objectKeys = Object.keys(this.effectiveDefaultRules);
             // console.log(objectKeys);
-            for (let i = objectKeys.length / 2 - 1; i >= 0; i--) {
-                // for (let i = 0; i < objectKeys.length / 2; i++) {
+            // for (let i = objectKeys.length / 2 - 1; i >= 0; i--) {
+            for (let i = 0; i < objectKeys.length / 2; i++) {
                 const stringKey = this.effectiveDefaultRules[i];
                 const selectorText = this.effectiveDefaultRules[stringKey].selectorText;
                 const propertyValue = this.effectiveDefaultRules[stringKey].style[propertyName];

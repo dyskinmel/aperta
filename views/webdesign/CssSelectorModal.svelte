@@ -2,7 +2,8 @@
     import { createEventDispatcher } from "svelte";
     const dispatch = createEventDispatcher();
 
-    let selectorInput = "";
+    let selectorInput;
+    export let inputValue;
 
     function cancel() {
         dispatch("cancel");
@@ -19,6 +20,7 @@
     <div class="modal-content" on:click|stopPropagation>
         <input
             bind:this={selectorInput}
+            value={inputValue}
             type="text"
             placeholder="Type selector and press Enter"
         />

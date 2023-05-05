@@ -1,4 +1,5 @@
 <script>
+    import CssDropdownMenu from "./CssDropdownMenu.svelte";
     import CssSelectorModal from "./CssSelectorModal.svelte";
     //
     let showModal = false;
@@ -10,6 +11,7 @@
 
     function openModal(event, tagValue = "") {
         inputValue = tagValue;
+        // console.log(inputValue);
         showModal = true;
     }
 
@@ -34,22 +36,32 @@
         closeModal();
     }
 
-    function addTag() {
-        if (inputValue.trim()) {
-            selectorTags = [...selectorTags, inputValue.trim()];
-            inputValue = "";
-        }
-    }
+    // function addTag() {
+    //     if (inputValue.trim()) {
+    //         selectorTags = [...selectorTags, inputValue.trim()];
+    //         inputValue = "";
+    //     }
+    // }
 
     function removeTag(tag) {
         selectorTags = selectorTags.filter((t) => t !== tag);
     }
 
     //
-    let ddOpen = false;
+    const tagActions = [
+        { label: "Edit selector", type: "edit" },
+        { label: "Delete selector", type: "delete" },
+    ];
 
-    function toggleDD() {
-        ddOpen = !ddOpen;
+    function handleTagAction(action, tag) {
+        // console.log(action);
+        if (action.type === "edit") {
+            openModal(null, tag);
+            // console.log(`Edit tag: ${tag}`);
+            // Edit tag name logic here
+        } else if (action.type === "delete") {
+            removeTag(tag);
+        }
     }
 </script>
 
@@ -63,7 +75,11 @@
 <button on:click={openModal}>Add</button>
 
 {#if showModal}
-    <CssSelectorModal on:cancel={closeModal} on:add={updateSelector} />
+    <CssSelectorModal
+        {inputValue}
+        on:cancel={closeModal}
+        on:add={updateSelector}
+    />
     <!-- <CssSelectorModal on:cancel={closeModal}>
         <h2>Modal Title</h2>
         <p>Modal content</p>
@@ -75,7 +91,13 @@
         <div class="tag">
             {tag}
             <!-- svelte-ignore a11y-click-events-have-key-events -->
-            <span class="tag-ddmenu" on:click={() => removeTag(tag)}>∨</span>
+            <CssDropdownMenu
+                actions={tagActions}
+                onAction={(action) => handleTagAction(action, tag)}
+            >
+                <span>∨</span>
+            </CssDropdownMenu>
+            <!-- <span class="tag-ddmenu" on:click={() => removeTag(tag)}>∨</span> -->
         </div>
     {/each}
 </div>
@@ -95,8 +117,8 @@
         padding: 4px 8px;
     }
 
-    .tag-ddmenu {
+    /* .tag-ddmenu {
         margin-left: 4px;
         cursor: pointer;
-    }
+    } */
 </style>
