@@ -32,7 +32,6 @@
         } else {
             selectorTags = [...selectorTags, event.detail.value];
         }
-
         closeModal();
     }
 

@@ -238,6 +238,7 @@
 </script>
 
 <div class="cssSizeMenuItem" bind:this={sizeProperty} id={item.value}>
+    <!--  -->
     <span class="cssSizeMenuItemLabel">{item.label}</span>
     <div class="cssSizeMenuItemInputGroup">
         <input
