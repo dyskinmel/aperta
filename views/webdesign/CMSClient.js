@@ -1,4 +1,4 @@
-//Migrate from CMSConnector.js
+//working on migrating features from CMSConnector.js
 
 
 

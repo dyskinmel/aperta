@@ -36,99 +36,100 @@ export function applyStyleToSelectedElement(property, cssValue) {
 
 
 // set css value to css editor when a element is selected
+// migrated feature to CssStyleManager.js
 
-export function setCssValueToCssEditor(elm) {
-    //all css property items in css editor
-    const cssProperties = [
-        "width",
-        "height",
-        "min-width",
-        "min-height",
-        "max-width",
-        "max-height",
-        //add more css properties here
-    ]
+// export function setCssValueToCssEditor(elm) {
+//     //all css property items in css editor
+//     const cssProperties = [
+//         "width",
+//         "height",
+//         "min-width",
+//         "min-height",
+//         "max-width",
+//         "max-height",
+//         //add more css properties here
+//     ]
 
-    // get css value from selected element
-    const cssValues = elm.ownerDocument.defaultView.getComputedStyle(elm);
+//     // get css value from selected element
+//     const cssValues = elm.ownerDocument.defaultView.getComputedStyle(elm);
 
-    const styleSheet = elm.ownerDocument.styleSheets;
-    console.log(styleSheet.length);
-    for (let i = 0; i < styleSheet.length; i++) {
-        console.log(styleSheet[i]);
-    }
+//     const styleSheet = elm.ownerDocument.styleSheets;
+//     console.log(styleSheet.length);
+//     for (let i = 0; i < styleSheet.length; i++) {
+//         console.log(styleSheet[i]);
+//     }
 
-    //get disabled css property list
-    const elmManager = elementManagerFactory(elm);
-    const enabledCssProperties = elmManager.getEnabledCssProperties();
+//     //get disabled css property list
+//     const elmManager = elementManagerFactory(elm);
+//     const enabledCssProperties = elmManager.getEnabledCssProperties();
 
-    // console.log("cssValue: ", cssValue);
-    // console.log(enabledCssProperties[cssProperties[0]]);
+//     // console.log("cssValue: ", cssValue);
+//     // console.log(enabledCssProperties[cssProperties[0]]);
 
-    cssProperties.forEach((cssProperty) => {
-        //get css editor
-        const targetProperty = document.getElementById(cssProperty);
-        const targetValue = targetProperty.querySelectorAll('[data-aperta-css-value-type="value"]')[0];
-        const targetUnit = targetProperty.querySelectorAll('[data-aperta-css-value-type="unit"]')[0];
+//     cssProperties.forEach((cssProperty) => {
+//         //get css editor
+//         const targetProperty = document.getElementById(cssProperty);
+//         const targetValue = targetProperty.querySelectorAll('[data-aperta-css-value-type="value"]')[0];
+//         const targetUnit = targetProperty.querySelectorAll('[data-aperta-css-value-type="unit"]')[0];
 
-        //fire focus event on target unit to set value to currentUnit on CssDimensionInput.svelte
-        const event = new Event('focus');
-        targetUnit.dispatchEvent(event);
+//         //fire focus event on target unit to set value to currentUnit on CssDimensionInput.svelte
+//         const event = new Event('focus');
+//         targetUnit.dispatchEvent(event);
 
-        //
-        let cssValue = cssValues[cssProperty];
-        cssValue = parseCssValue(cssValue);
-        // console.log(cssValue);
-        // console.log(cssProperty + ": " + cssValue.value + cssValue.unit);
+//         //
+//         let cssValue = cssValues[cssProperty];
+//         cssValue = parseCssValue(cssValue);
+//         // console.log(cssValue);
+//         // console.log(cssProperty + ": " + cssValue.value + cssValue.unit);
 
-        switch (enabledCssProperties[cssProperty]) {
-            case true:
-                // enable input field (add later)
+//         switch (enabledCssProperties[cssProperty]) {
+//             case true:
+//                 // enable input field (add later)
 
-                //set css value to css editor
-                if (cssValue.unit !== undefined) {
-                    // add both css value and unit if unit value is defined
-                    targetValue.value = cssValue.value;
-                    targetUnit.value = cssValue.unit.toUpperCase();
-                    // const event = new Event('change');
-                    // targetUnit.dispatchEvent(event);
-
-
-                } else {
-                    // add only css value if unit value is undefined (value would be KEYWORD value such as "AUTO" and "NONE")
-                    targetUnit.value = cssValue.value.toUpperCase();
-                    // dispatch change event on CssDimensionInput.svelte select element to change UI 
-                    const event = new Event('change');
-                    targetUnit.dispatchEvent(event);
-                }
-
-                break;
-
-            //if css property is disabled
-            case false:
-                // clear value and disable input field (add later)
+//                 //set css value to css editor
+//                 if (cssValue.unit !== undefined) {
+//                     // add both css value and unit if unit value is defined
+//                     targetValue.value = cssValue.value;
+//                     targetUnit.value = cssValue.unit.toUpperCase();
+//                     // const event = new Event('change');
+//                     // targetUnit.dispatchEvent(event);
 
 
-                break;
-        }
+//                 } else {
+//                     // add only css value if unit value is undefined (value would be KEYWORD value such as "AUTO" and "NONE")
+//                     targetUnit.value = cssValue.value.toUpperCase();
+//                     // dispatch change event on CssDimensionInput.svelte select element to change UI 
+//                     const event = new Event('change');
+//                     targetUnit.dispatchEvent(event);
+//                 }
+
+//                 break;
+
+//             //if css property is disabled
+//             case false:
+//                 // clear value and disable input field (add later)
 
 
-        //set css value to css editor
+//                 break;
+//         }
 
-    });
 
-    // get 
+//         //set css value to css editor
 
-    // console.log("cssValue.length: ", cssValue.length);
-    // console.log("cssValue.length: ", cssValue[350]);
+//     });
 
-    // // get css editor
-    // const cssEditor = elm.ownerDocument.getElementById("cssEditor");
+//     // get 
 
-    // // set css value to css editor
-    // cssEditor.value = cssValue.cssText;
+//     // console.log("cssValue.length: ", cssValue.length);
+//     // console.log("cssValue.length: ", cssValue[350]);
 
-}
+//     // // get css editor
+//     // const cssEditor = elm.ownerDocument.getElementById("cssEditor");
+
+//     // // set css value to css editor
+//     // cssEditor.value = cssValue.cssText;
+
+// }
 
 
 
@@ -186,7 +187,7 @@ export function parseCssValue(value) {
 }
 
 //
-// functions related to convert units
+// functions related to convert dimensional units
 //
 
 // convert css value to target unit 
@@ -887,7 +888,7 @@ function vhToCh(vhValue, canvasWrapper) {
 }
 
 
-// util methods for converting units
+// util methods for converting dimensional units
 //
 
 // check if the property is a height property
