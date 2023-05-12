@@ -1,6 +1,7 @@
 <script>
     import { onMount } from "svelte";
     import { CanvasWrapper } from "./utils";
+    import { cssStyleReader } from "./CssStore.js";
     export let rightSideMenuTabItems = [];
     export let activeTabValue = 1;
 
@@ -26,7 +27,10 @@
     <!-- {#if activeTabValue == rightSideMenuTabItem.value} -->
     <div
         class="box
-        {activeTabValue == rightSideMenuTabItem.value ? '' : 'hidden'}"
+        {$cssStyleReader !== null &&
+        activeTabValue == rightSideMenuTabItem.value
+            ? ''
+            : 'hidden'}"
     >
         <svelte:component this={rightSideMenuTabItem.component} />
     </div>

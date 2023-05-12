@@ -5,6 +5,7 @@
     import { parseCssValue } from "./CssEditorUtils.js";
     import { convertCssUnits } from "./CssEditorUtils.js";
     import { CanvasWrapper } from "./utils.js";
+    import { cssStyleReader, selectorToEdit } from "./CssStore.js";
 
     // export let property;
     export let item;
@@ -20,62 +21,135 @@
     let sizeProperty = null;
     let sizeValue = null;
     let sizeUnit = null;
+    let sizeColor = null;
+
+    let StoreCssStyleReader = null;
+    let StoreSelectorToEdit = null;
+
+    cssStyleReader.subscribe((value) => {
+        StoreCssStyleReader = value;
+    });
+    selectorToEdit.subscribe((value) => {
+        StoreSelectorToEdit = value;
+    });
+
+    // reactive statement to update the input value when the selector editor is changed
+    $: {
+        if (StoreCssStyleReader === null) {
+            //do nothing if no element is selected
+        } else {
+            if (StoreSelectorToEdit === "") {
+                const appliedRule = StoreCssStyleReader.getAppliedRule(
+                    sizeProperty.id
+                );
+                // console.log(appliedRule["appliedPropertyValue"]);
+                // console.log(appliedRule);
+
+                if (appliedRule["appliedPropertyValue"] === null) {
+                    //do nothing
+                } else {
+                    const parsedCssValue = parseCssValue(
+                        appliedRule["appliedPropertyValue"]
+                    );
+                    // console.log(parsedCssValue);
+
+                    //add condiiton for when NaN value is returned
+                    if (isNaN(parsedCssValue["value"])) {
+                        sizeValue.value = parsedCssValue["value"].toUpperCase();
+                        sizeUnit.value = hidden;
+                        isDisabled = true;
+                        sizeUnit.classList.remove("deleteArrow");
+
+                        // return;
+                    } else {
+                        sizeValue.value = parsedCssValue["value"];
+                        sizeUnit.value = parsedCssValue["unit"].toUpperCase();
+                        isDisabled = false;
+                        sizeUnit.classList.add("deleteArrow");
+                    }
+                    // console.log("appliedRuleMode");
+                }
+            } else {
+                // if mode is to edit individual selector properties
+                const selectorRule =
+                    StoreCssStyleReader.getRuleBySelectorAndPropertyName(
+                        StoreSelectorToEdit,
+                        sizeProperty.id
+                    );
+                console.log("show properties of " + StoreSelectorToEdit);
+            }
+            // console.log("StoreCssStyleReader is not null");
+        }
+    }
 
     // const cssStyleReader = new CssStyleReader();
 
-    onMount(() => {
-        // getCssStyle();
-        document.addEventListener("elementSelected", (event) => {
-            // console.log(sizeProperty.id);
-            // console.log(sizeProperty);
+    // onMount(() => {
+    //     // getCssStyle();
+    //     document.addEventListener("elementSelected", (event) => {
+    //         // console.log(sizeProperty.id);
+    //         // console.log(sizeProperty);
 
-            if (sizeProperty === null) {
-                return;
-            }
-            const appliedRule = event.detail.targetStyle.getAppliedRule(
-                sizeProperty.id
-            );
-            // console.log(appliedRule["appliedPropertyValue"]);
+    //         // event.detail.targetSytle.getRulebySelector(
+    //         //     selectorToEdit.value,
+    //         //     sizeProperty.id
+    //         // );
 
-            // console.log(appliedRule);
+    //         const appliedRule = event.detail.targetStyle.getAppliedRule(
+    //             sizeProperty.id
+    //         );
+    //         // console.log(appliedRule["appliedPropertyValue"]);
+    //         // console.log(appliedRule);
 
-            if (appliedRule["appliedPropertyValue"] === null) {
-                return;
-            }
+    //         if (appliedRule["appliedPropertyValue"] === null) {
+    //             return;
+    //         }
 
-            const parsedCssValue = parseCssValue(
-                appliedRule["appliedPropertyValue"]
-            );
-            // console.log(parsedCssValue);
+    //         const parsedCssValue = parseCssValue(
+    //             appliedRule["appliedPropertyValue"]
+    //         );
+    //         // console.log(parsedCssValue);
 
-            //add condiiton for when NaN value is returned
-            if (isNaN(parsedCssValue["value"])) {
-                sizeValue.value = parsedCssValue["value"].toUpperCase();
-                sizeUnit.value = hidden;
-                isDisabled = true;
-                sizeUnit.classList.remove("deleteArrow");
+    //         //add condiiton for when NaN value is returned
+    //         if (isNaN(parsedCssValue["value"])) {
+    //             sizeValue.value = parsedCssValue["value"].toUpperCase();
+    //             sizeUnit.value = hidden;
+    //             isDisabled = true;
+    //             sizeUnit.classList.remove("deleteArrow");
 
-                // return;
-            } else {
-                sizeValue.value = parsedCssValue["value"];
-                sizeUnit.value = parsedCssValue["unit"].toUpperCase();
-                isDisabled = false;
-                sizeUnit.classList.add("deleteArrow");
-            }
+    //             // return;
+    //         } else {
+    //             sizeValue.value = parsedCssValue["value"];
+    //             sizeUnit.value = parsedCssValue["unit"].toUpperCase();
+    //             isDisabled = false;
+    //             sizeUnit.classList.add("deleteArrow");
+    //         }
 
-            // console.log("chatched elementSelected event@CSSDimensionInput");
-            // getCssStyle();
-        });
-    });
+    //         // console.log("chatched elementSelected event@CSSDimensionInput");
+    //         // getCssStyle();
+    //     });
+    // });
 
-    function getCssStyle() {
-        // cssStyleReader.getAppliedRule();
+    //
+    //
+
+    function getPropertyValueAccordingToMode($cssEditMode) {
+        //if individual mode is ture
+        if ($cssEditMode) {
+            //set selected css selector's property value
+            console.log("individualMode");
+        } else {
+            //set applied css property value with selector value
+            console.log("appliedMode");
+        }
     }
 
-    const getUnitType = (value) => {
-        const keywords = ["NONE", "AUTO", ""];
-        return keywords.includes(value.toUpperCase()) ? "KEYWORD" : "DIMENSION";
-    };
+    // function getTagColorAccordingToMode(){
+
+    // }
+
+    //
+    //
 
     function getSizeValueAndApply(event) {
         let propertyName = sizeProperty.id;
@@ -90,6 +164,14 @@
             applyStyleToSelectedElement(propertyName, cssValue);
         }
     }
+
+    // functions related to unit conversion ////////////////
+    //
+
+    const getUnitType = (value) => {
+        const keywords = ["NONE", "AUTO", ""];
+        return keywords.includes(value.toUpperCase()) ? "KEYWORD" : "DIMENSION";
+    };
 
     function saveValues(event) {
         // currentValue = sizeValue.value;
@@ -117,6 +199,8 @@
 
         // console.log(UnitConvert);
 
+        // convert units and apply edited style to selected element
+        // DIMENSION-KEYWORD means convert unit from DIMENSION(ex. 10px, 10em) to KEYWORD(ex. auto, none)
         switch (UnitConvert) {
             case "DIMENSION-DIMENSION":
                 // convert units and apply edited style to selected element
@@ -230,6 +314,7 @@
         }
 
         // apply edited style to selected element
+        //
         applyStyleToSelectedElement(propertyName, cssValue);
 
         // blur to make sure next time user clicks on input, focused event will be fired
@@ -237,6 +322,11 @@
     }
 </script>
 
+<!-- {setPropertyValueAccordingToMode($cssEditMode)} -->
+<!-- {getCurrentMode($cssEditMode)} -->
+<!-- {isCssEditModeTrue($cssEditMode)} -->
+<!-- {$cssEditMode} -->
+<!-- {$selectorToEdit} -->
 <div class="cssSizeMenuItem" bind:this={sizeProperty} id={item.value}>
     <!--  -->
     <span class="cssSizeMenuItemLabel">{item.label}</span>

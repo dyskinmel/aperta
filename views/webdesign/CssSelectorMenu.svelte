@@ -14,6 +14,7 @@
     //
     // let selectorTags = [];
     let selectorTags = derived(selectorList, ($selectorList) => {
+        // console.log($selectorList);
         let array = [];
         const objectKeys = Object.keys($selectorList);
         for (let i = 0; i < objectKeys.length / 2; i++) {
@@ -62,7 +63,7 @@
             selectorToEdit.update((value) => tag);
             // console.log(event);
         }
-        // console.log(selectorToEdit);
+        console.log("selectorToEdit: " + $selectorToEdit);
     }
 
     //
@@ -91,7 +92,7 @@
         bind:checked={$cssEditMode}
     />
     <!-- <input type="checkbox" bind:checked={cssEditMode} /> -->
-    edit individual selectors
+    individual mode
 </label>
 
 <button on:click={openModal}>Add</button>
@@ -103,19 +104,28 @@
 <div class="tags-container">
     {#each $selectorTags as tag (tag)}
         <!-- svelte-ignore a11y-click-events-have-key-events -->
-        <div class="tag" on:click={selectTag(tag)}>
+        <div
+            class="tag"
+            on:click={selectTag(tag)}
+            style="background-color:{$selectorList[tag].color}"
+        >
             {tag}
+
             <!-- svelte-ignore a11y-click-events-have-key-events -->
-            <CssDropdownMenu
-                actions={tagActions}
-                onAction={(action) => handleTagAction(action, tag)}
-            >
-                <span>∨</span>
-            </CssDropdownMenu>
-            <!-- <span class="tag-ddmenu" on:click={() => removeTag(tag)}>∨</span> -->
+            {#if tag !== "inline"}
+                <CssDropdownMenu
+                    actions={tagActions}
+                    onAction={(action) => handleTagAction(action, tag)}
+                >
+                    <span>∨</span>
+                </CssDropdownMenu>
+                <!-- <span class="tag-ddmenu" on:click={() => removeTag(tag)}>∨</span> -->
+            {/if}
         </div>
     {/each}
 </div>
+
+<!-- add tags container for pseudo lists -->
 
 <style>
     .tags-container {
@@ -127,7 +137,8 @@
     .tag {
         display: flex;
         align-items: center;
-        background-color: #f1f1f1;
+        /* background-color: #f1f1f1; */
+        color: #fefcfc;
         border-radius: 4px;
         padding: 4px 8px;
     }

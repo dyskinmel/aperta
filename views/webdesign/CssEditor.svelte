@@ -15,7 +15,7 @@
 
     onMount(() => {
         document.addEventListener("elementSelected", (event) => {
-            //initialize when new element is selected
+            //initialize store variables when new element is selected
             cssStyleReader.update((value) => event.detail.targetStyle);
             selectorList.update((value) => $cssStyleReader.getSelectorList());
             pseudoList.update((value) => $cssStyleReader.getPseudoList());
@@ -24,12 +24,15 @@
 
             // cssStyleReader = event.detail.targetStyle;
             // console.log($cssStyleReader);
-            console.log($selectorList);
+            // console.log($selectorList);
 
             // console.log($pseudoList);
             // $cssStyleReader.getSelectorList();
         });
     });
+
+    //
+    //
 </script>
 
 <CssSelectorMenu />

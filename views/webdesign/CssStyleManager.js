@@ -207,6 +207,40 @@ export class CssStyleReader {
         // return { appliedSelector, appliedPropertyValue, isAppliedImportant, appliedRule };
     }
 
+    getRuleBySelectorAndPropertyName(selector, propertyName) {
+        let isImportant = false;
+        let propertyValue = null;
+        // let selector = null;
+        let color = null;
+        // let Rule = null;
+
+        if (selector === "inline") {
+            // console.log("inline");
+            propertyValue = this.selectedElm.style[propertyName];
+            if (propertyValue !== "") {
+                isImportant = this.isImportant(this.selectedElm.style, propertyName);
+
+                // selector = "inline";
+                color = "#0000FF";
+                propertyValue = propertyValue;
+                // isImportant = isImportant;
+                // Rule = this.selectedElm.style;
+            }
+        } else {
+            propertyValue = this.effectiveRules[selector].style[propertyName];
+            if (propertyValue !== "") {
+                color = this.effectiveRules[selector].color;
+                // selector = this.effectiveRules[selector].selectorText;
+                isImportant = this.isImportant(this.effectiveRules[selector].style, propertyName);
+
+                // console.log(this.effectiveRules[selector]);
+            }
+        }
+
+        // console.log("Selector: " + selector + "  propertyName: " + propertyName + "  PropertyValue: " + propertyValue + "  isImportant: " + isImportant);
+        return { propertyValue, isImportant, color };
+    }
+
 
     getEffectiveRules(rules) {
         // console.log(this.defaultRules);
