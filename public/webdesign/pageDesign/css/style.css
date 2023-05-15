@@ -49,10 +49,10 @@ h1:hover {
     margin-top: 0;
 }
 
-/* 
+
 h1::after {
     content: "HTML Tag";
-} */
+}
 
 body h1 {
     font-size: 2.5rem;

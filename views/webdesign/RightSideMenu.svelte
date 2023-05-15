@@ -10,5 +10,4 @@
     ];
 </script>
 
-<!-- <MetaEditorTabs {metaMenus} /> -->
 <RightSideMenuTabs {rightSideMenuTabItems} />

@@ -1,3 +1,6 @@
+// Migrated to utils.js adjustBodyHeight()
+//
+
 // export function adjustBodyHeight() {
 //     const canvas = document.getElementById("canvas");
 //     const canvasWindow = canvas.contentWindow;

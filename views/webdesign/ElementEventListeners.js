@@ -1,5 +1,5 @@
 import { elementManagerFactory } from "./ElementManager.js";
-import { setCssValueToCssEditor } from "./CssEditorUtils.js";
+// import { setCssValueToCssEditor } from "./CssEditorUtils.js";
 import { adjustBodyHeight } from "./utils.js";
 import { selectElm } from "./utils.js";
 import { addCaptionToSelectedElm } from "./utils.js";
@@ -151,7 +151,7 @@ export function addClickEventListeners(elm) {
 
         let targetElements = canvasDocument.querySelector('[contenteditable="true"]');
         if (targetElements !== null) {
-            if (elm.getAttribute('data-uuid') !== targetElements.getAttribute('data-uuid')) {
+            if (elm.getAttribute('data-aperta-uuid') !== targetElements.getAttribute('data-aperta-uuid')) {
                 targetElements.removeAttribute("contenteditable");
                 targetElements.removeAttribute("spellcheck");
             }
@@ -179,12 +179,6 @@ export function addClickEventListeners(elm) {
         event.stopPropagation();
     }, false);
 }
-
-
-
-// function updateCssEditor() {
-//     checkIfElementIsSelected();
-// }
 
 
 
@@ -433,7 +427,7 @@ export function addDragAndDropEventListeners(elm) {
 
     //Dragging: enable drag and drop element swapping
     elm.addEventListener('dragstart', (event) => {
-        //set transparent image to prevent to show default drag image
+        //set transparent image to prevent to show a default drag image
         const transparentImage = new Image();
         transparentImage.src =
             "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7";
@@ -448,8 +442,10 @@ export function addDragAndDropEventListeners(elm) {
         // const canvasWrapper = new CanvasWrapper();
         // console.log(canvasWrapper.isSelectedElement(draggedElm));
 
-        //set selectedElm id to draggedElm if draggedElm is not selectedElm
-        if (draggedElm.id !== "selectedElm") {
+        //change state of draggedElm to selectedElm if draggedElm is not selectedElm
+        const canvasWrapper = new CanvasWrapper();
+        if (!canvasWrapper.isSelectedElement(draggedElm)) {
+            // if (draggedElm.id !== "selectedElm") {
             // set id to selected element
             selectElm(event.target);
 
@@ -473,7 +469,7 @@ export function addDragAndDropEventListeners(elm) {
 
 
         //
-        if (event.target.getAttribute("data-uuid") === draggedElm.getAttribute("data-uuid")) {
+        if (event.target.getAttribute("data-aperta-uuid") === draggedElm.getAttribute("data-aperta-uuid")) {
             //console.log("same element");
             return;
         }
@@ -612,7 +608,7 @@ export function addDragAndDropEventListeners(elm) {
 
         //break if dragged element is same as element being dropped on
         //also break if previousState is null
-        if (event.target.getAttribute("data-uuid") === draggedElm.getAttribute("data-uuid") || previousState === null) {
+        if (event.target.getAttribute("data-aperta-uuid") === draggedElm.getAttribute("data-aperta-uuid") || previousState === null) {
             //console.log("same element");
             return;
         }

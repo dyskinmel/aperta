@@ -35,6 +35,10 @@ export class CssStyleReader {
         this.defaultRules = null;
         this.effectiveDefaultRules = null;
 
+        //
+        this.selectorList = {};
+        this.pseudoList = {};
+
         // console.log(this.selectedElm.style.length);
         // this.getAppliedRule("height");
 
@@ -48,6 +52,7 @@ export class CssStyleReader {
                 this.defaultStyleSheet = this.styleSheets[i];
                 this.defaultRules = this.defaultStyleSheet.cssRules || this.defaultStyleSheet.rules;
 
+                //get effective css rules from default css file
                 this.effectiveDefaultRules = this.getEffectiveRules(this.defaultRules);
 
                 // console.log(this.defaultStyleSheet);
@@ -56,6 +61,7 @@ export class CssStyleReader {
                 this.StyleSheet = this.styleSheets[i];
                 this.rules = this.StyleSheet.cssRules || this.StyleSheet.rules;
 
+                //get effective css rules from user defined css file
                 this.effectiveRules = this.getEffectiveRules(this.rules);
 
             }
@@ -73,103 +79,113 @@ export class CssStyleReader {
         let appliedSpecificity = 0;
         let appliedPropertyValue = null;
         let appliedSelector = null;
+        let appliedColor = null;
         let appliedRule = null;
 
 
+        // check element inline style and set value if it has property value
+        // 
+        const propertyValue = this.selectedElm.style[propertyName];
+        if (propertyValue !== "") {
+            const isImportant = this.isImportant(this.selectedElm.style, propertyName);
+
+            appliedSelector = "inline";
+            appliedColor = "#0000FF";
+            appliedPropertyValue = propertyValue;
+            isAppliedImportant = isImportant;
+            appliedRule = this.selectedElm.style;
+        }
+        // console.log("Selector:  " + appliedSelector + "  propertyName:  " + propertyName + ":  propertyValue:  " + appliedPropertyValue + "  isAppliedImportant:  " + isAppliedImportant);
+        // console.log(this.selectedElm.style);
 
 
         // check css style and get property with highest priority (considering specificity and !important)
         //
+
+        // consider to change this part of code to support multiple css files in the future
         objectKeys = Object.keys(this.effectiveRules);
-        for (let i = 0; i < objectKeys.length; i++) {
+        if (appliedPropertyValue === null) {
+            // for (let i = objectKeys.length / 2 - 1; i >= 0; i--) {
+            for (let i = 0; i < objectKeys.length / 2; i++) {
+                const stringKey = this.effectiveRules[i];
+                const selectorText = this.effectiveRules[stringKey].selectorText;
+                const selectorToMatch = this.effectiveRules[stringKey].selectorToMatch;
 
-            //ignore if ObjectKeys and selectorToMatch are not the same (ignore selector with pseudo elements and classes)
-            if (objectKeys[i] === this.effectiveRules[objectKeys[i]].selectorToMatch) {
-                // console.log(this.effectiveRules[objectKeys[i]]);
-                const propertyValue = this.effectiveRules[objectKeys[i]].style[propertyName];
-
-                // if propertyValue is not empty, check if !important is set
-                if (propertyValue !== "") {
-                    const propertySpecificity = this.effectiveRules[objectKeys[i]].specificity;
-                    const isImportant = this.isImportant(this.effectiveRules[objectKeys[i]].style, propertyName);
-                    // console.log(objectKeys[i] + ":  " + propertyName + ":  " + propertyValue + " isImportant: " + isImportant);
+                //ignore if ObjectKeys and selectorToMatch are not the same (ignore selector with pseudo elements and classes)
+                if (selectorText === selectorToMatch) {
+                    // console.log(this.effectiveRules[objectKeys[i]]);
+                    const propertyValue = this.effectiveRules[stringKey].style[propertyName];
 
 
-                    // when both rules have !important, check which rule has higher specificity
-                    if (isImportant && isAppliedImportant) {
-                        if (appliedSpecificity <= propertySpecificity) {
-                            appliedSelector = objectKeys[i];
+                    // if propertyValue is not empty, check if !important is set
+                    if (propertyValue !== "") {
+                        const propertySpecificity = this.effectiveRules[stringKey].specificity;
+                        const isImportant = this.isImportant(this.effectiveRules[stringKey].style, propertyName);
+                        const selectorColor = this.effectiveRules[stringKey].color;
+                        // console.log(objectKeys[i] + ":  " + propertyName + ":  " + propertyValue + " isImportant: " + isImportant);
+
+
+                        // when both rules have !important, check which rule has higher specificity
+                        if (isImportant && isAppliedImportant) {
+                            if (appliedSpecificity <= propertySpecificity) {
+                                appliedSelector = selectorText;
+                                appliedColor = selectorColor;
+                                appliedPropertyValue = propertyValue;
+                                isAppliedImportant = isImportant;
+                                appliedSpecificity = propertySpecificity;
+                                appliedRule = this.effectiveRules[stringKey];
+                            }
+                        }
+                        //if previous rule does not have !important, and current rule has !important, set the current rule as applied rule
+                        else if (isImportant && !isAppliedImportant) {
+                            appliedSelector = selectorText;
+                            appliedColor = selectorColor;
                             appliedPropertyValue = propertyValue;
                             isAppliedImportant = isImportant;
                             appliedSpecificity = propertySpecificity;
-                            appliedRule = this.effectiveRules[objectKeys[i]];
+                            appliedRule = this.effectiveRules[stringKey];
                         }
-                    }
-                    //if previous rule does not have !important, and current rule has !important, set the current rule as applied rule
-                    else if (isImportant && !isAppliedImportant) {
-                        appliedSelector = objectKeys[i];
-                        appliedPropertyValue = propertyValue;
-                        isAppliedImportant = isImportant;
-                        appliedSpecificity = propertySpecificity;
-                        appliedRule = this.effectiveRules[objectKeys[i]];
-                    }
-                    // if both rules do not have !important, check which rule has higher specificity
-                    else if (!isImportant && !isAppliedImportant) {
-                        if (appliedSpecificity <= propertySpecificity) {
-                            appliedSelector = objectKeys[i];
-                            appliedPropertyValue = propertyValue;
-                            isAppliedImportant = isImportant;
-                            appliedSpecificity = propertySpecificity;
-                            appliedRule = this.effectiveRules[objectKeys[i]];
+                        // if both rules do not have !important, check which rule has higher specificity
+                        else if (!isImportant && !isAppliedImportant) {
+                            if (appliedSpecificity <= propertySpecificity) {
+                                appliedSelector = selectorText;
+                                appliedColor = selectorColor;
+                                appliedPropertyValue = propertyValue;
+                                isAppliedImportant = isImportant;
+                                appliedSpecificity = propertySpecificity;
+                                appliedRule = this.effectiveRules[stringKey];
+                            }
                         }
-                    }
-                    // if previous rule has !important, ignore the new rule
+                        // if previous rule has !important, ignore the new rule
 
+                    }
                 }
             }
         }
         // console.log("Selector:  " + appliedSelector + "  propertyName:  " + propertyName + ":  propertyValue:  " + appliedPropertyValue + "  isAppliedImportant:  " + isAppliedImportant);
 
 
-        // check element inline style and get property with highest priority (considering !important)
-        // (consider to bring this to top of the function to avoid checking inline style if css style has !important)
-        const propertyValue = this.selectedElm.style[propertyName];
-        if (propertyValue !== "") {
-            const isImportant = this.isImportant(this.selectedElm.style, propertyName);
-
-            //if rule from css style sheet has !important and inline style does not have !important, keep the rule from css style sheet
-            if (isAppliedImportant && !isImportant) {
-                //do nothing
-            }
-            // else set inline style as applied style
-            else {
-                appliedSelector = "inlineStyle";
-                appliedPropertyValue = propertyValue;
-                isAppliedImportant = isImportant;
-                appliedRule = this.selectedElm.style;
-            }
-            //
-        }
-        // console.log("Selector:  " + appliedSelector + "  propertyName:  " + propertyName + ":  propertyValue:  " + appliedPropertyValue + "  isAppliedImportant:  " + isAppliedImportant);
-        // console.log(this.selectedElm.style);
-
-
         // check default css rule if no element style and css rule to apply
         //
+
         if (appliedPropertyValue === null) {
             objectKeys = Object.keys(this.effectiveDefaultRules);
-            for (let i = 0; i < objectKeys.length; i++) {
-                const propertyValue = this.effectiveDefaultRules[objectKeys[i]].style[propertyName];
+            // console.log(objectKeys);
+            // for (let i = objectKeys.length / 2 - 1; i >= 0; i--) {
+            for (let i = 0; i < objectKeys.length / 2; i++) {
+                const stringKey = this.effectiveDefaultRules[i];
+                const selectorText = this.effectiveDefaultRules[stringKey].selectorText;
+                const propertyValue = this.effectiveDefaultRules[stringKey].style[propertyName];
                 if (propertyValue !== "") {
-                    const propertySpecificity = this.effectiveDefaultRules[objectKeys[i]].specificity;
-                    const isImportant = this.isImportant(this.effectiveDefaultRules[objectKeys[i]].style, propertyName);
+                    const propertySpecificity = this.effectiveDefaultRules[stringKey].specificity;
+                    const isImportant = this.isImportant(this.effectiveDefaultRules[stringKey].style, propertyName);
                     // console.log(objectKeys[i] + ":  " + propertyName + ":  " + propertyValue + " isImportant: " + isImportant);
                     if (appliedSpecificity <= propertySpecificity) {
-                        appliedSelector = objectKeys[i];
+                        appliedSelector = selectorText;
                         appliedPropertyValue = propertyValue;
                         isAppliedImportant = isImportant;
                         appliedSpecificity = propertySpecificity;
-                        appliedRule = this.effectiveDefaultRules[objectKeys[i]];
+                        appliedRule = this.effectiveDefaultRules[stringKey];
                     }
                 }
                 // const propertyValue = this.effectiveDefaultRules[propertyName];
@@ -177,39 +193,97 @@ export class CssStyleReader {
 
             }
         }
-        console.log("Selector:  " + appliedSelector + "  propertyName:  " + propertyName + ":  propertyValue:  " + appliedPropertyValue + "  isAppliedImportant:  " + isAppliedImportant);
+
+        //
+        //Add feature to check if the property is inherited
+        //
+        //
 
 
 
+        // console.log("Selector:  " + appliedSelector + "  propertyName:  " + propertyName + ":  propertyValue:  " + appliedPropertyValue + "  isAppliedImportant:  " + isAppliedImportant);
 
-
-
+        return { appliedSelector, appliedPropertyValue, isAppliedImportant, appliedColor };
+        // return { appliedSelector, appliedPropertyValue, isAppliedImportant, appliedRule };
     }
 
-    // bool 
-    isImportant(cssStyle, propertyName) {
-        const priority = cssStyle.getPropertyPriority(propertyName);
-        return priority === 'important';
-        // return {
-        //     value: propertyValue,
-        //     important: priority === 'important',
-        // };
+    getRuleBySelectorAndPropertyName(selector, propertyName) {
+        let isImportant = false;
+        let propertyValue = null;
+        // let selector = null;
+        let color = null;
+        // let Rule = null;
+
+        if (selector === "inline") {
+            // console.log("inline");
+            propertyValue = this.selectedElm.style[propertyName];
+            if (propertyValue !== "") {
+                isImportant = this.isImportant(this.selectedElm.style, propertyName);
+
+                // selector = "inline";
+                color = "#0000FF";
+                // propertyValue = propertyValue;
+                // isImportant = isImportant;
+                // Rule = this.selectedElm.style;
+            }
+        } else {
+            propertyValue = this.effectiveRules[selector].style[propertyName];
+            if (propertyValue !== "") {
+                color = this.effectiveRules[selector].color;
+                // selector = this.effectiveRules[selector].selectorText;
+                isImportant = this.isImportant(this.effectiveRules[selector].style, propertyName);
+
+                // console.log(this.effectiveRules[selector]);
+            }
+        }
+
+        // console.log("Selector: " + selector + "  propertyName: " + propertyName + "  PropertyValue: " + propertyValue + "  isImportant: " + isImportant);
+        return { propertyName, propertyValue, isImportant, color };
     }
+
 
     getEffectiveRules(rules) {
         // console.log(this.defaultRules);
         // console.log(this.rules);
         // let includePseudo = null;
         let effectiveRules = {};
+        let numberOfRules = 0;
+
+        this.selectorList = {
+            0: "inline",
+            "inline": {
+                color: "#0000FF",
+            },
+        };
+        this.pseudoList = {};
+        let selectorIndex = 1;
+        let pseudoIndex = 0;
 
         for (let j = 0; j < rules.length; j++) {
             // set selectorText without pseudo element and class
             rules[j].selectorToMatch = this.removePseudo(rules[j].selectorText);
 
             if (this.selectedElm.matches(rules[j].selectorToMatch)) {
-                // add speficity to rules
+                // add speficity to rules to find property with the highest priority
                 rules[j].specificity = this.getSpecificity(rules[j].selectorText);
+
+                // add color to rules to use in the cssEditor
+                rules[j].color = this.getTagColor(numberOfRules);
+
+
+                if (rules[j].selectorText === rules[j].selectorToMatch) {
+                    this.selectorList[selectorIndex] = rules[j].selectorText;
+                    this.selectorList[rules[j].selectorText] = { color: rules[j].color };
+                    selectorIndex++;
+                } else {
+                    this.pseudoList[pseudoIndex] = rules[j].selectorText;
+                    this.pseudoList[rules[j].selectorText] = { color: rules[j].color };
+                    pseudoIndex++;
+                }
+
+                effectiveRules[numberOfRules] = rules[j].selectorText;
                 effectiveRules[rules[j].selectorText] = rules[j];
+                numberOfRules++;
                 // effectiveRule = { [rules[j].selectorText]: rules[j] };
                 // console.log(effectiveRule);
 
@@ -218,10 +292,34 @@ export class CssStyleReader {
             }
         }
         // console.log(effectiveRules);
+        // console.log(numberOfRules);
         // console.log(Object.keys(effectiveRules));
+        // console.log(this.selectorList);
+        // console.log(this.pseudoList);
         return effectiveRules;
     }
 
+    getSelectorList() {
+        return this.selectorList;
+    }
+
+    getPseudoList() {
+        return this.pseudoList;
+    }
+
+    getTagColor(i) {
+        const tagColors = ["#FFA500", "#FF0000", "#008000", "#FFFF00", "#800080", "#00FFFF", "#FF00FF"];
+
+        if (i < tagColors.length) {
+            return tagColors[i];
+        } else {
+            return generateRandomColor();
+            // return tagColors[i % tagColors.length];
+        }
+
+    }
+
+    // get specificity of a selector
     getSpecificity(selectorText) {
         const result = calculate(selectorText);
         // console.log(result);
@@ -231,21 +329,25 @@ export class CssStyleReader {
         return specificityValue;
     }
 
+    // bool functions 
+    //
 
+    isImportant(cssStyle, propertyName) {
+        const priority = cssStyle.getPropertyPriority(propertyName);
+        return priority === 'important';
+        // return {
+        //     value: propertyValue,
+        //     important: priority === 'important',
+        // };
+    }
 
-    // isInlineStyleImportant() {
-    //     const importantFlag = "!important";
-    //     if (propertyValue.includes(importantFlag)) {
-    //         console.log(propertyValue);
-    //         importantRule = propertyValue.replace(importantFlag, "").trim();
-    //     }
-
-    // }
-
+    // utility functions
+    //
 
     removePseudo(selectorText) {
         const pseudoElementRegex = /::(before|after|first-letter|first-line|selection|backdrop|placeholder|marker|spelling-error|grammar-error)/i;
-        const pseudoClassRegex = /:(active|hover|focus|visited|link|enabled|disabled|checked|indeterminate|valid|invalid|required|optional|read-only|read-write|first-child|last-child|nth-child|nth-last-child|first-of-type|last-of-type|nth-of-type|nth-last-of-type|only-child|only-of-type|target|root|empty|not|lang|dir|is|where|has|scope|fullscreen|current|past|future)/i;
+        const pseudoClassRegex = /:(?:(?:active|hover|focus|visited|link|enabled|disabled|checked|indeterminate|valid|invalid|required|optional|read-only|read-write|first-child|last-child|nth-child|nth-last-child|first-of-type|last-of-type|nth-of-type|nth-last-of-type|only-child|only-of-type|target|root|empty|not|lang|dir|is|where|has|scope|fullscreen|current|past|future)(?:\(.*?\))?)/gi;
+        // const pseudoClassRegex = /:(active|hover|focus|visited|link|enabled|disabled|checked|indeterminate|valid|invalid|required|optional|read-only|read-write|first-child|last-child|nth-child|nth-last-child|first-of-type|last-of-type|nth-of-type|nth-last-of-type|only-child|only-of-type|target|root|empty|not|lang|dir|is|where|has|scope|fullscreen|current|past|future)/i;
 
         const cleanedSelector = selectorText
             .replace(pseudoElementRegex, '')
@@ -255,6 +357,47 @@ export class CssStyleReader {
         // const includePseudo = selectorText != cleanedSelector;
         // return cleanedSelector.trim(), includePseudo;
     }
+
+    hslToRgb(h, s, l) {
+        let r, g, b;
+
+        if (s === 0) {
+            r = g = b = l; // achromatic
+        } else {
+            const hue2rgb = (p, q, t) => {
+                if (t < 0) t += 1;
+                if (t > 1) t -= 1;
+                if (t < 1 / 6) return p + (q - p) * 6 * t;
+                if (t < 1 / 2) return q;
+                if (t < 2 / 3) return p + (q - p) * (2 / 3 - t) * 6;
+                return p;
+            };
+
+            const q = l < 0.5 ? l * (1 + s) : l + s - l * s;
+            const p = 2 * l - q;
+            r = hue2rgb(p, q, h + 1 / 3);
+            g = hue2rgb(p, q, h);
+            b = hue2rgb(p, q, h - 1 / 3);
+        }
+
+        return [Math.round(r * 255), Math.round(g * 255), Math.round(b * 255)];
+    }
+
+    generateRandomColor() {
+        // 色相 (0-360)
+        const hue = Math.random();
+
+        // 彩度 (30-100)
+        const saturation = Math.random() * (100 - 30 + 1) + 30;
+
+        // 明度 (30-70)
+        const lightness = Math.random() * (70 - 30 + 1) + 30;
+
+        const [r, g, b] = hslToRgb(hue, saturation / 100, lightness / 100);
+        return `#${r.toString(16).padStart(2, '0')}${g.toString(16).padStart(2, '0')}${b.toString(16).padStart(2, '0')}`;
+    }
+
+
 }
 
 

@@ -85,6 +85,11 @@ export function selectElm(elm) {
     // const selectedElement = elm.ownerDocument.getElementById("selectedElm");
     // const selectedElement = elm.ownerDocument.querySelectorAll('[data-aperta-selected-element="true"]')[0];
 
+    // don't proceed if selected element is the same as the new one
+    if (elm === selectedElm) {
+        return;
+    }
+
     if (selectedElm !== undefined) {
         //remove selectedElement id from previously selected element
         // selectedElm.removeAttribute("id");
