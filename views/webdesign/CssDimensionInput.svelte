@@ -33,7 +33,7 @@
         StoreSelectorToEdit = value;
     });
 
-    // reactive statement to update the input value when the selector editor is changed
+    // reactive statement to update the input value when the selector editor's value is changed
     $: {
         if (StoreCssStyleReader === null) {
             //do nothing if no element is selected
@@ -76,7 +76,35 @@
                         StoreSelectorToEdit,
                         sizeProperty.id
                     );
-                console.log("show properties of " + StoreSelectorToEdit);
+                // console.log(selectorRule);
+                if (selectorRule["propertyValue"] === "") {
+                    //clear the value from the input
+                    sizeValue.value = "";
+                    sizeUnit.value = "PX";
+                    isDisabled = false;
+                    sizeUnit.classList.add("deleteArrow");
+                } else {
+                    const parsedCssValue = parseCssValue(
+                        selectorRule["propertyValue"]
+                    );
+                    console.log(parsedCssValue);
+                    if (isNaN(parsedCssValue["value"])) {
+                        sizeValue.value = parsedCssValue["value"].toUpperCase();
+                        sizeUnit.value = hidden;
+                        isDisabled = true;
+                        sizeUnit.classList.remove("deleteArrow");
+
+                        // return;
+                    } else {
+                        sizeValue.value = parsedCssValue["value"];
+                        sizeUnit.value = parsedCssValue["unit"].toUpperCase();
+                        isDisabled = false;
+                        sizeUnit.classList.add("deleteArrow");
+                    }
+                    // console.log("appliedRuleMode");
+                }
+
+                // console.log("show properties of " + StoreSelectorToEdit);
             }
             // console.log("StoreCssStyleReader is not null");
         }
@@ -132,17 +160,6 @@
 
     //
     //
-
-    function getPropertyValueAccordingToMode($cssEditMode) {
-        //if individual mode is ture
-        if ($cssEditMode) {
-            //set selected css selector's property value
-            console.log("individualMode");
-        } else {
-            //set applied css property value with selector value
-            console.log("appliedMode");
-        }
-    }
 
     // function getTagColorAccordingToMode(){
 

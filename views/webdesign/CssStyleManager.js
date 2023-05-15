@@ -222,7 +222,7 @@ export class CssStyleReader {
 
                 // selector = "inline";
                 color = "#0000FF";
-                propertyValue = propertyValue;
+                // propertyValue = propertyValue;
                 // isImportant = isImportant;
                 // Rule = this.selectedElm.style;
             }
@@ -238,7 +238,7 @@ export class CssStyleReader {
         }
 
         // console.log("Selector: " + selector + "  propertyName: " + propertyName + "  PropertyValue: " + propertyValue + "  isImportant: " + isImportant);
-        return { propertyValue, isImportant, color };
+        return { propertyName, propertyValue, isImportant, color };
     }
 
 
