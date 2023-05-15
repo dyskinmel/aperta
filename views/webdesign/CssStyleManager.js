@@ -316,7 +316,6 @@ export class CssStyleReader {
             return generateRandomColor();
             // return tagColors[i % tagColors.length];
         }
-
     }
 
     // get specificity of a selector
