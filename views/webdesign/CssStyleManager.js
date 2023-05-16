@@ -1,6 +1,7 @@
 //this js will read/write css style from/to css file and html file
 import { CanvasWrapper } from "./utils.js";
 import { calculate } from "specificity";
+import { addCaptionToSelectedElm } from "./utils";
 
 
 
@@ -24,7 +25,7 @@ export class CssStyleReader {
         this.styleSheets = null;
 
         this.cssFileName = "style.css"; //change this to get css file name from config in future
-        this.StyleSheet = null;
+        this.styleSheet = null;
         this.rules = null;
 
         this.effectiveRules = null;
@@ -58,8 +59,8 @@ export class CssStyleReader {
                 // console.log(this.defaultStyleSheet);
             }
             if (this.styleSheets[i].href.endsWith(this.cssFileName)) {
-                this.StyleSheet = this.styleSheets[i];
-                this.rules = this.StyleSheet.cssRules || this.StyleSheet.rules;
+                this.styleSheet = this.styleSheets[i];
+                this.rules = this.styleSheet.cssRules || this.styleSheet.rules;
 
                 //get effective css rules from user defined css file
                 this.effectiveRules = this.getEffectiveRules(this.rules);
@@ -328,6 +329,30 @@ export class CssStyleReader {
         return specificityValue;
     }
 
+    // setter
+    // 
+
+    setRule(selector, propertyName, cssValue) {
+        // console.log(this.StyleSheet);
+        // console.log(this.rules);
+        for (let i = 0; i < this.rules.length; i++) {
+            const rule = this.rules[i];
+            if (rule.selectorText === selector) {
+
+                rule.style[propertyName] = cssValue;
+                this.styleSheet.deleteRule(i);
+                this.styleSheet.insertRule(rule.cssText, i);
+
+                // this.selectedElm.style["width"] = "100px";
+                //
+                // console.log(this.rules[i].style);
+                // console.log(this.styleSheet);
+                addCaptionToSelectedElm(this.selectedElm);
+            }
+        }
+    }
+
+
     // bool functions 
     //
 
@@ -383,13 +408,13 @@ export class CssStyleReader {
     }
 
     generateRandomColor() {
-        // 色相 (0-360)
+        // hue (0-360)
         const hue = Math.random();
 
-        // 彩度 (30-100)
+        // saturation (30-100)
         const saturation = Math.random() * (100 - 30 + 1) + 30;
 
-        // 明度 (30-70)
+        // lightness (30-70)
         const lightness = Math.random() * (70 - 30 + 1) + 30;
 
         const [r, g, b] = hslToRgb(hue, saturation / 100, lightness / 100);

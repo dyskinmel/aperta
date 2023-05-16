@@ -1,5 +1,5 @@
 <script>
-    import { onMount } from "svelte";
+    // import { onMount } from "svelte";
     import { blurWhenEnterPressed } from "./CssEditorUtils.js";
     import { applyStyleToSelectedElement } from "./CssEditorUtils.js";
     import { parseCssValue } from "./CssEditorUtils.js";
@@ -18,6 +18,7 @@
     // let currentValue = null;
     let currentUnit = null;
 
+    let sizeSelector = null;
     let sizeProperty = null;
     let sizeValue = null;
     let sizeUnit = null;
@@ -46,11 +47,17 @@
                 // console.log(appliedRule);
 
                 if (appliedRule["appliedPropertyValue"] === null) {
-                    //do nothing
+                    //clear the value from the input
+                    sizeValue.value = "";
+                    sizeUnit.value = "PX";
+                    isDisabled = false;
+                    sizeUnit.classList.add("deleteArrow");
                 } else {
                     const parsedCssValue = parseCssValue(
                         appliedRule["appliedPropertyValue"]
                     );
+                    sizeSelector = appliedRule["appliedSelector"];
+                    sizeColor = appliedRule["appliedColor"];
                     // console.log(parsedCssValue);
 
                     //add condiiton for when NaN value is returned
@@ -87,6 +94,8 @@
                     const parsedCssValue = parseCssValue(
                         selectorRule["propertyValue"]
                     );
+                    sizeSelector = selectorRule["selector"];
+                    sizeColor = selectorRule["color"];
                     console.log(parsedCssValue);
                     if (isNaN(parsedCssValue["value"])) {
                         sizeValue.value = parsedCssValue["value"].toUpperCase();
@@ -173,13 +182,16 @@
         let value = sizeValue.value;
         let unit = sizeUnit.value;
         let cssValue = `${value}${unit}`;
-        if (value !== "") {
-            if (isNaN(sizeValue.value)) {
-                sizeValue.value = "";
-                return;
-            }
-            applyStyleToSelectedElement(propertyName, cssValue);
-        }
+        // if (value !== "") {
+        //     if (isNaN(sizeValue.value)) {
+        //         sizeValue.value = "";
+        //         return;
+        //     }
+        //     $cssStyleReader.selectorRule();
+        //     // applyStyleToSelectedElement(propertyName, cssValue);
+        // }
+        console.log("selector: " + sizeSelector + " color: " + sizeColor);
+        $cssStyleReader.setRule(sizeSelector, propertyName, cssValue);
     }
 
     // functions related to unit conversion ////////////////
@@ -332,7 +344,8 @@
 
         // apply edited style to selected element
         //
-        applyStyleToSelectedElement(propertyName, cssValue);
+        // applyStyleToSelectedElement(propertyName, cssValue);
+        $cssStyleReader.setRule(sizeSelector, propertyName, cssValue);
 
         // blur to make sure next time user clicks on input, focused event will be fired
         event.target.blur();
