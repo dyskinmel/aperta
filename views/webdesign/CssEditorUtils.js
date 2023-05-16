@@ -174,10 +174,6 @@ export function parseCssValue(value) {
         // add more patterns here if needed
     ];
 
-    // if (value === null) {
-    //     return { value: null };
-    // }
-
     for (const pattern of patterns) {
         const matches = value.match(pattern.regex);
         if (matches) {
