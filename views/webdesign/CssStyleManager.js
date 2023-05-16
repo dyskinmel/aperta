@@ -335,21 +335,28 @@ export class CssStyleReader {
     setRule(selector, propertyName, cssValue) {
         // console.log(this.StyleSheet);
         // console.log(this.rules);
-        for (let i = 0; i < this.rules.length; i++) {
-            const rule = this.rules[i];
-            if (rule.selectorText === selector) {
+        if (selector === "inline") {
+            // console.log("inline");
+            this.selectedElm.style[propertyName] = cssValue;
+        } else {
+            for (let i = 0; i < this.rules.length; i++) {
+                const rule = this.rules[i];
+                if (rule.selectorText === selector) {
 
-                rule.style[propertyName] = cssValue;
-                this.styleSheet.deleteRule(i);
-                this.styleSheet.insertRule(rule.cssText, i);
+                    rule.style[propertyName] = cssValue;
+                    this.styleSheet.deleteRule(i);
+                    this.styleSheet.insertRule(rule.cssText, i);
 
-                // this.selectedElm.style["width"] = "100px";
-                //
-                // console.log(this.rules[i].style);
-                // console.log(this.styleSheet);
-                addCaptionToSelectedElm(this.selectedElm);
+                    // this.selectedElm.style["width"] = "100px";
+                    //
+                    console.log(this.rules[i].style);
+                    // console.log(this.styleSheet);
+                }
             }
         }
+        addCaptionToSelectedElm(this.selectedElm);
+        // update effectiveRules
+        this.effectiveRules = this.getEffectiveRules(this.rules);
     }
 
 

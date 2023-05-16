@@ -6,6 +6,8 @@
     import { convertCssUnits } from "./CssEditorUtils.js";
     import { CanvasWrapper } from "./utils.js";
     import { cssStyleReader, selectorToEdit } from "./CssStore.js";
+    //// import { cssStyleManager } from "./CssStore.js";
+    //// import { selectorToEdit} from "./CssStore.js";
 
     // export let property;
     export let item;
@@ -36,6 +38,7 @@
 
     // reactive statement to update the input value when the selector editor's value is changed
     $: {
+        console.log("$: ran");
         if (StoreCssStyleReader === null) {
             //do nothing if no element is selected
         } else {
@@ -77,10 +80,11 @@
                     // console.log("appliedRuleMode");
                 }
             } else {
+                sizeSelector = StoreSelectorToEdit;
                 // if mode is to edit individual selector properties
                 const selectorRule =
                     StoreCssStyleReader.getRuleBySelectorAndPropertyName(
-                        StoreSelectorToEdit,
+                        sizeSelector,
                         sizeProperty.id
                     );
                 // console.log(selectorRule);
@@ -182,6 +186,17 @@
         let value = sizeValue.value;
         let unit = sizeUnit.value;
         let cssValue = `${value}${unit}`;
+
+        if (value !== "") {
+            // something other than number is entered in the input, then add "" to the value and return
+            if (isNaN(sizeValue.value)) {
+                sizeValue.value = "";
+                return;
+            }
+            $cssStyleReader.setRule(sizeSelector, propertyName, cssValue);
+        }
+        // console.log("selector: " + sizeSelector + " color: " + sizeColor);
+
         // if (value !== "") {
         //     if (isNaN(sizeValue.value)) {
         //         sizeValue.value = "";
@@ -190,8 +205,7 @@
         //     $cssStyleReader.selectorRule();
         //     // applyStyleToSelectedElement(propertyName, cssValue);
         // }
-        console.log("selector: " + sizeSelector + " color: " + sizeColor);
-        $cssStyleReader.setRule(sizeSelector, propertyName, cssValue);
+        // console.log("selector: " + sizeSelector + " color: " + sizeColor);
     }
 
     // functions related to unit conversion ////////////////
@@ -221,6 +235,8 @@
 
         const canvasWrapper = new CanvasWrapper();
 
+        // console.log(UnitConvert);
+
         //stop this function if there is no selected element
         if (canvasWrapper.isSelectedElementNull()) {
             return;
@@ -248,6 +264,8 @@
                 sizeValue.value = convertedStyle["values"];
                 sizeUnit.value = convertedStyle["unit"];
 
+                console.log(sizeValue.value + sizeUnit.value);
+
                 cssValue = convertedStyle["values"] + convertedStyle["unit"];
                 break;
             case "KEYWORD-DIMENSION":
@@ -260,7 +278,6 @@
                 isDisabled = false;
 
                 //get current style value
-
                 const selectedElm = canvasWrapper.getSelectedElement();
                 const canvasWindow = canvasWrapper.getCanvasWindow();
                 // const canvas = document.getElementById("canvas");
@@ -282,7 +299,7 @@
 
                     currentStyleValue = parseCssValue(currentStyleValue);
 
-                    //add condiiton for when NaN value is returned
+                    //add condition for when NaN value is returned
                     if (isNaN(currentStyleValue["value"])) {
                         sizeValue.value = "";
                         return;

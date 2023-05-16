@@ -450,7 +450,7 @@ function pxToEm(pxValue, canvasWrapper) {
     const selectedElement = canvasWrapper.getSelectedElement();
     const parentElement = selectedElement.parentElement;
     const parentFontSize = parseFloat(getComputedStyle(parentElement).fontSize);
-    console.log("parentFontSize: " + parentFontSize + "px");
+    // console.log("parentFontSize: " + parentFontSize + "px");
 
     const emValue = pxValue / parentFontSize;
 
