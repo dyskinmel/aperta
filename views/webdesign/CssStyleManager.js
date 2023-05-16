@@ -4,7 +4,7 @@ import { calculate } from "specificity";
 import { addCaptionToSelectedElm } from "./utils";
 
 
-
+// export class CssStyleManager {
 export class CssStyleReader {
     constructor() {
         //initialize

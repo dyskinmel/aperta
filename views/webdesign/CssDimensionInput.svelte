@@ -1,7 +1,7 @@
 <script>
     // import { onMount } from "svelte";
     import { blurWhenEnterPressed } from "./CssEditorUtils.js";
-    import { applyStyleToSelectedElement } from "./CssEditorUtils.js";
+    // import { applyStyleToSelectedElement } from "./CssEditorUtils.js";
     import { parseCssValue } from "./CssEditorUtils.js";
     import { convertCssUnits } from "./CssEditorUtils.js";
     import { CanvasWrapper } from "./utils.js";
