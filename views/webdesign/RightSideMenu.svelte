@@ -4,7 +4,7 @@
     import RightSideMenuTabs from "./RightSideMenuTabs.svelte";
 
     let rightSideMenuTabItems = [
-        // let metaMenus = [
+        // add new tab here
         { label: "css", value: 1, component: CssEditor },
         { label: "cms", value: 2, component: ConnectionEditor },
     ];
