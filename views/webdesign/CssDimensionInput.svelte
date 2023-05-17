@@ -5,7 +5,7 @@
     import { parseCssValue } from "./CssEditorUtils.js";
     import { convertCssUnits } from "./CssEditorUtils.js";
     import { CanvasWrapper } from "./utils.js";
-    import { cssStyleReader, selectorToEdit } from "./CssStore.js";
+    import { cssStyleManager, selectorToEdit } from "./CssStore.js";
     //// import { cssStyleManager } from "./CssStore.js";
     //// import { selectorToEdit} from "./CssStore.js";
 
@@ -26,11 +26,11 @@
     let sizeUnit = null;
     let sizeColor = null;
 
-    let storeCssStyleReader = null;
+    let storeCssStyleManager = null;
     let storeSelectorToEdit = null;
 
-    cssStyleReader.subscribe((value) => {
-        storeCssStyleReader = value;
+    cssStyleManager.subscribe((value) => {
+        storeCssStyleManager = value;
     });
     selectorToEdit.subscribe((value) => {
         storeSelectorToEdit = value;
@@ -38,11 +38,11 @@
 
     // reactive statement to update the input value when the selector editor's value is changed
     $: {
-        if (storeCssStyleReader === null) {
+        if (storeCssStyleManager === null) {
             //do nothing if no element is selected
         } else {
             if (storeSelectorToEdit === "") {
-                const appliedRule = storeCssStyleReader.getAppliedRule(
+                const appliedRule = storeCssStyleManager.getAppliedRule(
                     sizeProperty.id
                 );
                 // console.log(appliedRule["appliedPropertyValue"]);
@@ -82,7 +82,7 @@
                 sizeSelector = storeSelectorToEdit;
                 // if mode is to edit individual selector properties
                 const selectorRule =
-                    storeCssStyleReader.getRuleBySelectorAndPropertyName(
+                    storeCssStyleManager.getRuleBySelectorAndPropertyName(
                         sizeSelector,
                         sizeProperty.id
                     );
@@ -118,11 +118,11 @@
 
                 // console.log("show properties of " + storeSelectorToEdit);
             }
-            // console.log("storeCssStyleReader is not null");
+            // console.log("storeCssStyleManager is not null");
         }
     }
 
-    // const cssStyleReader = new CssStyleReader();
+    // const cssStyleManager = new CssStyleManager();
 
     // onMount(() => {
     //     // getCssStyle();
@@ -192,7 +192,7 @@
                 sizeValue.value = "";
                 return;
             }
-            $cssStyleReader.setRule(sizeSelector, propertyName, cssValue);
+            $cssStyleManager.setRule(sizeSelector, propertyName, cssValue);
         }
         // console.log("selector: " + sizeSelector + " color: " + sizeColor);
 
@@ -201,7 +201,7 @@
         //         sizeValue.value = "";
         //         return;
         //     }
-        //     $cssStyleReader.selectorRule();
+        //     $cssStyleManager.selectorRule();
         //     // applyStyleToSelectedElement(propertyName, cssValue);
         // }
         // console.log("selector: " + sizeSelector + " color: " + sizeColor);
@@ -361,7 +361,7 @@
         // apply edited style to selected element
         //
         // applyStyleToSelectedElement(propertyName, cssValue);
-        $cssStyleReader.setRule(sizeSelector, propertyName, cssValue);
+        $cssStyleManager.setRule(sizeSelector, propertyName, cssValue);
 
         // blur to make sure next time user clicks on input, focused event will be fired
         event.target.blur();

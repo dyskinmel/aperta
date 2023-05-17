@@ -1,7 +1,7 @@
 <script>
     import { onMount } from "svelte";
     import { CanvasWrapper } from "./utils";
-    import { cssStyleReader } from "./CssStore.js";
+    import { cssStyleManager } from "./CssStore.js";
     export let rightSideMenuTabItems = [];
     export let activeTabValue = 1;
 
@@ -27,7 +27,7 @@
     <!-- {#if activeTabValue == rightSideMenuTabItem.value} -->
     <div
         class="box
-        {$cssStyleReader !== null &&
+        {$cssStyleManager !== null &&
         activeTabValue == rightSideMenuTabItem.value
             ? ''
             : 'hidden'}"

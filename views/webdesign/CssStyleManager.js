@@ -5,7 +5,7 @@ import { addCaptionToSelectedElm } from "./utils";
 
 
 // export class CssStyleManager {
-export class CssStyleReader {
+export class CssStyleManager {
     constructor() {
         //initialize
 

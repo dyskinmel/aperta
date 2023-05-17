@@ -1,5 +1,5 @@
 
-import { CssStyleReader } from "./CssStyleManager.js";
+import { CssStyleManager } from "./CssStyleManager.js";
 
 //
 // hovered elements related functions
@@ -99,13 +99,13 @@ export function selectElm(elm) {
     // add selectedElement attribute to newly selected element
     elm.setAttribute(canvasWrapper.getSelectedElementAttributeName(), "true");
 
-    const cssStyleReader = new CssStyleReader();
-    // console.log(cssStyleReader);
+    const cssStyleManager = new CssStyleManager();
+    // console.log(cssStyleManager);
 
     const elementSelectedEvent = new CustomEvent("elementSelected", {
         detail: {
             target: elm,
-            targetStyle: cssStyleReader,
+            targetStyle: cssStyleManager,
         }
     });
     document.dispatchEvent(elementSelectedEvent);
