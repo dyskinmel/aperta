@@ -187,7 +187,7 @@ export class CssStyleManager {
         }
 
         //
-        // Add feature to check if the property is inherited in the future
+        // TODO: Add feature to check if the property is inherited in the future
         //
         //
 
