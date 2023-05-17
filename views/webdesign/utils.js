@@ -170,7 +170,7 @@ export class CanvasWrapper {
         this.canvasWindow = this.canvas.contentWindow;
         this.canvasDocument = this.canvasWindow.document;
         // this.selectedElement = this.canvasDocument.getElementById("selectedElm");
-        this.selectedElement = this.canvasDocument.querySelectorAll('[data-aperta-selected-element="true"]')[0];
+        this.selectedElm = this.canvasDocument.querySelectorAll('[data-aperta-selected-element="true"]')[0];
     }
 
     // constructor() {
@@ -207,7 +207,7 @@ export class CanvasWrapper {
     }
 
     getSelectedElement() {
-        return this.selectedElement;
+        return this.selectedElm;
     }
     getSelectedElementAttributeName() {
         // return "selectedElm";
@@ -217,15 +217,15 @@ export class CanvasWrapper {
     //bool functions
     isSelectedElement(elm) {
         // return elm.id === "selectedElm";
-        return elm === this.selectedElement;
+        return elm === this.selectedElm;
     }
 
     isSelectedElementNull() {
-        return this.selectedElement === undefined;
+        return this.selectedElm === undefined;
     }
 
     isElementSelected() {
-        return this.selectedElement !== undefined;
+        return this.selectedElm !== undefined;
     }
 
 }

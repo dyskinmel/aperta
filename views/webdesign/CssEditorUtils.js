@@ -16,14 +16,13 @@ export function blurWhenEnterPressed(event) {
 // Migrated feature to CssStyleManager.js
 //
 // apply edited css value on CssEditor to the selected element
-// export function applyStyleToSelectedElement(property, cssValue) {
+// export function applyStyleToSelectedElm(property, cssValue) {
 //     // const canvas = document.getElementById("canvas");
 //     // const canvasWindow = canvas.contentWindow;
 //     // const canvasDocument = canvasWindow.document;
-//     // const selectedElement = canvasDocument.getElementById("selectedElm");
+//     // const selectedElm = canvasDocument.getElementById("selectedElm");
 //     const canvasWrapper = new CanvasWrapper();
-//     const selectedElm = canvasWrapper.getSelectedElement();
-
+//     const selectedElm = canvasWrapper.getSelectedElm();
 //     if (selectedElm !== null) {
 //         selectedElm.style[property] = cssValue;
 //     }
@@ -31,7 +30,6 @@ export function blurWhenEnterPressed(event) {
 //     // refresh caption and outline to reflect a style change
 //     addCaptionToSelectedElm(selectedElm);
 // }
-
 //
 // 
 //
@@ -138,14 +136,6 @@ export function blurWhenEnterPressed(event) {
 
 
 
-
-
-
-
-
-
-
-
 //
 // functions related to data formatting
 //
@@ -190,7 +180,6 @@ export function parseCssValue(value) {
 
 // convert css value to target unit 
 //
-
 export function convertCssUnits(propertyName, currentValue, currentUnit, convertUnit) {
     console.log(propertyName + ": " + currentValue + " " + currentUnit + " → " + convertUnit);
     // 
@@ -425,8 +414,8 @@ function pxToPercentage(propertyName, pxValue, canvasWrapper) {
     // const canvas = document.getElementById("canvas");
     // const canvasWindow = canvas.contentWindow;
     // const canvasDocument = canvasWindow.document;
-    const selectedElement = canvasWrapper.getSelectedElement();
-    const parentElement = selectedElement.parentElement;
+    const selectedElm = canvasWrapper.getSelectedElement();
+    const parentElement = selectedElm.parentElement;
     let parentSize = null;
 
     const isHeightProperty = ifHeightProperty(propertyName);
@@ -447,8 +436,8 @@ function pxToEm(pxValue, canvasWrapper) {
     // const canvas = document.getElementById("canvas");
     // const canvasWindow = canvas.contentWindow;
     // const canvasDocument = canvasWindow.document;
-    const selectedElement = canvasWrapper.getSelectedElement();
-    const parentElement = selectedElement.parentElement;
+    const selectedElm = canvasWrapper.getSelectedElement();
+    const parentElement = selectedElm.parentElement;
     const parentFontSize = parseFloat(getComputedStyle(parentElement).fontSize);
     // console.log("parentFontSize: " + parentFontSize + "px");
 
@@ -463,8 +452,8 @@ function pxToRem(pxValue, canvasWrapper) {
     // const canvasWindow = canvas.contentWindow;
     // const canvasDocument = canvasWindow.document;
     const canvasDocument = canvasWrapper.getCanvasDocument();
-    const rootElement = canvasDocument.documentElement;
-    const rootFontSize = parseFloat(getComputedStyle(rootElement).fontSize);
+    const rootElm = canvasDocument.documentElement;
+    const rootFontSize = parseFloat(getComputedStyle(rootElm).fontSize);
 
     const remValue = pxValue / rootFontSize;
 
@@ -476,12 +465,12 @@ function pxToCh(pxValue, canvasWrapper) {
     // const canvas = document.getElementById("canvas");
     // const canvasWindow = canvas.contentWindow;
     // const canvasDocument = canvasWindow.document;
-    // const selectedElement = canvasDocument.getElementById("selectedElm");
+    // const selectedElm = canvasDocument.getElementById("selectedElm");
 
     const canvasWindow = canvasWrapper.getCanvasWindow();
-    const selectedElement = canvasWrapper.getSelectedElement();
+    const selectedElm = canvasWrapper.getSelectedElement();
 
-    const computedStyle = canvasWindow.getComputedStyle(selectedElement);
+    const computedStyle = canvasWindow.getComputedStyle(selectedElm);
     const fontSize = parseFloat(computedStyle.fontSize);
     const fontFamily = computedStyle.fontFamily;
 
@@ -536,9 +525,9 @@ function percentageToPx(propertyName, percentValue, canvasWrapper) {
     // const canvas = document.getElementById("canvas");
     // const canvasWindow = canvas.contentWindow;
     // const canvasDocument = canvasWindow.document;
-    // const selectedElement = canvasDocument.getElementById("selectedElm");
-    const selectedElement = canvasWrapper.getSelectedElement();
-    const parentElement = selectedElement.parentElement;
+    // const selectedElm = canvasDocument.getElementById("selectedElm");
+    const selectedElm = canvasWrapper.getSelectedElement();
+    const parentElement = selectedElm.parentElement;
     let parentSize = null;
 
     const isHeightProperty = ifHeightProperty(propertyName);
@@ -601,9 +590,9 @@ function emToPx(emValue, canvasWrapper) {
     // const canvas = document.getElementById("canvas");
     // const canvasWindow = canvas.contentWindow;
     // const canvasDocument = canvasWindow.document;
-    // const selectedElement = canvasDocument.getElementById("selectedElm");
-    const selectedElement = canvasWrapper.getSelectedElement();
-    const parentElement = selectedElement.parentElement;
+    // const selectedElm = canvasDocument.getElementById("selectedElm");
+    const selectedElm = canvasWrapper.getSelectedElement();
+    const parentElement = selectedElm.parentElement;
     const parentFontSize = parseFloat(getComputedStyle(parentElement).fontSize);
 
     const pxValue = emValue * parentFontSize;
@@ -717,11 +706,11 @@ function chToPx(chValue, canvasWrapper) {
     // const canvas = document.getElementById("canvas");
     // const canvasWindow = canvas.contentWindow;
     // const canvasDocument = canvasWindow.document;
-    // const selectedElement = canvasDocument.getElementById("selectedElm");
+    // const selectedElm = canvasDocument.getElementById("selectedElm");
     const canvasWindow = canvasWrapper.getCanvasWindow();
-    const selectedElement = canvasWrapper.getSelectedElement();
+    const selectedElm = canvasWrapper.getSelectedElement();
 
-    const computedStyle = canvasWindow.getComputedStyle(selectedElement);
+    const computedStyle = canvasWindow.getComputedStyle(selectedElm);
     const fontSize = parseFloat(computedStyle.fontSize);
     const fontFamily = computedStyle.fontFamily;
 
