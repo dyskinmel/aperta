@@ -24,7 +24,6 @@
 </ul>
 
 {#each rightSideMenuTabItems as rightSideMenuTabItem}
-    <!-- {#if activeTabValue == rightSideMenuTabItem.value} -->
     <div
         class="box
         {$cssStyleManager !== null &&
@@ -34,7 +33,6 @@
     >
         <svelte:component this={rightSideMenuTabItem.component} />
     </div>
-    <!-- {/if} -->
 {/each}
 
 <style>

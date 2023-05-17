@@ -389,6 +389,4 @@ export class CssStyleManager {
         const [r, g, b] = hslToRgb(hue, saturation / 100, lightness / 100);
         return `#${r.toString(16).padStart(2, '0')}${g.toString(16).padStart(2, '0')}${b.toString(16).padStart(2, '0')}`;
     }
-
-
 }
