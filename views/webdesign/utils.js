@@ -50,8 +50,6 @@ export function addCaptionToHoveredElm(elm) {
     hoverOutline.style.height = absoluteRectBottom - absoluteRectTop + "px";
 
     hoverCaption.after(hoverOutline);
-
-    // console.log("Hovered");
 }
 
 // delete caption and outline from hovered element
@@ -82,17 +80,13 @@ export function selectElm(elm) {
     const canvasWrapper = new CanvasWrapper();
     const selectedElm = canvasWrapper.getSelectedElement();
 
-    // const selectedElement = elm.ownerDocument.getElementById("selectedElm");
-    // const selectedElement = elm.ownerDocument.querySelectorAll('[data-aperta-selected-element="true"]')[0];
-
-    // don't proceed if selected element is the same as the new one
+    // don't proceed if current selected element is the same as the new one
     if (elm === selectedElm) {
         return;
     }
 
     if (selectedElm !== undefined) {
         //remove selectedElement id from previously selected element
-        // selectedElm.removeAttribute("id");
         selectedElm.removeAttribute(canvasWrapper.getSelectedElementAttributeName());
     }
 
@@ -109,14 +103,6 @@ export function selectElm(elm) {
         }
     });
     document.dispatchEvent(elementSelectedEvent);
-
-    // const elementSelectedEvent = new CustomEvent("elementSelected", {
-    //     target: elm
-    // });
-
-
-
-
 }
 
 // add caption to selected element
