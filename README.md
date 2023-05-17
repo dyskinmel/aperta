@@ -42,7 +42,7 @@ Nothing
 1. clone git repo to your local environment
 2. click >< on buttom left corner of VS code
 3. chose "reopen in Container"
-4.install webpack using following command
+4. install webpack using following command
 
 `yarn add webpack-dev-server --dev`
 
