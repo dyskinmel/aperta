@@ -132,14 +132,12 @@
             Size
         </button>
     </div>
-    <!-- {#if isOpen == true} -->
+
     <div class="cssSizeMenu {isOpen ? '' : 'hidden'}">
         {#each menuItems as item}
-            <!-- <CssSizeMenuItem {item} /> -->
             <CssDimensionInput {item} />
         {/each}
     </div>
-    <!-- {/if} -->
 </div>
 
 <style>

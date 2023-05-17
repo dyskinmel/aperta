@@ -40,10 +40,6 @@ export class CssStyleManager {
         this.selectorList = {};
         this.pseudoList = {};
 
-        // console.log(this.selectedElm.style.length);
-        // this.getAppliedRule("height");
-
-
         //get css style from style sheet
         //
         this.styleSheets = this.canvasDocument.styleSheets;
@@ -123,8 +119,6 @@ export class CssStyleManager {
                         const propertySpecificity = this.effectiveRules[stringKey].specificity;
                         const isImportant = this.isImportant(this.effectiveRules[stringKey].style, propertyName);
                         const selectorColor = this.effectiveRules[stringKey].color;
-                        // console.log(objectKeys[i] + ":  " + propertyName + ":  " + propertyValue + " isImportant: " + isImportant);
-
 
                         // when both rules have !important, check which rule has higher specificity
                         if (isImportant && isAppliedImportant) {

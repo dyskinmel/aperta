@@ -11,8 +11,6 @@
         pseudoList,
     } from "./CssStore.js";
 
-    // let cssStyleManager = null;
-
     onMount(() => {
         document.addEventListener("elementSelected", (event) => {
             //initialize store variables when new element is selected
@@ -21,13 +19,6 @@
             pseudoList.update((value) => $cssStyleManager.getPseudoList());
             cssEditMode.update((value) => false);
             selectorToEdit.update((value) => "");
-
-            // cssStyleManager = event.detail.targetStyle;
-            // console.log($cssStyleManager);
-            // console.log($selectorList);
-
-            // console.log($pseudoList);
-            // $cssStyleManager.getSelectorList();
         });
     });
 
