@@ -6,16 +6,12 @@
     import { convertCssUnits } from "./CssEditorUtils.js";
     import { CanvasWrapper } from "./utils.js";
     import { cssStyleManager, selectorToEdit } from "./CssStore.js";
-    //// import { cssStyleManager } from "./CssStore.js";
-    //// import { selectorToEdit} from "./CssStore.js";
 
     // export let property;
     export let item;
 
     let hidden = null;
     let isDisabled = false;
-
-    let inputClass = "cssSizeMenuItemInputUnit deleteArrow";
 
     // let currentValue = null;
     let currentUnit = null;
@@ -122,61 +118,6 @@
         }
     }
 
-    // const cssStyleManager = new CssStyleManager();
-
-    // onMount(() => {
-    //     // getCssStyle();
-    //     document.addEventListener("elementSelected", (event) => {
-    //         // console.log(sizeProperty.id);
-    //         // console.log(sizeProperty);
-
-    //         // event.detail.targetSytle.getRulebySelector(
-    //         //     selectorToEdit.value,
-    //         //     sizeProperty.id
-    //         // );
-
-    //         const appliedRule = event.detail.targetStyle.getAppliedRule(
-    //             sizeProperty.id
-    //         );
-    //         // console.log(appliedRule["appliedPropertyValue"]);
-    //         // console.log(appliedRule);
-
-    //         if (appliedRule["appliedPropertyValue"] === null) {
-    //             return;
-    //         }
-
-    //         const parsedCssValue = parseCssValue(
-    //             appliedRule["appliedPropertyValue"]
-    //         );
-    //         // console.log(parsedCssValue);
-
-    //         //add condiiton for when NaN value is returned
-    //         if (isNaN(parsedCssValue["value"])) {
-    //             sizeValue.value = parsedCssValue["value"].toUpperCase();
-    //             sizeUnit.value = hidden;
-    //             isDisabled = true;
-    //             sizeUnit.classList.remove("deleteArrow");
-
-    //             // return;
-    //         } else {
-    //             sizeValue.value = parsedCssValue["value"];
-    //             sizeUnit.value = parsedCssValue["unit"].toUpperCase();
-    //             isDisabled = false;
-    //             sizeUnit.classList.add("deleteArrow");
-    //         }
-
-    //         // console.log("chatched elementSelected event@CSSDimensionInput");
-    //         // getCssStyle();
-    //     });
-    // });
-
-    //
-    //
-
-    // function getTagColorAccordingToMode(){
-
-    // }
-
     //
     //
 
@@ -194,17 +135,6 @@
             }
             $cssStyleManager.setRule(sizeSelector, propertyName, cssValue);
         }
-        // console.log("selector: " + sizeSelector + " color: " + sizeColor);
-
-        // if (value !== "") {
-        //     if (isNaN(sizeValue.value)) {
-        //         sizeValue.value = "";
-        //         return;
-        //     }
-        //     $cssStyleManager.selectorRule();
-        //     // applyStyleToSelectedElement(propertyName, cssValue);
-        // }
-        // console.log("selector: " + sizeSelector + " color: " + sizeColor);
     }
 
     // functions related to unit conversion ////////////////
@@ -215,10 +145,9 @@
         return keywords.includes(value.toUpperCase()) ? "KEYWORD" : "DIMENSION";
     };
 
+    // save current css unit(such as px, em, %) to use it for unit conversion
     function saveValues(event) {
-        // currentValue = sizeValue.value;
         currentUnit = sizeUnit.value;
-        // console.log(previousValue + " " + previousUnit);
     }
 
     function handleUnitChange(event) {
@@ -279,11 +208,6 @@
                 //get current style value
                 const selectedElm = canvasWrapper.getSelectedElement();
                 const canvasWindow = canvasWrapper.getCanvasWindow();
-                // const canvas = document.getElementById("canvas");
-                // const canvasWindow = canvas.contentWindow;
-                // const canvasDocument = canvasWindow.document;
-                // const selectedElm =
-                //     canvasDocument.getElementById("selectedElm");
 
                 if (selectedElm === null) {
                     sizeValue.value = "";
@@ -314,11 +238,6 @@
 
                     cssValue = `${sizeValue.value}${sizeUnit.value}`;
                 }
-                // cssValue = convertCssUnits(
-                //     currentValue,
-                //     currentUnit,
-                //     convertUnit
-                // );
                 break;
             case "DIMENSION-KEYWORD":
                 // add arrow to select option
@@ -360,7 +279,6 @@
 
         // apply edited style to selected element
         //
-        // applyStyleToSelectedElement(propertyName, cssValue);
         $cssStyleManager.setRule(sizeSelector, propertyName, cssValue);
 
         // blur to make sure next time user clicks on input, focused event will be fired
@@ -368,11 +286,6 @@
     }
 </script>
 
-<!-- {setPropertyValueAccordingToMode($cssEditMode)} -->
-<!-- {getCurrentMode($cssEditMode)} -->
-<!-- {isCssEditModeTrue($cssEditMode)} -->
-<!-- {$cssEditMode} -->
-<!-- {$selectorToEdit} -->
 <div class="cssSizeMenuItem" bind:this={sizeProperty} id={item.value}>
     <!--  -->
     <span class="cssSizeMenuItemLabel">{item.label}</span>
