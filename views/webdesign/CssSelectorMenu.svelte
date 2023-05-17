@@ -3,7 +3,7 @@
     import CssSelectorModal from "./CssSelectorModal.svelte";
     import { derived } from "svelte/store";
     import {
-        cssStyleReader,
+        cssStyleManager,
         cssEditMode,
         selectorToEdit,
         selectorList,
@@ -73,7 +73,7 @@
                 const length = Object.keys(newObj).length / 2;
                 newObj[length] = newKey;
                 newObj[newKey] = {};
-                newObj[newKey].color = $cssStyleReader.getTagColor(length);
+                newObj[newKey].color = $cssStyleManager.getTagColor(length);
                 return newObj;
             });
             // // selectorTags = [...selectorTags, event.detail.value];
