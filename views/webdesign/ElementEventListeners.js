@@ -181,7 +181,7 @@ export function addClickEventListeners(elm) {
 }
 
 
-
+// currently not in use
 function addListenersToChangeSizeMarginPadding() {
     // const canvas = document.getElementById("canvas");
     // const canvasWindow = canvas.contentWindow;
@@ -662,7 +662,8 @@ export function addDragAndDropEventListeners(elm) {
 //
 
 
-
+// migrated feature to CssStyleManager.js
+//
 // function setCssValueToCssEditor(elm) {
 //     //all css property items in css editor
 //     const cssProperties = [
