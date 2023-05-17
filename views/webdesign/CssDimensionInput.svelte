@@ -26,24 +26,23 @@
     let sizeUnit = null;
     let sizeColor = null;
 
-    let StoreCssStyleReader = null;
-    let StoreSelectorToEdit = null;
+    let storeCssStyleReader = null;
+    let storeSelectorToEdit = null;
 
     cssStyleReader.subscribe((value) => {
-        StoreCssStyleReader = value;
+        storeCssStyleReader = value;
     });
     selectorToEdit.subscribe((value) => {
-        StoreSelectorToEdit = value;
+        storeSelectorToEdit = value;
     });
 
     // reactive statement to update the input value when the selector editor's value is changed
     $: {
-        console.log("$: ran");
-        if (StoreCssStyleReader === null) {
+        if (storeCssStyleReader === null) {
             //do nothing if no element is selected
         } else {
-            if (StoreSelectorToEdit === "") {
-                const appliedRule = StoreCssStyleReader.getAppliedRule(
+            if (storeSelectorToEdit === "") {
+                const appliedRule = storeCssStyleReader.getAppliedRule(
                     sizeProperty.id
                 );
                 // console.log(appliedRule["appliedPropertyValue"]);
@@ -80,10 +79,10 @@
                     // console.log("appliedRuleMode");
                 }
             } else {
-                sizeSelector = StoreSelectorToEdit;
+                sizeSelector = storeSelectorToEdit;
                 // if mode is to edit individual selector properties
                 const selectorRule =
-                    StoreCssStyleReader.getRuleBySelectorAndPropertyName(
+                    storeCssStyleReader.getRuleBySelectorAndPropertyName(
                         sizeSelector,
                         sizeProperty.id
                     );
@@ -117,9 +116,9 @@
                     // console.log("appliedRuleMode");
                 }
 
-                // console.log("show properties of " + StoreSelectorToEdit);
+                // console.log("show properties of " + storeSelectorToEdit);
             }
-            // console.log("StoreCssStyleReader is not null");
+            // console.log("storeCssStyleReader is not null");
         }
     }
 
