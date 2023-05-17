@@ -13,22 +13,24 @@ export function blurWhenEnterPressed(event) {
     }
 }
 
+// Migrated feature to CssStyleManager.js
+//
 // apply edited css value on CssEditor to the selected element
-export function applyStyleToSelectedElement(property, cssValue) {
-    // const canvas = document.getElementById("canvas");
-    // const canvasWindow = canvas.contentWindow;
-    // const canvasDocument = canvasWindow.document;
-    // const selectedElement = canvasDocument.getElementById("selectedElm");
-    const canvasWrapper = new CanvasWrapper();
-    const selectedElm = canvasWrapper.getSelectedElement();
+// export function applyStyleToSelectedElement(property, cssValue) {
+//     // const canvas = document.getElementById("canvas");
+//     // const canvasWindow = canvas.contentWindow;
+//     // const canvasDocument = canvasWindow.document;
+//     // const selectedElement = canvasDocument.getElementById("selectedElm");
+//     const canvasWrapper = new CanvasWrapper();
+//     const selectedElm = canvasWrapper.getSelectedElement();
 
-    if (selectedElm !== null) {
-        selectedElm.style[property] = cssValue;
-    }
+//     if (selectedElm !== null) {
+//         selectedElm.style[property] = cssValue;
+//     }
 
-    // refresh caption and outline to reflect a style change
-    addCaptionToSelectedElm(selectedElm);
-}
+//     // refresh caption and outline to reflect a style change
+//     addCaptionToSelectedElm(selectedElm);
+// }
 
 //
 // 
@@ -171,10 +173,6 @@ export function parseCssValue(value) {
         },
         // add more patterns here if needed
     ];
-
-    // if (value === null) {
-    //     return { value: null };
-    // }
 
     for (const pattern of patterns) {
         const matches = value.match(pattern.regex);
@@ -452,7 +450,7 @@ function pxToEm(pxValue, canvasWrapper) {
     const selectedElement = canvasWrapper.getSelectedElement();
     const parentElement = selectedElement.parentElement;
     const parentFontSize = parseFloat(getComputedStyle(parentElement).fontSize);
-    console.log("parentFontSize: " + parentFontSize + "px");
+    // console.log("parentFontSize: " + parentFontSize + "px");
 
     const emValue = pxValue / parentFontSize;
 

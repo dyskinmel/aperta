@@ -37,13 +37,46 @@
     }
 
     function updateTag(event) {
+        let i = 0;
+        // console.log($selectorList);
+
         if (inputValue !== "") {
-            const index = selectorTags.indexOf(inputValue);
-            if (index !== -1) {
-                selectorTags[index] = event.detail.value;
-            }
+            selectorList.update((obj) => {
+                let newObj = obj;
+                const newKey = event.detail.value;
+
+                // console.log(newObj);
+                while (newObj[i]) {
+                    if (newObj[i] === inputValue) {
+                        newObj[i] = newKey;
+                        // console.log(newObj[i]);
+                    }
+                    i++;
+                }
+                newObj[newKey] = newObj[inputValue];
+                delete newObj[inputValue];
+
+                // console.log(newObj);
+                // return obj;
+                return newObj;
+            });
+
+            // const index = selectorTags.indexOf(inputValue);
+            // if (index !== -1) {
+            //     // selectorTags[index] = event.detail.value;
+            // }
         } else {
-            selectorTags = [...selectorTags, event.detail.value];
+            // console.log($selectorList);
+            selectorList.update((obj) => {
+                let newObj = obj;
+                const newKey = event.detail.value;
+                const length = Object.keys(newObj).length / 2;
+                newObj[length] = newKey;
+                newObj[newKey] = {};
+                newObj[newKey].color = $cssStyleReader.getTagColor(length);
+                return newObj;
+            });
+            // // selectorTags = [...selectorTags, event.detail.value];
         }
         closeModal();
     }
@@ -59,7 +92,7 @@
 
     function selectTag(tag) {
         // if cssEditorMode(mode to edit individual selector props) is on, then update the selectorToEdit
-        if (cssEditMode) {
+        if ($cssEditMode) {
             selectorToEdit.update((value) => tag);
             // console.log(event);
         }
