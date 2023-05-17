@@ -1,7 +1,7 @@
 
 # Getting Started
 
-## Installation
+## Development Environment Setup
 
 ### codespace:
 
@@ -9,7 +9,7 @@
 
 Nothing
 
-#### Installation instruction
+#### Development environment setup instructions
 
 1. create new codespace on a branch
 2. cd to project home directory
@@ -37,7 +37,7 @@ Nothing
   - Dev Container (extensions)
   - Svelte for VS Code (extensions)
 
-#### Installation instrunctions:
+#### Development environment setup instructions:
 
 1. clone git repo to your local environment
 2. click >< on buttom left corner of VS code
