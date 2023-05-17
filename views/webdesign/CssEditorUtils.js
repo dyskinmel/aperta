@@ -1,5 +1,5 @@
-import { addCaptionToSelectedElm } from "./utils";
-import { elementManagerFactory } from "./ElementManager";
+// import { addCaptionToSelectedElm } from "./utils";
+// import { elementManagerFactory } from "./ElementManager";
 import { CanvasWrapper } from "./utils";
 
 //
