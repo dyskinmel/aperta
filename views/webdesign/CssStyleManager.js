@@ -67,9 +67,6 @@ export class CssStyleManager {
 
     // return applied css style of propety, selector and if !important is set
     getAppliedRule(propertyName) {
-        // console.log(propertyName);
-        // console.log(this.effectiveRules);
-        // console.log(Object.keys(this.effectiveRules));
         let objectKeys = null;
 
         let isAppliedImportant = false;
@@ -190,16 +187,12 @@ export class CssStyleManager {
         }
 
         //
-        //Add feature to check if the property is inherited
+        // Add feature to check if the property is inherited in the future
         //
         //
 
-
-
-        // console.log("Selector:  " + appliedSelector + "  propertyName:  " + propertyName + ":  propertyValue:  " + appliedPropertyValue + "  isAppliedImportant:  " + isAppliedImportant);
 
         return { appliedSelector, appliedPropertyValue, isAppliedImportant, appliedColor };
-        // return { appliedSelector, appliedPropertyValue, isAppliedImportant, appliedRule };
     }
 
     getRuleBySelectorAndPropertyName(selector, propertyName) {
@@ -279,18 +272,8 @@ export class CssStyleManager {
                 effectiveRules[numberOfRules] = rules[j].selectorText;
                 effectiveRules[rules[j].selectorText] = rules[j];
                 numberOfRules++;
-                // effectiveRule = { [rules[j].selectorText]: rules[j] };
-                // console.log(effectiveRule);
-
-
-                // effectiveRules 
             }
         }
-        // console.log(effectiveRules);
-        // console.log(numberOfRules);
-        // console.log(Object.keys(effectiveRules));
-        // console.log(this.selectorList);
-        // console.log(this.pseudoList);
         return effectiveRules;
     }
 
@@ -309,7 +292,6 @@ export class CssStyleManager {
             return tagColors[i];
         } else {
             return generateRandomColor();
-            // return tagColors[i % tagColors.length];
         }
     }
 
@@ -327,27 +309,19 @@ export class CssStyleManager {
     // 
 
     setRule(selector, propertyName, cssValue) {
-        // console.log(this.StyleSheet);
-        // console.log(this.rules);
         if (selector === "inline") {
-            // console.log("inline");
             this.selectedElm.style[propertyName] = cssValue;
         } else {
             for (let i = 0; i < this.rules.length; i++) {
                 const rule = this.rules[i];
                 if (rule.selectorText === selector) {
-
                     rule.style[propertyName] = cssValue;
                     this.styleSheet.deleteRule(i);
                     this.styleSheet.insertRule(rule.cssText, i);
-
-                    // this.selectedElm.style["width"] = "100px";
-                    //
-                    console.log(this.rules[i].style);
-                    // console.log(this.styleSheet);
                 }
             }
         }
+        // update caption of selected element to apply the change
         addCaptionToSelectedElm(this.selectedElm);
         // update effectiveRules
         this.effectiveRules = this.getEffectiveRules(this.rules);
@@ -360,10 +334,6 @@ export class CssStyleManager {
     isImportant(cssStyle, propertyName) {
         const priority = cssStyle.getPropertyPriority(propertyName);
         return priority === 'important';
-        // return {
-        //     value: propertyValue,
-        //     important: priority === 'important',
-        // };
     }
 
     // utility functions
@@ -379,8 +349,6 @@ export class CssStyleManager {
             .replace(pseudoClassRegex, '');
 
         return cleanedSelector.trim();
-        // const includePseudo = selectorText != cleanedSelector;
-        // return cleanedSelector.trim(), includePseudo;
     }
 
     hslToRgb(h, s, l) {
@@ -424,93 +392,3 @@ export class CssStyleManager {
 
 
 }
-
-
-
-// export class CssStyleManager {
-//     //Singleton constructor
-//     constructor() {
-//         if (CssStyleManager.instance == null) {
-//             //initialize
-
-//             //get canvas document
-//             this.canvasWrapper = new CanvasWrapper();
-//             console.log(this.canvasWrapper);
-//             this.canvasDocument = this.canvasWrapper.getCanvasDocument();
-//             this.selectedElm = this.canvasWrapper.getSelectedElement();
-
-//             //set element related variables
-//             this.elmStyle = this.selectedElm.style;
-//             this.elmId = this.selectedElm.id;
-//             this.elmClassList = this.selectedElm.classList;
-
-//             //initialize style sheets related variables
-//             this.styleSheets = null;
-
-//             this.cssFileName = "style.css"; //change this to get css file name from config in future
-//             this.cssStyleSheet = null;
-
-//             this.defaultCssFileName = "apertaDefaultStyle.css";
-//             this.defaultCssStyle = null;
-
-//             //get css style sheet
-//             this.styleSheets = this.canvasDocument.styleSheets;
-//             for (let i = 0; i < this.styleSheets.length; i++) {
-//                 if (this.styleSheets[i].href.endsWith(this.defaultCssFileName)) {
-//                     this.defaultStyleSheet = this.styleSheets[i];
-//                 }
-//                 if (this.styleSheets[i].href.endsWith(this.cssFileName)) {
-//                     this.cssStyleSheet = this.styleSheets[i];
-//                 }
-//             }
-
-//             // save the singleton instance
-//             CssStyleManager.instance = this;
-
-//         }
-//         else {
-//             // update elm related info and return the singleton instance
-
-//             console.log(this.canvasWrapper);
-//             // if (this.CanvasWrapper.isSelectedElement(this.selectedElm) == false) {
-//             //     this.CanvasWrapper = new CanvasWrapper();
-//             //     this.selectedElm = this.CanvasWrapper.getSelectedElement();
-//             //     CssStyleManager.instance.style = this.selectedElm.style;
-//             //     CssStyleManager.instance.elmId = this.selectedElm.id;
-//             //     CssStyleManager.instance.elmClassList = this.selectedElm.classList;
-//             // }
-//             return CssStyleManager.instance;
-//         }
-//     }
-
-//     insertRule(cssSelector, cssProperty, cssValue) {
-//         this.cssStyleSheet.insertRule(cssSelector + "{" + cssProperty + ":" + cssValue + "}", cssStyleSheet.cssRules.length);
-
-//     }
-
-//     getAppliedRule() {
-//         console.log(this.defaultCssStyle);
-
-//     }
-
-
-
-
-//     // updateCssStyleSheet() {
-//     //     //get css style sheet
-//     //     this.styleSheets = this.canvasDocument.styleSheets;
-//     //     for (let i = 0; i < styleSheet.length; i++) {
-//     //         // if (styleSheet[i].href.endsWith(this.defaultCssFileName)) {
-//     //         //     this.defaultStyleSheet = styleSheet[i];
-//     //         // }
-//     //         if (styleSheet[i].href.endsWith(this.cssFileName)) {
-//     //             this.cssStyleSheet = styleSheet[i];
-//     //         }
-//     //     }
-//     // }
-// }
-
-
-
-
-
