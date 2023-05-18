@@ -1,5 +1,4 @@
 <script>
-    import { onMount } from "svelte";
     import { elementManagerFactory } from "./ElementManager.js";
     import { addKeydownEventListeners } from "./ElementEventListeners.js";
 
@@ -10,6 +9,7 @@
         addKeydownEventListeners(canvasWindow);
         const canvasBody = canvasWindow.document.body;
 
+        // TODO: go through all the HTML elements on the page and add event listeners to them.
         const elm = elementManagerFactory(canvasBody);
         elm.addListenerToElement(canvasBody);
     };
