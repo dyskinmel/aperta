@@ -8,10 +8,20 @@
         const canvasWindow = canvas.contentWindow;
         addKeydownEventListeners(canvasWindow);
         const canvasBody = canvasWindow.document.body;
+        const allElementsIncludingBody = [canvasBody].concat(
+            Array.from(canvasBody.getElementsByTagName("*"))
+        );
 
-        // TODO: go through all the HTML elements on the page and add event listeners to them.
-        const elm = elementManagerFactory(canvasBody);
-        elm.addListenerToElement(canvasBody);
+        console.log(allElementsIncludingBody);
+
+        // go through all the HTML elements on the page and add event listeners to them.
+        for (let i = 0; i < allElementsIncludingBody.length; i++) {
+            const elm = allElementsIncludingBody[i];
+            const elmManager = elementManagerFactory(elm);
+            elmManager.addListenerToElement(elm);
+        }
+        // const elmManager = elementManagerFactory(canvasBody);
+        // elmManager.addListenerToElement(canvasBody);
     };
 </script>
 
