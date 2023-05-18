@@ -42,8 +42,6 @@ export class ContentfulClient extends CmsClient {
         // console.log(this.content);
 
         return this.contents;
-
-
     }
 
     async getEntry(content) {
