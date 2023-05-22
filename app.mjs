@@ -2,13 +2,16 @@ import express from 'express';
 import path from 'path';
 import { readFile } from 'fs';
 
+let webRouter = express.Router();
 const app = express();
+app.use("/", webRouter);
+
 const port = 8080;
 
 const basePath = new URL('./public', import.meta.url).pathname;
 
-app.use((req, res) => {
-    const targetPath = req.path === "/" ? "/index.html" : req.path;
+webRouter.get('/', function (req, res) {
+    const targetPath = "/index.html";
 
     const contentType = getContentTypes(targetPath);
 
@@ -23,6 +26,25 @@ app.use((req, res) => {
         res.end();
     });
 });
+
+webRouter.get('/webdesign/*', function (req, res) {
+    const targetPath = req.path;
+
+    const contentType = getContentTypes(targetPath);
+
+    readFile(basePath + targetPath, (err, data) => {
+        if (err) {
+            console.log(err);
+            res.sendStatus(404);
+            return;
+        }
+        res.writeHead(200, { 'Content-Type': contentType });
+        res.write(data);
+        res.end();
+    });
+});
+
+
 
 function getContentTypes(targetPath) {
     const extension = path.extname(targetPath).toLowerCase();
@@ -49,3 +71,24 @@ app.listen(port, () => {
 
 
 
+
+
+// Used following before using express.Router()
+//
+
+// app.use((req, res) => {
+//     const targetPath = req.path === "/" ? "/index.html" : req.path;
+
+//     const contentType = getContentTypes(targetPath);
+
+//     readFile(basePath + targetPath, (err, data) => {
+//         if (err) {
+//             console.log(err);
+//             res.sendStatus(404);
+//             return;
+//         }
+//         res.writeHead(200, { 'Content-Type': contentType });
+//         res.write(data);
+//         res.end();
+//     });
+// });
