@@ -1,16 +1,26 @@
 import express from 'express';
 import path from 'path';
 import { readFile } from 'fs';
+import dotenv from 'dotenv';
+
+// read .env file
+dotenv.config();
 
 const webRouter = express.Router();
-// const apiRouter = express.Router();
-const app = express();
+const apiRouter = express.Router();
+
+let app = express();
+
 app.use("/", webRouter);
-// app.use("/api", apiRouter);
+app.use("/api", apiRouter);
 
 const port = 8080;
 
 const basePath = new URL('./public', import.meta.url).pathname;
+
+/*
+    *  Web Router
+*/
 
 webRouter.get('/', function (req, res) {
     const targetPath = "/index.html";
@@ -46,6 +56,32 @@ webRouter.get('/webdesign/*', function (req, res) {
     });
 });
 
+webRouter.get('/img/*', function (req, res) {
+    const targetPath = req.path;
+
+    const contentType = getContentTypes(targetPath);
+
+    readFile(basePath + targetPath, (err, data) => {
+        if (err) {
+            console.log(err);
+            res.sendStatus(404);
+            return;
+        }
+        res.writeHead(200, { 'Content-Type': contentType });
+        res.write(data);
+        res.end();
+    });
+});
+
+/*
+    *  API Router
+*/
+
+apiRouter.get('/apiKey', function (req, res) {
+    res.send(process.env.CONTENTFUL_API_KEY);
+});
+
+
 
 
 function getContentTypes(targetPath) {
@@ -70,6 +106,9 @@ function getContentTypes(targetPath) {
 app.listen(port, () => {
     console.log(`Example app listening at http://localhost:${port}`)
 });
+
+
+
 
 
 
