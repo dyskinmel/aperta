@@ -2,9 +2,11 @@ import express from 'express';
 import path from 'path';
 import { readFile } from 'fs';
 
-let webRouter = express.Router();
+const webRouter = express.Router();
+// const apiRouter = express.Router();
 const app = express();
 app.use("/", webRouter);
+// app.use("/api", apiRouter);
 
 const port = 8080;
 
