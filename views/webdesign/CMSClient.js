@@ -11,73 +11,47 @@ class CmsClient {
 export class ContentfulClient extends CmsClient {
     constructor() {
         super();
-        this.contentTypes = [];
-        this.entries = [];
+        this.BASE_URL = "https://cdn.contentful.com";
+
+        // TODO: change following to use environment variables in the future
+        this.spaceId = "rvj0gs4gb6wz";
+        this.environmentId = "master";
+        this.accessToken = "4jj76mhuV9M5drJOAwzDx6Lpuv1eN8TLE4DHc6hN4hw";
+
+        this.contentTypes = null;
+        this.contents = null;
+        this.entries = null;
     }
-    // Contentful
 
     async getContentType() {
-        const url = "https://cdn.contentful.com/spaces/rvj0gs4gb6wz/environments/master/content_types?access_token=4jj76mhuV9M5drJOAwzDx6Lpuv1eN8TLE4DHc6hN4hw";
+        const url = "https://cdn.contentful.com/spaces/" + this.spaceId + "/environments/" + this.environmentId + "/content_types?access_token=" + this.accessToken;
         const response = await fetch(url);
         const contentTypeJSON = await response.json();
         this.contentTypes = JSON.parse(JSON.stringify(contentTypeJSON));
-        // console.log(obj);
+        // console.log(this.contentTypes);
+
         return this.contentTypes;
-        // fetch(url).then(response => response.json()).then(contentType => {
-        //     const obj = JSON.parse(JSON.stringify(contentType));
-        //     //console.log(obj);
-        //     return obj;
-        // });
-        // .then(response => response.json())
-        // .then(contentType => {
-        //     const obj = JSON.parse(JSON.stringify(contentType));
-        //     //console.log(obj);
-        //     return obj;
-        //     // let pulldownMenu = document.getElementById("contentTypes");
-        //     // const ContentTypeButton = document.getElementById("getContentType");
-
-        //     // for (i = 0; i < obj.items.length; i++) {
-        //     //     const item = obj.items[i];
-
-        //     //     let pulldownOption = document.createElement("option");
-        //     //     pulldownOption.textContent = item.name;
-        //     //     pulldownOption.setAttribute("id", item.sys.id);
-
-        //     //     pulldownMenu.appendChild(pulldownOption);
-
-        //     //     console.log(item.name);
-
-        //     // }
-
-        //     // ContentTypeButton.after(pulldownMenu);
-        // })
     }
 
-    async getContents(value) {
-
-        const url = "https://cdn.contentful.com/spaces/rvj0gs4gb6wz/environments/master/entries?access_token=4jj76mhuV9M5drJOAwzDx6Lpuv1eN8TLE4DHc6hN4hw&content_type=" + value;
+    async getContents(contentType) {
+        const url = "https://cdn.contentful.com/spaces/" + this.spaceId + "/environments/" + this.environmentId + "/entries?access_token=" + this.accessToken + "&content_type=" + contentType;
 
         const response = await fetch(url);
         const entries = await response.json();
-        const obj = JSON.parse(JSON.stringify(entries));
-        // console.log(obj);
-        return obj;
+        this.contents = JSON.parse(JSON.stringify(entries));
+        // console.log(this.content);
 
-        // fetch(url)
-        //     .then(response => response.json())
-        //     .then(entries => {
-        //         console.log(entries);
-
-        //     })
+        return this.contents;
     }
 
-    async getEntry(value) {
-        const url = "https://cdn.contentful.com/spaces/rvj0gs4gb6wz/environments/master/entries/" + value + "?access_token=4jj76mhuV9M5drJOAwzDx6Lpuv1eN8TLE4DHc6hN4hw";
-        // console.log(url);
+    async getEntry(content) {
+        const url = "https://cdn.contentful.com/spaces/" + this.spaceId + "/environments/" + this.environmentId + "/entries/" + content + "?access_token=" + this.accessToken;
+
         const response = await fetch(url);
         const entries = await response.json();
-        const obj = JSON.parse(JSON.stringify(entries));
-        // console.log(obj);
-        return obj;
+        this.entries = JSON.parse(JSON.stringify(entries));
+        // console.log(this.entries);
+
+        return this.entries;
     }
 }

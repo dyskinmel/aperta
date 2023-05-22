@@ -1,5 +1,6 @@
 <script>
-    import { ContentfulConnector } from "./CMSConnector.js";
+    // import { ContentfulConnector } from "./CMSConnector.js";
+    import { ContentfulClient } from "./CMSClient.js";
     import { CanvasWrapper } from "./utils.js";
 
     let contentTypes;
@@ -24,7 +25,8 @@
 <button
     id="getContentType"
     on:click={() => {
-        const contentfulConnector = new ContentfulConnector();
+        // const contentfulConnector = new ContentfulConnector();
+        const contentfulConnector = new ContentfulClient();
         contentfulConnector.getContentType().then((obj) => {
             while (contentTypes.firstChild) {
                 contentTypes.removeChild(contentTypes.firstChild);
@@ -46,7 +48,8 @@
     id="getContents"
     on:click={() => {
         // console.log(contentTypes.value);
-        const contentfulConnector = new ContentfulConnector();
+        // const contentfulConnector = new ContentfulConnector();
+        const contentfulConnector = new ContentfulClient();
         contentfulConnector.getContents(contentTypes.value).then((obj) => {
             while (contents.firstChild) {
                 contents.removeChild(contents.firstChild);
@@ -69,7 +72,8 @@
 <button
     on:click={() => {
         // console.log(contents.value);
-        const contentfulConnector = new ContentfulConnector();
+        // const contentfulConnector = new ContentfulConnector();
+        const contentfulConnector = new ContentfulClient();
         contentfulConnector.getEntry(contents.value).then((obj) => {
             while (entries.firstChild) {
                 entries.removeChild(entries.firstChild);
