@@ -10,9 +10,9 @@ import { adjustBodyHeight } from "./utils.js";
 import { isPhrasingContentTags } from "./HtmlCategories.js";
 import { CanvasWrapper } from "./utils.js";
 
-//
-// Factory function to create an element manager
-//
+/* 
+    *  Factory function to create an element manager
+*/
 
 // factory function to create an element
 export function elementManagerFactory(htag) {
@@ -37,9 +37,9 @@ export function elementManagerFactory(htag) {
     }
 }
 
-//
-// Base class for all HTML elements
-//
+/* 
+    * Base class for HTML elements
+*/
 
 class ElementManager {
     addElementToCanvas(htag, textContent) {
@@ -110,8 +110,8 @@ class ElementManager {
     // check if the element can be a parent of the child element
     // override this method in child classes 
     // refer https://html.spec.whatwg.org/multipage/semantics.html#semantics for specifcations
-    // use methods in HtmlCategories.js to check child elements belogs to which category
-    // also add exceptional cases if needed
+    // use methods in HtmlCategories.js to check child elements belongs to which category
+    // also add conditions for exceptional cases if needed
     // return true if the element can be a parent of the child element
     canBeParentOf(child) {
 
@@ -133,9 +133,9 @@ class ElementManager {
 
 }
 
-//
-// Child classes for elements (Categorize if possible)
-//
+/*
+    * Child classes for individual HTML elements (Categorize if possible)
+*/
 
 // Body element
 //
