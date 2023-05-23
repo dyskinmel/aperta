@@ -78,7 +78,7 @@ webRouter.get('/img/*', function (req, res) {
 */
 
 apiRouter.get('/apiKey', function (req, res) {
-    res.send(process.env.CONTENTFUL_API_KEY);
+    res.send(process.env.CONTENTFUL_ACCESS_TOKEN);
 });
 
 
