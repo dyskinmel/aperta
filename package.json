@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "scripts": {
     "build": "webpack --mode development",
-    "start": "webpack-dev-server",
+    "start": "node --experimental-modules app.mjs",
     "test": "your-test-command",
     "dev:start": "concurrently \"yarn run client:dev\" \"yarn run server:dev\"",
     "client:dev": "webpack-dev-server --mode development --open --hot",
