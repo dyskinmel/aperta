@@ -37,6 +37,12 @@ module.exports = {
         conditionNames: ['svelte'],
     },
     devServer: {
+        proxy: {
+            '/api': {
+                target: 'http://localhost:8080',
+                secure: false,
+            }
+        },
         static: {
             directory: path.join(__dirname, 'public'),
         },
