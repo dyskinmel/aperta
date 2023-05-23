@@ -11,7 +11,7 @@ import { isPhrasingContentTags } from "./HtmlCategories.js";
 import { CanvasWrapper } from "./utils.js";
 
 /* 
-    *  Factory function to create an element manager
+    *  Factory function to create an element manager from htag
 */
 
 // factory function to create an element
