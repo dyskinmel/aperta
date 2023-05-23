@@ -10,7 +10,7 @@ export function addCaptionToHoveredElm(elm) {
     // delete old hovered element before creating a new one
     delCaptionFromHoveredElm(elm);
 
-    // get position of hovered element
+    // get position of elm to calculate position for hovered element
     const rect = elm.getBoundingClientRect();
 
     const canvas = document.getElementById("canvas");
