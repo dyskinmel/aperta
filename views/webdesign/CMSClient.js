@@ -26,7 +26,7 @@ export class ContentfulClient extends CmsClient {
     }
 
     async getApiKey() {
-        const url = "http://localhost:8080/api/apiKey";
+        const url = "http://localhost:9000/api/apiKey";
         try {
             const response = await fetch(url);
             if (!response.ok) {
