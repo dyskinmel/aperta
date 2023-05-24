@@ -112,7 +112,11 @@ class ElementManager {
     // refer https://html.spec.whatwg.org/multipage/semantics.html#semantics for specifcations
     // use methods in HtmlCategories.js to check child elements belongs to which category
     // also add conditions for exceptional cases if needed
-    // return true if the element can be a parent of the child element
+    // return true if an element can be a parent of a child element
+
+    // TODO: reconsider if return value should be true or false
+    // this is default implementation for development purposes
+    // change default return value (true) if needed
     canBeParentOf(child) {
 
         return true;
