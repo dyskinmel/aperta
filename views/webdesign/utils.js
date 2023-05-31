@@ -1,16 +1,16 @@
 
-import { CssStyleReader } from "./CssStyleManager.js";
+import { CssStyleManager } from "./CssStyleManager.js";
 
-//
-// hovered elements related functions
-//
+/*
+    *  hovered elements related functions
+*/
 
 // add caption and outline to hovered element
 export function addCaptionToHoveredElm(elm) {
     // delete old hovered element before creating a new one
     delCaptionFromHoveredElm(elm);
 
-    // get position of hovered element
+    // get position of elm to calculate position for hovered element
     const rect = elm.getBoundingClientRect();
 
     const canvas = document.getElementById("canvas");
@@ -50,8 +50,6 @@ export function addCaptionToHoveredElm(elm) {
     hoverOutline.style.height = absoluteRectBottom - absoluteRectTop + "px";
 
     hoverCaption.after(hoverOutline);
-
-    // console.log("Hovered");
 }
 
 // delete caption and outline from hovered element
@@ -71,10 +69,9 @@ export function delCaptionFromHoveredElm(elm) {
     }
 }
 
-
-//
-//　selected elements related functions 
-//
+/*
+    *  selected elements related functions
+*/
 
 // change state of selected elements
 //
@@ -82,39 +79,33 @@ export function selectElm(elm) {
     const canvasWrapper = new CanvasWrapper();
     const selectedElm = canvasWrapper.getSelectedElement();
 
-    // const selectedElement = elm.ownerDocument.getElementById("selectedElm");
-    // const selectedElement = elm.ownerDocument.querySelectorAll('[data-aperta-selected-element="true"]')[0];
+    // don't proceed if current selected element is the same as the new one
+    if (elm === selectedElm) {
+        return;
+    }
 
     if (selectedElm !== undefined) {
         //remove selectedElement id from previously selected element
-        // selectedElm.removeAttribute("id");
         selectedElm.removeAttribute(canvasWrapper.getSelectedElementAttributeName());
     }
 
     // add selectedElement attribute to newly selected element
     elm.setAttribute(canvasWrapper.getSelectedElementAttributeName(), "true");
 
-    const cssStyleReader = new CssStyleReader();
-    // console.log(cssStyleReader);
+    const cssStyleManager = new CssStyleManager();
+    // console.log(cssStyleManager);
 
     const elementSelectedEvent = new CustomEvent("elementSelected", {
         detail: {
             target: elm,
-            targetStyle: cssStyleReader,
+            targetStyle: cssStyleManager,
         }
     });
     document.dispatchEvent(elementSelectedEvent);
-
-    // const elementSelectedEvent = new CustomEvent("elementSelected", {
-    //     target: elm
-    // });
-
-
-
-
 }
 
 // add caption to selected element
+// TODO: add feature to edit element basic contents
 //
 export function addCaptionToSelectedElm(elm) {
     // delete old label and menu before creating a new one
@@ -169,17 +160,20 @@ export function addCaptionToSelectedElm(elm) {
 
 }
 
-//
-//
-//
 
+/*
+    *  util functions
+*/
+
+// use this class to get canvas related elements and attribute names to avoid hardcoding
+// TODO: consider to make it singleton to chache variables
 export class CanvasWrapper {
     constructor() {
         this.canvas = document.getElementById("canvas");
         this.canvasWindow = this.canvas.contentWindow;
         this.canvasDocument = this.canvasWindow.document;
         // this.selectedElement = this.canvasDocument.getElementById("selectedElm");
-        this.selectedElement = this.canvasDocument.querySelectorAll('[data-aperta-selected-element="true"]')[0];
+        this.selectedElm = this.canvasDocument.querySelectorAll('[data-aperta-selected-element="true"]')[0];
     }
 
     // constructor() {
@@ -216,7 +210,7 @@ export class CanvasWrapper {
     }
 
     getSelectedElement() {
-        return this.selectedElement;
+        return this.selectedElm;
     }
     getSelectedElementAttributeName() {
         // return "selectedElm";
@@ -226,22 +220,21 @@ export class CanvasWrapper {
     //bool functions
     isSelectedElement(elm) {
         // return elm.id === "selectedElm";
-        return elm === this.selectedElement;
+        return elm === this.selectedElm;
     }
 
     isSelectedElementNull() {
-        return this.selectedElement === undefined;
+        return this.selectedElm === undefined;
     }
 
     isElementSelected() {
-        return this.selectedElement !== undefined;
+        return this.selectedElm !== undefined;
     }
 
 }
 
 
-//
-// related canvas appearance
+// function related to canvas appearance
 //
 
 export function adjustBodyHeight() {

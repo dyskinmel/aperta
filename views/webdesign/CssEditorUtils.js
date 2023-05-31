@@ -1,5 +1,5 @@
-import { addCaptionToSelectedElm } from "./utils";
-import { elementManagerFactory } from "./ElementManager";
+// import { addCaptionToSelectedElm } from "./utils";
+// import { elementManagerFactory } from "./ElementManager";
 import { CanvasWrapper } from "./utils";
 
 //
@@ -13,143 +13,133 @@ export function blurWhenEnterPressed(event) {
     }
 }
 
+// Migrated feature to CssStyleManager.js
+//
 // apply edited css value on CssEditor to the selected element
-export function applyStyleToSelectedElement(property, cssValue) {
-    // const canvas = document.getElementById("canvas");
-    // const canvasWindow = canvas.contentWindow;
-    // const canvasDocument = canvasWindow.document;
-    // const selectedElement = canvasDocument.getElementById("selectedElm");
-    const canvasWrapper = new CanvasWrapper();
-    const selectedElm = canvasWrapper.getSelectedElement();
+// export function applyStyleToSelectedElm(property, cssValue) {
+//     // const canvas = document.getElementById("canvas");
+//     // const canvasWindow = canvas.contentWindow;
+//     // const canvasDocument = canvasWindow.document;
+//     // const selectedElm = canvasDocument.getElementById("selectedElm");
+//     const canvasWrapper = new CanvasWrapper();
+//     const selectedElm = canvasWrapper.getSelectedElm();
+//     if (selectedElm !== null) {
+//         selectedElm.style[property] = cssValue;
+//     }
 
-    if (selectedElm !== null) {
-        selectedElm.style[property] = cssValue;
-    }
-
-    // refresh caption and outline to reflect a style change
-    addCaptionToSelectedElm(selectedElm);
-}
-
+//     // refresh caption and outline to reflect a style change
+//     addCaptionToSelectedElm(selectedElm);
+// }
 //
 // 
 //
 
 
 // set css value to css editor when a element is selected
+// migrated feature to CssStyleManager.js
 
-export function setCssValueToCssEditor(elm) {
-    //all css property items in css editor
-    const cssProperties = [
-        "width",
-        "height",
-        "min-width",
-        "min-height",
-        "max-width",
-        "max-height",
-        //add more css properties here
-    ]
+// export function setCssValueToCssEditor(elm) {
+//     //all css property items in css editor
+//     const cssProperties = [
+//         "width",
+//         "height",
+//         "min-width",
+//         "min-height",
+//         "max-width",
+//         "max-height",
+//         //add more css properties here
+//     ]
 
-    // get css value from selected element
-    const cssValues = elm.ownerDocument.defaultView.getComputedStyle(elm);
+//     // get css value from selected element
+//     const cssValues = elm.ownerDocument.defaultView.getComputedStyle(elm);
 
-    const styleSheet = elm.ownerDocument.styleSheets;
-    console.log(styleSheet.length);
-    for (let i = 0; i < styleSheet.length; i++) {
-        console.log(styleSheet[i]);
-    }
+//     const styleSheet = elm.ownerDocument.styleSheets;
+//     console.log(styleSheet.length);
+//     for (let i = 0; i < styleSheet.length; i++) {
+//         console.log(styleSheet[i]);
+//     }
 
-    //get disabled css property list
-    const elmManager = elementManagerFactory(elm);
-    const enabledCssProperties = elmManager.getEnabledCssProperties();
+//     //get disabled css property list
+//     const elmManager = elementManagerFactory(elm);
+//     const enabledCssProperties = elmManager.getEnabledCssProperties();
 
-    // console.log("cssValue: ", cssValue);
-    // console.log(enabledCssProperties[cssProperties[0]]);
+//     // console.log("cssValue: ", cssValue);
+//     // console.log(enabledCssProperties[cssProperties[0]]);
 
-    cssProperties.forEach((cssProperty) => {
-        //get css editor
-        const targetProperty = document.getElementById(cssProperty);
-        const targetValue = targetProperty.querySelectorAll('[data-aperta-css-value-type="value"]')[0];
-        const targetUnit = targetProperty.querySelectorAll('[data-aperta-css-value-type="unit"]')[0];
+//     cssProperties.forEach((cssProperty) => {
+//         //get css editor
+//         const targetProperty = document.getElementById(cssProperty);
+//         const targetValue = targetProperty.querySelectorAll('[data-aperta-css-value-type="value"]')[0];
+//         const targetUnit = targetProperty.querySelectorAll('[data-aperta-css-value-type="unit"]')[0];
 
-        //fire focus event on target unit to set value to currentUnit on CssDimensionInput.svelte
-        const event = new Event('focus');
-        targetUnit.dispatchEvent(event);
+//         //fire focus event on target unit to set value to currentUnit on CssDimensionInput.svelte
+//         const event = new Event('focus');
+//         targetUnit.dispatchEvent(event);
 
-        //
-        let cssValue = cssValues[cssProperty];
-        cssValue = parseCssValue(cssValue);
-        // console.log(cssValue);
-        // console.log(cssProperty + ": " + cssValue.value + cssValue.unit);
+//         //
+//         let cssValue = cssValues[cssProperty];
+//         cssValue = parseCssValue(cssValue);
+//         // console.log(cssValue);
+//         // console.log(cssProperty + ": " + cssValue.value + cssValue.unit);
 
-        switch (enabledCssProperties[cssProperty]) {
-            case true:
-                // enable input field (add later)
+//         switch (enabledCssProperties[cssProperty]) {
+//             case true:
+//                 // enable input field (add later)
 
-                //set css value to css editor
-                if (cssValue.unit !== undefined) {
-                    // add both css value and unit if unit value is defined
-                    targetValue.value = cssValue.value;
-                    targetUnit.value = cssValue.unit.toUpperCase();
-                    // const event = new Event('change');
-                    // targetUnit.dispatchEvent(event);
-
-
-                } else {
-                    // add only css value if unit value is undefined (value would be KEYWORD value such as "AUTO" and "NONE")
-                    targetUnit.value = cssValue.value.toUpperCase();
-                    // dispatch change event on CssDimensionInput.svelte select element to change UI 
-                    const event = new Event('change');
-                    targetUnit.dispatchEvent(event);
-                }
-
-                break;
-
-            //if css property is disabled
-            case false:
-                // clear value and disable input field (add later)
+//                 //set css value to css editor
+//                 if (cssValue.unit !== undefined) {
+//                     // add both css value and unit if unit value is defined
+//                     targetValue.value = cssValue.value;
+//                     targetUnit.value = cssValue.unit.toUpperCase();
+//                     // const event = new Event('change');
+//                     // targetUnit.dispatchEvent(event);
 
 
-                break;
-        }
+//                 } else {
+//                     // add only css value if unit value is undefined (value would be KEYWORD value such as "AUTO" and "NONE")
+//                     targetUnit.value = cssValue.value.toUpperCase();
+//                     // dispatch change event on CssDimensionInput.svelte select element to change UI 
+//                     const event = new Event('change');
+//                     targetUnit.dispatchEvent(event);
+//                 }
+
+//                 break;
+
+//             //if css property is disabled
+//             case false:
+//                 // clear value and disable input field (add later)
 
 
-        //set css value to css editor
-
-    });
-
-    // get 
-
-    // console.log("cssValue.length: ", cssValue.length);
-    // console.log("cssValue.length: ", cssValue[350]);
-
-    // // get css editor
-    // const cssEditor = elm.ownerDocument.getElementById("cssEditor");
-
-    // // set css value to css editor
-    // cssEditor.value = cssValue.cssText;
-
-}
+//                 break;
+//         }
 
 
+//         //set css value to css editor
 
+//     });
+
+//     // get 
+
+//     // console.log("cssValue.length: ", cssValue.length);
+//     // console.log("cssValue.length: ", cssValue[350]);
+
+//     // // get css editor
+//     // const cssEditor = elm.ownerDocument.getElementById("cssEditor");
+
+//     // // set css value to css editor
+//     // cssEditor.value = cssValue.cssText;
+
+// }
 
 
 
 
-
-
-
-
-
-
-
-//
-// functions related to data formatting
-//
+/* 
+    * functions related to data formatting
+*/
 
 // parse css value to separate the value and unit
 // e.g. "10px" -> { value: 10, unit: "px" }
-
 export function parseCssValue(value) {
     const patterns = [
         // e.g. "10px"
@@ -171,10 +161,6 @@ export function parseCssValue(value) {
         // add more patterns here if needed
     ];
 
-    // if (value === null) {
-    //     return { value: null };
-    // }
-
     for (const pattern of patterns) {
         const matches = value.match(pattern.regex);
         if (matches) {
@@ -185,13 +171,12 @@ export function parseCssValue(value) {
     return { value }; // if no pattern matches, return the value as is
 }
 
-//
-// functions related to convert units
-//
+/* 
+    * functions related to css dimensional value conversion
+*/
 
 // convert css value to target unit 
 //
-
 export function convertCssUnits(propertyName, currentValue, currentUnit, convertUnit) {
     console.log(propertyName + ": " + currentValue + " " + currentUnit + " → " + convertUnit);
     // 
@@ -426,8 +411,8 @@ function pxToPercentage(propertyName, pxValue, canvasWrapper) {
     // const canvas = document.getElementById("canvas");
     // const canvasWindow = canvas.contentWindow;
     // const canvasDocument = canvasWindow.document;
-    const selectedElement = canvasWrapper.getSelectedElement();
-    const parentElement = selectedElement.parentElement;
+    const selectedElm = canvasWrapper.getSelectedElement();
+    const parentElement = selectedElm.parentElement;
     let parentSize = null;
 
     const isHeightProperty = ifHeightProperty(propertyName);
@@ -448,10 +433,10 @@ function pxToEm(pxValue, canvasWrapper) {
     // const canvas = document.getElementById("canvas");
     // const canvasWindow = canvas.contentWindow;
     // const canvasDocument = canvasWindow.document;
-    const selectedElement = canvasWrapper.getSelectedElement();
-    const parentElement = selectedElement.parentElement;
+    const selectedElm = canvasWrapper.getSelectedElement();
+    const parentElement = selectedElm.parentElement;
     const parentFontSize = parseFloat(getComputedStyle(parentElement).fontSize);
-    console.log("parentFontSize: " + parentFontSize + "px");
+    // console.log("parentFontSize: " + parentFontSize + "px");
 
     const emValue = pxValue / parentFontSize;
 
@@ -464,8 +449,8 @@ function pxToRem(pxValue, canvasWrapper) {
     // const canvasWindow = canvas.contentWindow;
     // const canvasDocument = canvasWindow.document;
     const canvasDocument = canvasWrapper.getCanvasDocument();
-    const rootElement = canvasDocument.documentElement;
-    const rootFontSize = parseFloat(getComputedStyle(rootElement).fontSize);
+    const rootElm = canvasDocument.documentElement;
+    const rootFontSize = parseFloat(getComputedStyle(rootElm).fontSize);
 
     const remValue = pxValue / rootFontSize;
 
@@ -477,12 +462,12 @@ function pxToCh(pxValue, canvasWrapper) {
     // const canvas = document.getElementById("canvas");
     // const canvasWindow = canvas.contentWindow;
     // const canvasDocument = canvasWindow.document;
-    // const selectedElement = canvasDocument.getElementById("selectedElm");
+    // const selectedElm = canvasDocument.getElementById("selectedElm");
 
     const canvasWindow = canvasWrapper.getCanvasWindow();
-    const selectedElement = canvasWrapper.getSelectedElement();
+    const selectedElm = canvasWrapper.getSelectedElement();
 
-    const computedStyle = canvasWindow.getComputedStyle(selectedElement);
+    const computedStyle = canvasWindow.getComputedStyle(selectedElm);
     const fontSize = parseFloat(computedStyle.fontSize);
     const fontFamily = computedStyle.fontFamily;
 
@@ -537,9 +522,9 @@ function percentageToPx(propertyName, percentValue, canvasWrapper) {
     // const canvas = document.getElementById("canvas");
     // const canvasWindow = canvas.contentWindow;
     // const canvasDocument = canvasWindow.document;
-    // const selectedElement = canvasDocument.getElementById("selectedElm");
-    const selectedElement = canvasWrapper.getSelectedElement();
-    const parentElement = selectedElement.parentElement;
+    // const selectedElm = canvasDocument.getElementById("selectedElm");
+    const selectedElm = canvasWrapper.getSelectedElement();
+    const parentElement = selectedElm.parentElement;
     let parentSize = null;
 
     const isHeightProperty = ifHeightProperty(propertyName);
@@ -602,9 +587,9 @@ function emToPx(emValue, canvasWrapper) {
     // const canvas = document.getElementById("canvas");
     // const canvasWindow = canvas.contentWindow;
     // const canvasDocument = canvasWindow.document;
-    // const selectedElement = canvasDocument.getElementById("selectedElm");
-    const selectedElement = canvasWrapper.getSelectedElement();
-    const parentElement = selectedElement.parentElement;
+    // const selectedElm = canvasDocument.getElementById("selectedElm");
+    const selectedElm = canvasWrapper.getSelectedElement();
+    const parentElement = selectedElm.parentElement;
     const parentFontSize = parseFloat(getComputedStyle(parentElement).fontSize);
 
     const pxValue = emValue * parentFontSize;
@@ -718,11 +703,11 @@ function chToPx(chValue, canvasWrapper) {
     // const canvas = document.getElementById("canvas");
     // const canvasWindow = canvas.contentWindow;
     // const canvasDocument = canvasWindow.document;
-    // const selectedElement = canvasDocument.getElementById("selectedElm");
+    // const selectedElm = canvasDocument.getElementById("selectedElm");
     const canvasWindow = canvasWrapper.getCanvasWindow();
-    const selectedElement = canvasWrapper.getSelectedElement();
+    const selectedElm = canvasWrapper.getSelectedElement();
 
-    const computedStyle = canvasWindow.getComputedStyle(selectedElement);
+    const computedStyle = canvasWindow.getComputedStyle(selectedElm);
     const fontSize = parseFloat(computedStyle.fontSize);
     const fontFamily = computedStyle.fontFamily;
 
@@ -887,7 +872,7 @@ function vhToCh(vhValue, canvasWrapper) {
 }
 
 
-// util methods for converting units
+// util methods for converting dimensional units
 //
 
 // check if the property is a height property

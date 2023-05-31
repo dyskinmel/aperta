@@ -2,12 +2,15 @@
     import { createEventDispatcher } from "svelte";
     const dispatch = createEventDispatcher();
 
-    let selectorInput = "";
+    let selectorInput;
+    export let inputValue;
 
     function cancel() {
         dispatch("cancel");
     }
     function add() {
+        //add code to check if selector is valid and matches with current selected element
+
         // console.log(selectorInput.value);
         dispatch("add", { value: selectorInput.value });
     }
@@ -19,6 +22,7 @@
     <div class="modal-content" on:click|stopPropagation>
         <input
             bind:this={selectorInput}
+            value={inputValue}
             type="text"
             placeholder="Type selector and press Enter"
         />

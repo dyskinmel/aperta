@@ -132,14 +132,12 @@
             Size
         </button>
     </div>
-    {#if isOpen == true}
-        <div class="cssSizeMenu">
-            {#each menuItems as item}
-                <!-- <CssSizeMenuItem {item} /> -->
-                <CssDimensionInput {item} />
-            {/each}
-        </div>
-    {/if}
+
+    <div class="cssSizeMenu {isOpen ? '' : 'hidden'}">
+        {#each menuItems as item}
+            <CssDimensionInput {item} />
+        {/each}
+    </div>
 </div>
 
 <style>
@@ -170,5 +168,8 @@
     .cssSizeMenu {
         display: grid;
         grid-template-columns: repeat(2, 1fr);
+    }
+    .hidden {
+        display: none;
     }
 </style>

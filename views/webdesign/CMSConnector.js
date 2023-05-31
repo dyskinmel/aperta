@@ -1,4 +1,4 @@
-// Migrate to CMSClients.js
+// Migrating to CMSClients.js
 //
 
 
