@@ -16,14 +16,31 @@ export class ContentfulClient extends CmsClient {
         // TODO: change following to use environment variables in the future
         this.spaceId = "rvj0gs4gb6wz";
         this.environmentId = "master";
-        this.accessToken = "4jj76mhuV9M5drJOAwzDx6Lpuv1eN8TLE4DHc6hN4hw";
+        this.accessToken = "";
 
         this.contentTypes = null;
         this.contents = null;
         this.entries = null;
+
+        this.getApiKey();
+    }
+
+    async getApiKey() {
+        const url = "http://localhost:9000/api/apiKey";
+        try {
+            const response = await fetch(url);
+            if (!response.ok) {
+                throw new Error("Network response was not ok.");
+            }
+            const apiKey = await response.text();
+            return apiKey;
+        } catch (error) {
+            console.error("error:", error);
+        }
     }
 
     async getContentType() {
+        this.accessToken = await this.getApiKey();
         const url = "https://cdn.contentful.com/spaces/" + this.spaceId + "/environments/" + this.environmentId + "/content_types?access_token=" + this.accessToken;
         const response = await fetch(url);
         const contentTypeJSON = await response.json();
@@ -34,6 +51,7 @@ export class ContentfulClient extends CmsClient {
     }
 
     async getContents(contentType) {
+        this.accessToken = await this.getApiKey();
         const url = "https://cdn.contentful.com/spaces/" + this.spaceId + "/environments/" + this.environmentId + "/entries?access_token=" + this.accessToken + "&content_type=" + contentType;
 
         const response = await fetch(url);
@@ -45,6 +63,7 @@ export class ContentfulClient extends CmsClient {
     }
 
     async getEntry(content) {
+        this.accessToken = await this.getApiKey();
         const url = "https://cdn.contentful.com/spaces/" + this.spaceId + "/environments/" + this.environmentId + "/entries/" + content + "?access_token=" + this.accessToken;
 
         const response = await fetch(url);

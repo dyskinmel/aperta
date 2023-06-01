@@ -8,9 +8,9 @@ import { delCaptionFromHoveredElm } from "./utils.js";
 import { CanvasWrapper } from "./utils.js";
 // import { checkIfElementIsSelected } from "./RightSideMenuTabs.svelte";
 
-
-// keydown event to delete selected eleemnt on canvas except for a body element
-//
+/* 
+    *  Keydown event listeners
+*/
 
 export function addKeydownEventListeners(elm) {
     elm.addEventListener('keydown', (event) => {
@@ -85,16 +85,14 @@ export function addKeydownEventListeners(elm) {
     }, true);
 }
 
-//
-// Hover and related functions
-//
+/* 
+    *  Hover event listeners
+*/
 
-
-//Hover activate: add hover class to hovered element to highlight
-//
 
 export function addHoverEventListeners(elm) {
-
+    //Hover activate: add hover class to hovered element to highlight
+    //
     elm.addEventListener("mouseover", (event) => {
         event.preventDefault();
         const canvasWrapper = new CanvasWrapper();
@@ -115,7 +113,7 @@ export function addHoverEventListeners(elm) {
     }, false);
 
     //Hover deactivate: remove hover class to hovered element to highlight
-
+    //
     elm.addEventListener("mouseout", (event) => {
         event.preventDefault();
 
@@ -126,17 +124,14 @@ export function addHoverEventListeners(elm) {
     }, false);
 }
 
+/* 
+    Click event listeners
+*/
 
-//
-// Click and related functions
-//
-
-
-//Click: add select class to clicked element to target other events
-//
 
 export function addClickEventListeners(elm) {
-
+    //Click: set clicked element as a selected elemment
+    //
     elm.addEventListener("click", (event) => {
 
         const ignoreId = ["marginLine", "paddingLine"];
@@ -164,15 +159,11 @@ export function addClickEventListeners(elm) {
         // set id to selected element
         selectElm(event.target);
 
-        // migrate this function to each CssEditor component
-        // set selected element's css value to css editor
-        // setCssValueToCssEditor(elm);
-
-        // updateCssEditor();
-
         // add caption to selected element
         addCaptionToSelectedElm(event.target);
 
+        // TODO: add listeners to change size, margin, padding of selected element
+        //
         // addListenersToChangeSizeMarginPadding(canvasDocument, rect);
 
 
@@ -182,6 +173,8 @@ export function addClickEventListeners(elm) {
 
 
 // currently not in use
+// TODO: add listeners to change size, margin, padding of selected element
+//
 function addListenersToChangeSizeMarginPadding() {
     // const canvas = document.getElementById("canvas");
     // const canvasWindow = canvas.contentWindow;
@@ -394,11 +387,12 @@ function addListenersToChangeSizeMarginPadding() {
 }
 
 
-//
-// Double Click and related functions
-//
+/* 
+    *  Double click event listener
+*/
 
 // Double Click: make element editable when double clicked
+//
 export function addDblClickEventListeners(elm) {
 
     elm.addEventListener("dblclick", function () {
@@ -410,10 +404,9 @@ export function addDblClickEventListeners(elm) {
     }, false);
 }
 
-
-//
-// Drag and Drop and related functions
-//
+/* 
+    *  Drag and Drop event listeners
+*/
 
 
 //use to set data to identify which element to swap when drop event is fired
@@ -653,76 +646,3 @@ export function addDragAndDropEventListeners(elm) {
 
 }
 
-//
-//
-
-
-
-
-//
-
-
-// migrated feature to CssStyleManager.js
-//
-// function setCssValueToCssEditor(elm) {
-//     //all css property items in css editor
-//     const cssProperties = [
-//         "width",
-//         "height",
-//         "min-width",
-//         "min-height",
-//         "max-width",
-//         "max-height",
-//         //add more css properties here
-//     ]
-
-//     // get css value from selected element
-//     const cssValues = elm.ownerDocument.defaultView.getComputedStyle(elm);
-
-//     //get disabled css property items
-//     const elmManager = elementManagerFactory(elm);
-//     const enabledCssProperties = elmManager.getEnabledCssProperties();
-
-//     // console.log("cssValue: ", cssValue);
-//     // console.log(enabledCssProperties[cssProperties[0]]);
-
-//     cssProperties.forEach((cssProperty) => {
-//         //get css editor
-//         const targetProperty = document.getElementById(cssProperty);
-//         const targetValue = targetProperty.querySelectorAll('[data-css-value-type="value"]')[0];
-//         const targetUnit = targetProperty.querySelectorAll('[data-css-value-type="unit"]')[0];
-
-//         let cssValue = cssValues[cssProperty];
-//         cssValue = 
-//         console.log(cssProperty + ": " + cssValues[cssProperty]);
-
-//         if (enabledCssProperties[cssProperty] === true) {
-//             if(targetUnit !== null){
-//                 //
-//             } else{
-//                 //
-//             }
-//             console.log("targetValue: " + targetValue);
-//             console.log("targetUnit: " + targetUnit);
-//         } else {
-//             //clear value and disable css editor
-
-//         }
-
-
-//         //set css value to css editor
-
-//     });
-
-//     // get 
-
-//     // console.log("cssValue.length: ", cssValue.length);
-//     // console.log("cssValue.length: ", cssValue[350]);
-
-//     // // get css editor
-//     // const cssEditor = elm.ownerDocument.getElementById("cssEditor");
-
-//     // // set css value to css editor
-//     // cssEditor.value = cssValue.cssText;
-
-// }

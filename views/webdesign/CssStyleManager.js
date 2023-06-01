@@ -3,8 +3,11 @@ import { CanvasWrapper } from "./utils.js";
 import { calculate } from "specificity";
 import { addCaptionToSelectedElm } from "./utils";
 
+/* 
+    *  CssStyleManager class
+    *  This class will read/write css style from/to css file and html file(inline style)
+*/
 
-// export class CssStyleManager {
 export class CssStyleManager {
     constructor() {
         //initialize

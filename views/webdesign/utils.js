@@ -1,16 +1,16 @@
 
 import { CssStyleManager } from "./CssStyleManager.js";
 
-//
-// hovered elements related functions
-//
+/*
+    *  hovered elements related functions
+*/
 
 // add caption and outline to hovered element
 export function addCaptionToHoveredElm(elm) {
     // delete old hovered element before creating a new one
     delCaptionFromHoveredElm(elm);
 
-    // get position of hovered element
+    // get position of elm to calculate position for hovered element
     const rect = elm.getBoundingClientRect();
 
     const canvas = document.getElementById("canvas");
@@ -69,10 +69,9 @@ export function delCaptionFromHoveredElm(elm) {
     }
 }
 
-
-//
-//　selected elements related functions 
-//
+/*
+    *  selected elements related functions
+*/
 
 // change state of selected elements
 //
@@ -106,6 +105,7 @@ export function selectElm(elm) {
 }
 
 // add caption to selected element
+// TODO: add feature to edit element basic contents
 //
 export function addCaptionToSelectedElm(elm) {
     // delete old label and menu before creating a new one
@@ -160,10 +160,13 @@ export function addCaptionToSelectedElm(elm) {
 
 }
 
-//
-//
-//
 
+/*
+    *  util functions
+*/
+
+// use this class to get canvas related elements and attribute names to avoid hardcoding
+// TODO: consider to make it singleton to chache variables
 export class CanvasWrapper {
     constructor() {
         this.canvas = document.getElementById("canvas");
@@ -231,8 +234,7 @@ export class CanvasWrapper {
 }
 
 
-//
-// related canvas appearance
+// function related to canvas appearance
 //
 
 export function adjustBodyHeight() {

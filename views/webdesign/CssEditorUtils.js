@@ -134,15 +134,12 @@ export function blurWhenEnterPressed(event) {
 
 
 
-
-
-//
-// functions related to data formatting
-//
+/* 
+    * functions related to data formatting
+*/
 
 // parse css value to separate the value and unit
 // e.g. "10px" -> { value: 10, unit: "px" }
-
 export function parseCssValue(value) {
     const patterns = [
         // e.g. "10px"
@@ -174,9 +171,9 @@ export function parseCssValue(value) {
     return { value }; // if no pattern matches, return the value as is
 }
 
-//
-// functions related to convert dimensional units
-//
+/* 
+    * functions related to css dimensional value conversion
+*/
 
 // convert css value to target unit 
 //
