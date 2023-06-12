@@ -1,6 +1,6 @@
 <script>
-    import { elementManagerFactory } from "./ElementManager.js";
-    import { addKeydownEventListeners } from "./ElementEventListeners.js";
+    import { elementManagerFactory } from "../Utils/ElementManager.js";
+    import { addKeydownEventListeners } from "../Utils/ElementEventListeners.js";
 
     let canvas;
 

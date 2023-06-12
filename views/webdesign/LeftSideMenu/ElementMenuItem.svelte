@@ -1,5 +1,5 @@
 <script>
-    import { elementManagerFactory } from "./ElementManager.js";
+    import { elementManagerFactory } from "../Utils/ElementManager.js";
 
     export let elementList;
     let isOpen = true;

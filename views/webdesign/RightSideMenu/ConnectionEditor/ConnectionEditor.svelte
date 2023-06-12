@@ -1,7 +1,7 @@
 <script>
     // import { ContentfulConnector } from "./CMSConnector.js";
     import { ContentfulClient } from "./CMSClient.js";
-    import { CanvasWrapper } from "./utils.js";
+    import { CanvasWrapper } from "../../Utils/utils.js";
 
     let contentTypes;
     let contents;

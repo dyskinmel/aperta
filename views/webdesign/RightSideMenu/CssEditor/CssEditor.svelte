@@ -9,7 +9,7 @@
         selectorToEdit,
         selectorList,
         pseudoList,
-    } from "./CssStore.js";
+    } from "../CssStore.js";
 
     onMount(() => {
         document.addEventListener("elementSelected", (event) => {

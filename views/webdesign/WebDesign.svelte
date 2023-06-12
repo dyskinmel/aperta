@@ -1,8 +1,8 @@
 <script>
-    import LeftSideMenu from "./ LeftSideMenu.svelte";
-    import EditorCanvas from "./EditorCanvas.svelte";
+    import LeftSideMenu from "./LeftSideMenu/LeftSideMenu.svelte";
+    import EditorCanvas from "./EditorCanvas/EditorCanvas.svelte";
     // import MetaEditor from "./RightSideMenu.svelte";
-    import RightSideMenu from "./RightSideMenu.svelte";
+    import RightSideMenu from "./RightSideMenu/RightSideMenu.svelte";
 </script>
 
 <div class="wrapper">
