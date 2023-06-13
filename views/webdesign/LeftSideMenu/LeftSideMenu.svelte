@@ -1,6 +1,6 @@
 <script>
     import FolderMenu from "./FolderMenu.svelte";
-    import ElementMenu from "./ElementMenu.svelte";
+    import ElementMenu from "./ElementMenu/ElementMenu.svelte";
     import IntegrationMenu from "./IntegrationMenu.svelte";
     import GitMenu from "./GitMenu.svelte";
     import SettingMenu from "./SettingMenu.svelte";
