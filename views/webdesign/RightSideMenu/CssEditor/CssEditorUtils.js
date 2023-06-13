@@ -1,6 +1,6 @@
 // import { addCaptionToSelectedElm } from "./utils";
 // import { elementManagerFactory } from "./ElementManager";
-import { CanvasWrapper } from "./utils";
+import { CanvasWrapper } from "../../Utils/utils.js";
 
 //
 // 

@@ -4,8 +4,8 @@
     // import { applyStyleToSelectedElement } from "./CssEditorUtils.js";
     import { parseCssValue } from "./CssEditorUtils.js";
     import { convertCssUnits } from "./CssEditorUtils.js";
-    import { CanvasWrapper } from "./utils.js";
-    import { cssStyleManager, selectorToEdit } from "./CssStore.js";
+    import { CanvasWrapper } from "../../Utils/utils.js";
+    import { cssStyleManager, selectorToEdit } from "../CssStore.js";
 
     // export let property;
     export let item;

@@ -1,7 +1,7 @@
 //this js will read/write css style from/to css file and html file
 import { CanvasWrapper } from "./utils.js";
 import { calculate } from "specificity";
-import { addCaptionToSelectedElm } from "./utils";
+import { addCaptionToSelectedElm } from "./utils.js";
 
 /* 
     *  CssStyleManager class

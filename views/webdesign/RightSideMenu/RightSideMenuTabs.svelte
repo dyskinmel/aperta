@@ -1,6 +1,6 @@
 <script>
     import { onMount } from "svelte";
-    import { CanvasWrapper } from "./utils";
+    import { CanvasWrapper } from "../Utils/utils.js";
     import { cssStyleManager } from "./CssStore.js";
     export let rightSideMenuTabItems = [];
     export let activeTabValue = 1;

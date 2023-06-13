@@ -8,7 +8,7 @@
         selectorToEdit,
         selectorList,
         pseudoList,
-    } from "./CssStore.js";
+    } from "../CssStore.js";
     //
     let showModal = false;
     //
