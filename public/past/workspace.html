@@ -1,81 +1,79 @@
 <!DOCTYPE html>
 <html lang="en">
-
-<head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Aperta Workspace</title>
-    <link rel="stylesheet" href="./assets/css/style.css" type="text/css">
-</head>
+    <link rel="stylesheet" href="./assets/css/style.css" type="text/css" />
+  </head>
 
-<body>
+  <body>
     <div class="wrapper">
-        <div class="header">
-            Header
-        </div>
-        <div class="workspace">
-            <div class="leftSideMenu">
-                <div class="iconMenu">
-                    <img src="./assets/image/menuIcons/folder.png">
-                    <img src="./assets/image/menuIcons/add_box.png">
-                    <img src="./assets/image/menuIcons/integration.png">
-                    <img src="./assets/image/menuIcons/git.png">
-                    <img src="./assets/image/menuIcons/settings.png">
-                </div>
-                <div class="elementMenu" hidden="true">
-                    <div class="menuTitle">
-                        Add elements
-                    </div>
-                    <div class="group Typography">
-                        <div class="groupName">
-                            Typography
-                        </div>
-                        <div class="elementContainer">
-                            <div class="subElementContainer">
-                                <!-- <div class="elementItem" data-Htag="h1" onclick="addElement(event)"> Heading </div>
+      <div class="header">Header</div>
+      <div class="workspace">
+        <div class="leftSideMenu">
+          <div class="iconMenu">
+            <img src="./assets/image/menuIcons/folder.png" />
+            <img src="./assets/image/menuIcons/add_box.png" />
+            <img src="./assets/image/menuIcons/integration.png" />
+            <img src="./assets/image/menuIcons/git.png" />
+            <img src="./assets/image/menuIcons/settings.png" />
+          </div>
+          <div class="elementMenu" hidden="true">
+            <div class="menuTitle">Add elements</div>
+            <div class="group Typography">
+              <div class="groupName">Typography</div>
+              <div class="elementContainer">
+                <div class="subElementContainer">
+                  <!-- <div class="elementItem" data-Htag="h1" onclick="addElement(event)"> Heading </div>
                                 <div class="elementItem"> Paragraph </div>
                                 <div class="elementItem"> Text link </div> -->
-                            </div>
-                        </div>
-                    </div>
                 </div>
+              </div>
             </div>
-            <div class="editor">
-                <!-- <div class="canvas" id="canvas">editor</div> -->
-                <iframe src="./assets/pageDesign/index.html" class="canvas" id="canvas"></iframe>
-
-            </div>
-            <div class="rightSideMenu">
-                RightSideMenu
-                <div class="metaEditorTab">
-                    <input id="cssEditor" type="radio" name="tab_menu" checked><label class="tab_menu"
-                        for="cssEditor">cssEdi</label>
-                    <input id="connectionEditor" type="radio" name="tab_menu"><label class="tab_menu"
-                        for="connectionEditor">conEdi</label>
-
-
-
-                    <div class="tab_contents" id="cssEditor">
-                        コンテンツ内容１
-                    </div>
-                    <div class="tab_contents" id="connectionEditor">
-                        コンテンツ内容2
-                        <button id="getContentType" onclick="getContentType()">get content type</button>
-                        <br>
-                        <select name="contentType" id="contentTypes"></select>
-                        <button id="getContents" onclick="getContents()">get contents</button>
-
-
-                    </div>
-                </div>
-            </div>
+          </div>
         </div>
-        <div class="footer">footer</div>
+        <div class="editor">
+          <!-- <div class="canvas" id="canvas">editor</div> -->
+          <iframe
+            src="./assets/pageDesign/index.html"
+            class="canvas"
+            id="canvas"
+          ></iframe>
+        </div>
+        <div class="rightSideMenu">
+          RightSideMenu
+          <div class="metaEditorTab">
+            <input id="cssEditor" type="radio" name="tab_menu" checked /><label
+              class="tab_menu"
+              for="cssEditor"
+              >cssEdi</label
+            >
+            <input id="connectionEditor" type="radio" name="tab_menu" /><label
+              class="tab_menu"
+              for="connectionEditor"
+              >conEdi</label
+            >
 
+            <div class="tab_contents" id="cssEditor">コンテンツ内容１</div>
+            <div class="tab_contents" id="connectionEditor">
+              コンテンツ内容2
+              <button id="getContentType" onclick="getContentType()">
+                get content type
+              </button>
+              <br />
+              <select name="contentType" id="contentTypes"></select>
+              <button id="getContents" onclick="getContents()">
+                get contents
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="footer">footer</div>
     </div>
 
-    <Script src="./assets/js/aperta.js"></Script>
-</body>
-
+    <script src="./assets/js/aperta.js"></script>
+  </body>
 </html>

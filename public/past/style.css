@@ -7,99 +7,95 @@ body {
 } */
 
 .wrapper {
-    /* @include box-sizing(border-box); */
-    position: fixed;
-    top: 0px;
-    left: 0px;
-    width: 100%;
-    height: 100%;
-    /* padding: 0px 0px 0px; */
-    margin: 0;
-    outline: 1px solid gray;
-    display: flex;
-    flex-flow: column;
-
+  /* @include box-sizing(border-box); */
+  position: fixed;
+  top: 0px;
+  left: 0px;
+  width: 100%;
+  height: 100%;
+  /* padding: 0px 0px 0px; */
+  margin: 0;
+  outline: 1px solid gray;
+  display: flex;
+  flex-flow: column;
 }
 
 .header {
-    width: 100%;
-    text-align: center;
-    outline: 1px solid gray;
-
+  width: 100%;
+  text-align: center;
+  outline: 1px solid gray;
 }
 
 .workspace {
-    height: 100%;
-    outline: 1px solid gray;
-    display: flex;
+  height: 100%;
+  outline: 1px solid gray;
+  display: flex;
 }
 
 .footer {
-    width: 100%;
-    text-align: center;
-    outline: 1px solid gray;
+  width: 100%;
+  text-align: center;
+  outline: 1px solid gray;
 }
 
 /* Left Side Menu CSS */
 
 .leftSideMenu {
-    height: 100%;
-    display: inline-flex;
-    outline: 1px solid gray;
+  height: 100%;
+  display: inline-flex;
+  outline: 1px solid gray;
 }
 
 .iconMenu {
-    height: 100%;
-    outline: 1px solid gray;
+  height: 100%;
+  outline: 1px solid gray;
 }
 
-.iconMenu>img {
-    width: 30px;
-    margin: 4px 2px;
-    display: block;
+.iconMenu > img {
+  width: 30px;
+  margin: 4px 2px;
+  display: block;
 }
 
 .elementMenu {
-    height: 100%;
-    display: block;
-    outline: 1px solid gray;
+  height: 100%;
+  display: block;
+  outline: 1px solid gray;
 }
 
 .menuTitle {
-    white-space: nowrap;
+  white-space: nowrap;
 }
 
 .groupName {
-    outline: 1px solid gray;
+  outline: 1px solid gray;
 }
-
 
 .elementItem {
-    font-size: 13px;
-    text-align: center;
-    vertical-align: middle;
-    width: 70px;
-    height: 70px;
-    outline: 1px solid gray;
+  font-size: 13px;
+  text-align: center;
+  vertical-align: middle;
+  width: 70px;
+  height: 70px;
+  outline: 1px solid gray;
 }
-
 
 /* Editor CSS */
 
 .editor {
-    /* height: 100%; */
-    width: 100%;
-    padding: 10px;
-    outline: 1px solid gray;
-    /* background-color: gray; */
+  /* height: 100%; */
+  width: 100%;
+  padding: 10px;
+  outline: 1px solid gray;
+  /* background-color: gray; */
 }
 
 .canvas {
-    border: none;
-    height: 100%;
-    width: 100%;
-    /* outline: 1px solid gray; */
-    /* background-color: white; */
+  border: none;
+  height: 100%;
+  width: 100%;
+  /* outline: 1px solid gray; */
+  /* background-color: white; */
 }
 
 /* .canvasItem {
@@ -107,60 +103,59 @@ body {
 } */
 
 .hover {
-    box-sizing: border-box;
-    outline: 1px solid rgb(48, 165, 249);
+  box-sizing: border-box;
+  outline: 1px solid rgb(48, 165, 249);
 }
 
 .selected {
-    box-sizing: border-box;
-    outline: 1px solid rgb(0, 120, 206);
+  box-sizing: border-box;
+  outline: 1px solid rgb(0, 120, 206);
 }
 
 .isAtTop {
-    border-top: 2px solid rgb(0, 120, 206);
+  border-top: 2px solid rgb(0, 120, 206);
 }
 
 .middle {
-    border: 2px solid rgb(0, 120, 206);
+  border: 2px solid rgb(0, 120, 206);
 }
 
 .isAtBottom {
-    border-bottom: 2px solid rgb(0, 120, 206);
+  border-bottom: 2px solid rgb(0, 120, 206);
 }
-
 
 /* Right side menu CSS */
 
 .rightSideMenu {
-    height: 100%;
-    /* position: absolute;
+  height: 100%;
+  /* position: absolute;
     right: 0; */
-    outline: 1px solid gray;
+  outline: 1px solid gray;
 }
 
 /*  */
 
 .metaEditorTab {
-    /* height: 100%; */
-    width: 225px;
+  /* height: 100%; */
+  width: 225px;
 }
 
 input[name="tab_menu"] {
-    display: none;
+  display: none;
 }
 
 .tab_contents {
-    display: none;
-    height: 100%;
-    outline: 1px solid black;
+  display: none;
+  height: 100%;
+  outline: 1px solid black;
 }
 
-#cssEditor:checked~#cssEditor,
-#connectionEditor:checked~#connectionEditor {
-    display: block;
+#cssEditor:checked ~ #cssEditor,
+#connectionEditor:checked ~ #connectionEditor {
+  display: block;
 }
 
-.metaEditorTab input:checked+.tab_menu {
-    background-color: #1f71b5;
-    color: #fff;
+.metaEditorTab input:checked + .tab_menu {
+  background-color: #1f71b5;
+  color: #fff;
 }

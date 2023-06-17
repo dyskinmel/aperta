@@ -16,28 +16,28 @@
 } */
 
 body {
-    height: auto;
-    width: auto;
-    min-height: 0;
-    min-width: 0;
-    max-height: none;
-    max-width: none;
+  height: auto;
+  width: auto;
+  min-height: 0;
+  min-width: 0;
+  max-height: none;
+  max-width: none;
 }
 
 div {
-    height: auto;
-    width: auto;
-    min-height: 0;
-    min-width: 0;
-    max-height: none;
-    max-width: none;
+  height: auto;
+  width: auto;
+  min-height: 0;
+  min-width: 0;
+  max-height: none;
+  max-width: none;
 }
 
 h1 {
-    height: auto;
-    width: auto;
-    min-height: 0;
-    min-width: 0;
-    max-height: none;
-    max-width: none;
+  height: auto;
+  width: auto;
+  min-height: 0;
+  min-width: 0;
+  max-height: none;
+  max-width: none;
 }

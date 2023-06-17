@@ -1,0 +1,22 @@
+name: Format
+
+on:
+  pull_request:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+        with:
+          ref: ${{ github.event.pull_request.head.ref }}
+      - uses: actions/setup-node@v3
+        with:
+          node-version: 20
+          cache: npm
+      - name: Run Package install
+        run: npm ci
+      - name: Run formatter
+        run: npm run format
+      - name: Run build
+        run: npm run build

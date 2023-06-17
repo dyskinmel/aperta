@@ -1,4 +1,3 @@
-
 # Getting Started
 
 ## Development Environment Setup
@@ -15,18 +14,17 @@ Nothing
 2. cd to project home directory
 3. install webpack using following command
 
-  `yarn add webpack-dev-server --dev`
+`yarn add webpack-dev-server --dev`
 
 4. start service with following command
 
 `yarn start`
 
-5. access to following url 
+5. access to following url
 
 `https://FQDN/webdesign/index.html`
 
 6. stop server with [Ctl+C]
-
 
 ### VS Code:
 
@@ -50,7 +48,7 @@ Nothing
 
 `yarn start`
 
-6. access to following url 
+6. access to following url
 
 `https://FQDN/webdesign/index.html`
 

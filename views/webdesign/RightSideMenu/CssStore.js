@@ -1,4 +1,4 @@
-import { writable } from 'svelte/store';
+import { writable } from "svelte/store";
 
 export const cssStyleManager = writable(null);
 export const cssEditMode = writable(false);
