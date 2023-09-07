@@ -48,7 +48,7 @@ export class CssStyleManager {
         this.styleSheets = this.canvasDocument.styleSheets;
         // console.log(this.styleSheets);
         for (let i = 0; i < this.styleSheets.length; i++) {
-            if (this.styleSheets[i].href.endsWith(this.defaultCssFileName)) {
+            if (this.styleSheets.at(i)?.href?.endsWith(this.defaultCssFileName)) {
                 this.defaultStyleSheet = this.styleSheets[i];
                 this.defaultRules = this.defaultStyleSheet.cssRules || this.defaultStyleSheet.rules;
 
@@ -57,7 +57,7 @@ export class CssStyleManager {
 
                 // console.log(this.defaultStyleSheet);
             }
-            if (this.styleSheets[i].href.endsWith(this.cssFileName)) {
+            if (this.styleSheets.at(i)?.href?.endsWith(this.cssFileName)) {
                 this.styleSheet = this.styleSheets[i];
                 this.rules = this.styleSheet.cssRules || this.styleSheet.rules;
 
